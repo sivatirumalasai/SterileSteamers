@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AccessoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +24,10 @@ Route::get('/home', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+    Route::resource('products', ProductController::class);
+    Route::resource('accessories', AccessoryController::class);
+});
