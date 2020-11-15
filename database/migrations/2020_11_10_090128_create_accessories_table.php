@@ -17,13 +17,16 @@ class CreateAccessoriesTable extends Migration
             $table->id();
             $table->string("name",100);
             $table->string('code',100);
+            $table->float('actual_price',10,2)->default('0');
+            $table->float('discount',10,2)->default('0');
             $table->json('images');
             $table->json('category');
             $table->longText('description',500);
-            $table->longText('short_descripition',200);
+            $table->longText('short_description',200);
             $table->string("width",100);
             $table->string('dimensions',100);
             $table->string('length',100);
+            $table->boolean('status')->default('true');
             $table->timestamps();
         });
     }

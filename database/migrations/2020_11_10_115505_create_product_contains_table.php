@@ -15,7 +15,8 @@ class CreateProductContainsTable extends Migration
     {
         Schema::create('product_contains', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('accessories_id');
+            $table->foreignId('product_id');
+            $table->foreignId('accessory_id');
             $table->boolean("status")->default(true);
             $table->timestamps();
         });

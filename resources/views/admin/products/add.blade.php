@@ -27,7 +27,7 @@
         <div class="container-fluid">
           <div class="row">
             <!-- left column -->
-            <div class="col-md-8">
+            <div class="col-md-10">
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
@@ -38,34 +38,64 @@
                 <form role="form" method="POST" enctype="multipart/form-data" action="{{ route("products.store") }}" >
                     @csrf
                   <div class="card-body">
-                    <div class="form-group">
-                      <label for="InputEmail1">Name*</label>
-                      <input type="text" name="product_name" class="form-control" id="InputEmail1" placeholder="Enter Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="InputPrice1">Price*</label>
-                        <input type="text" name="price" class="form-control" id="InputPrice1" placeholder="Enter Price">
-                      </div>
-                      <div class="form-group">
-                        <label for="InputColor">Color*</label>
-                        <input type="color" name="color" class="form-control" id="InputColor" placeholder="Enter Name">
-                      </div>
-                    <div class="form-group">
-                      <label for="InputFile">Product Images* </label>
-                      <div class="input-group">
-                        <div class="custom-file">
-                          <input type="file" name="product_images[]" class="custom-file-input" id="InputFile">
-                          <label class="custom-file-label" for="InputFile">Choose file</label>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="InputEmail1">Name*</label>
+                          <input type="text" name="product_name" value="{{ old("product_name") }}" class="form-control" id="InputEmail1" placeholder="Enter Name">
                         </div>
-                        <div class="input-group-append">
-                          <span class="input-group-text" id="InputColor">Upload</span>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="Inputcode">Code*</label>
+                          <input type="text" name="code" value="{{ old("code") }}"  class="form-control" id="Inputcode" placeholder="Enter Product Code">
                         </div>
                       </div>
                     </div>
-                    <div class="form-group">
-                        <label for="InputDescription">Description*</label>
-                        <input type="text" name="description" class="form-control" id="InputDescription" placeholder="Enter Description">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="InputEmail1">Acritual Price*</label>
+                          <input type="text" name="price"  value="{{ old("price") }}" class="form-control" id="InputEmail1" placeholder="Enter Name">
+                        </div>
                       </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="Inputdiscount">Discount*</label>
+                          <input type="text" name="discount" value="{{ old('discount') }}" class="form-control" id="Inputdiscount" placeholder="Enter discount">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="InputFile">Product Images* </label>
+                          <div class="input-group">
+                            <div class="custom-file">
+                              <input type="file" name="product_images[]" multiple value="{{ old('product_images') }}" class="custom-file-input" id="InputFile">
+                              <label class="custom-file-label" for="InputFile">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                              <span class="input-group-text" id="InputColor">Upload</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="InputDescription">Description*</label>
+                            <textarea rows="3" name="description" class="form-control" id="InputDescription" placeholder="Enter Description">{{ old('description') }}</textarea>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="InputSDescription">Short Description(Note)*</label>
+                          <textarea rows="3" name="short_description" class="form-control" id="InputSDescription" placeholder="Enter Short Description">{{ old('short_description') }}</textarea>
+                        </div>
+                      </div>
+                    </div>
                     <div class="form-check">
                       <input type="checkbox" name="status" class="form-check-input" id="exampleCheck1">
                       <label class="form-check-label" for="exampleCheck1">status</label>

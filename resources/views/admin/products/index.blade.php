@@ -38,37 +38,68 @@
                   <thead>
                   <tr>
                     <th>Slno</th>
+                    <th>Image</th>
                     <th>Product Name</th>
-                    <th>Colors</th>
+                    <th>Code</th>
                     <th>Price</th>
-                    <th>status</th>
                     <th>Created at</th>
+                    <th>Features</th>
+                    <th>Specifications</th>
+                    <th>Accessories</th>
                     <th>Controles</th>
                   </tr>
                   </thead>
                   <tbody>
+                    @foreach (App\Models\Product::all() as $item=>$product)
+                    
                   <tr>
-                    <td>Trident</td>
-                    <td>Internet
-                      Explorer 4.0
+                    <td>{{ $item+1 }}</td>
+                    @foreach(json_decode($product->images) as $product_image) 
+                    <td><img width="50"  src="{{Storage::url($product_image)}}" alt=""></td>
+                    @break
+                    @endforeach
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->code }}</td>
+                    <td>{{ $product->actual_price }}</td>
+                    <td>{{ $product->created_at->format('Y-m-d') }}</td>
+                    <td>
+                      <a href="{{ route('product-feature',['id'=>$product->code]) }}"><button type="button" class="btn btn-block btn-outline-info">Features</button></a>
                     </td>
-                    <td>Win 95+</td>
-                    <td> 4</td>
-                    <td>X</td>
-                    <td>X</td>
-                    <td>edit</td>s
+                      <td>
+                        <a href="{{ route('product-specifications-create',['id'=>$product->code]) }}"><button type="button" class="btn btn-block btn-outline-warning">Specifications</button>
+                        </a>
+                      </td>
+                      <td>
+                        <a href="{{ route('product-accessories',['id'=>$product->code]) }}"><button type="button" class="btn btn-block btn-outline-primary">Accessories</button>
+                        </a>
+                      </td>
+                      <td>
+                        <div class="row"><a ><button class="btn btn-block btn-outline-secondary">
+                          <i class="fas fa-edit"></i> </button>
+                          </a>
+                          <form action="{{ route('products.destroy', $product->code) }}" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button class="btn btn-block btn-outline-danger">
+                              <i class="fas fa-trash"></i></button>
+                        </form>
+                        </div>
+                      </td>
                   </tr>
+                  @endforeach
                   </tbody>
                   <tfoot>
                     <tr>
-                        <th>Slno</th>
-                        <th>Product Name</th>
-                        <th>Colors</th>
-                        <th>Price</th>
-                        <th>status</th>
-                        <th>Created at</th>
-                        <th>Controles</th>
-                      </tr>
+                      <th>Slno</th>
+                      <th>Product Name</th>
+                      <th>Colors</th>
+                      <th>Price</th>
+                      <th>Created at</th>
+                      <th>Features</th>
+                      <th>Specifications</th>
+                      <th>Accessories</th>
+                      <th>Controles</th>
+                    </tr>
                   </tfoot>
                 </table>
               </div>

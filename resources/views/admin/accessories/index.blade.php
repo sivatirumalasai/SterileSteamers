@@ -38,26 +38,43 @@
                   <thead>
                   <tr>
                     <th>Slno</th>
+                    <th>Image</th>
                     <th>Accessory Name</th>
-                    <th>Colors</th>
-                    <th>Price</th>
+                    <th>Code</th>
+                    <th>Price(INR)</th>
                     <th>status</th>
                     <th>Created at</th>
                     <th>Controles</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>Trident</td>
-                    <td>Internet
-                      Explorer 4.0
-                    </td>
-                    <td>Win 95+</td>
-                    <td> 4</td>
-                    <td>X</td>
-                    <td>X</td>
-                    <td>edit</td>s
-                  </tr>
+                    @foreach (App\Models\Accessory::get() as $index=>$accessory)
+                    <tr>
+                      <td>{{ $index+1 }}</td>
+                      @foreach(json_decode($accessory->images) as $product_image) 
+                    <td><img width="50"  src="{{Storage::url($product_image)}}" alt=""></td>
+                    @break
+                    @endforeach
+                      <td>{{ $accessory->name }}</td>
+                      <td>{{ $accessory->code}}
+                      </td>
+                      <td>{{ $accessory->actual_price }}</td>
+                      <td> {{ ($accessory->status)? 'Available':"Not Available" }}</td>
+                      <td>{{ $accessory->created_at->format('Y-m-d') }}</td>
+                          <td>
+                            <div class="row"><a ><button class="btn btn-block btn-outline-secondary">
+                              <i class="fas fa-edit"></i> </button>
+                              </a><form action="{{ route('accessories.destroy', $accessory->code) }}" method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button class="btn btn-block btn-outline-danger">
+                                  <i class="fas fa-trash"></i></button>
+                            </form>
+                            </div>
+                          </td>
+                    </tr>
+                    @endforeach
+                  
                   </tbody>
                   <tfoot>
                     <tr>

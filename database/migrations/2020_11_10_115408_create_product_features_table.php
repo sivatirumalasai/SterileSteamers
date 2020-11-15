@@ -15,6 +15,7 @@ class CreateProductFeaturesTable extends Migration
     {
         Schema::create('product_features', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("product_id");
             $table->string("name",100);
             $table->string('image',100);
             $table->longText('description',500);
