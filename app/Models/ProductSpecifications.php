@@ -8,5 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductSpecifications extends Model
 {
     use HasFactory;
+    protected $table = 'product_specifications';
+
     protected $guarded=[];
 }

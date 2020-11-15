@@ -15,7 +15,7 @@ class CreateProductSpecificationsTable extends Migration
     {
         Schema::create('product_specifications', function (Blueprint $table) {
             $table->id();
-            $table->json('category')->nullable();
+            $table->string('category',100)->nullable();
             $table->string('info',100)->nullable();
             $table->string('power',100)->nullable();
             $table->string('voltage',100)->nullable();

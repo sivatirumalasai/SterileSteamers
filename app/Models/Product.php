@@ -15,7 +15,7 @@ class Product extends Model
     }
     public function specifications()
     {
-        return $this->hasMany(ProductSpecifications::class);
+        return $this->hasOne(ProductSpecifications::class);
     }
     public function contains()
     {
