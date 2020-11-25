@@ -22,6 +22,10 @@ Route::get('/home', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+Route::get('product-info/{id}','WebSite\ProductController@productInfo')->name('product-info');
+Route::get("accessories-list",'WebSite\AccessoryController@index')->name('accessories-list');
+Route::get('accessory-info/{id}','WebSite\AccessoryController@accessoryInfo')->name('accessory-info');
+
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function () {
         return view('admin.dashboard');
