@@ -26,7 +26,7 @@ class CreateAccessoriesTable extends Migration
             $table->string("width",100);
             $table->string('dimensions',100);
             $table->string('length',100);
-            $table->boolean('status')->default('true');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

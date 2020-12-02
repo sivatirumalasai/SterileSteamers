@@ -211,6 +211,7 @@ trait HasPlans
      */
     public function subscribeTo($plan,$order=null, int $duration = 30,$noOfMonths=1, bool $isRecurring = true)
     {
+        return "sai";
         $subscriptionModel = config('plans.models.subscription');
         if ($duration < 1) {
             return false;

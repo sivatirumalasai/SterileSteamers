@@ -12,7 +12,7 @@ class ProductController extends Controller
     {
         $product=Product::where('code',$id)->first();
         if($product){
-            return view('product-info',["product"=>$product,'features'=>$product->features,'specifications'=>$product->specifications]);
+            return view('product-info',["product"=>$product,'features'=>$product->features,'specifications'=>$product->specifications,'title'=>'products']);
         }
         return redirect()->back();
     }

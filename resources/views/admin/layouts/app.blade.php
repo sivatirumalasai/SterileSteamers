@@ -6,7 +6,6 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>admin</title>
-
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{ URL::asset('plugins/fontawesome-free/css/all.min.css') }}">
   <!-- overlayScrollbars -->

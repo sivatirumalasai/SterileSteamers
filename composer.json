@@ -24,7 +24,8 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "8.12.3",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "rennokki/plans":"*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

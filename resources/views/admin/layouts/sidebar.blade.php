@@ -25,7 +25,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="{{ url("admin/dashboard")}}" class="nav-link active">
+            <a href="{{ url("admin/dashboard")}}" class="nav-link {{ ($title==='dashboard')? "active": "" }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -33,7 +33,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{url("admin/products")}}" class="nav-link">
+            <a href="{{url("admin/products")}}" class="nav-link {{ ($title==='products')? "active": "" }}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Products
@@ -41,10 +41,34 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{url("admin/accessories")}}" class="nav-link">
+            <a href="{{url("admin/accessories")}}" class="nav-link {{ ($title==='accessories')? "active": "" }}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Accessories
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{url("admin/plans")}}" class="nav-link {{ ($title==='plans')? "active": "" }}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Plans
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route("features.index")}}" class="nav-link {{ ($title==='features')? "active": "" }}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Features
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route("services.index")}}" class="nav-link {{ ($title==='services')? "active": "" }}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Services
               </p>
             </a>
           </li>

@@ -26,7 +26,7 @@ class ProductController extends Controller
     public function index()
     {
         
-        return view("admin.products.index");
+        return view("admin.products.index",['title'=>'products']);
     }
 
     /**
@@ -36,7 +36,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view("admin.products.add");
+        return view("admin.products.add",['title'=>'products']);
     }
 
     /**
@@ -141,25 +141,24 @@ class ProductController extends Controller
     {
         $product=Product::where('code',$id)->first();
         if($product){
-            return view('admin.product_accessories.add',['product'=>$product]);
+            return view('admin.product_accessories.add',['product'=>$product,'title'=>'products']);
         }
         return redirect()->back();
     }
     public function storeAccessories(AddAccessoryToProduct $request, $id)
     {
-        dd($request->all());
         $product=Product::where('code',$id)->first();
         if($product){
             ProductContains::updateOrCreate(['accessory_id'=>$request->accessories,'product_id'=>$product->id],['status'=>1,'no_of_items'=>$request->no_of_items]);
         }
         Toastr::success('Product-Accessory Deleted Successfully');
-        return redirect()->route('product-accessories',['id'=>$id]);
+        return redirect()->route('product-accessories',['id'=>$id,'title'=>'products']);
     }
     public function features($id)
     {
         $product=Product::where('code',$id)->first();
         if($product){
-            return view('admin.product_features.index',['product'=>$product]);
+            return view('admin.product_features.index',['product'=>$product,'title'=>'products']);
         }
         return redirect()->back();
     }
@@ -167,7 +166,7 @@ class ProductController extends Controller
     {
         $product=Product::where('code',$id)->first();
         if($product){
-            return view('admin.product_features.add',['product'=>$product]);
+            return view('admin.product_features.add',['product'=>$product,'title'=>'products']);
         }
         return redirect()->back();
     }
@@ -186,7 +185,7 @@ class ProductController extends Controller
     {
         $product=Product::where('code',$id)->first();
         if($product){
-            return view('admin.specifications.add',['product'=>$product]);
+            return view('admin.specifications.add',['product'=>$product,'title'=>'products']);
         }
         return redirect()->back();
     }
@@ -194,7 +193,7 @@ class ProductController extends Controller
     {
         $product=Product::where('code',$id)->first();
         if($product){
-            return view('admin.specifications.add',['product'=>$product]);
+            return view('admin.specifications.add',['product'=>$product,'title'=>'products']);
         }
         return redirect()->back();
     }

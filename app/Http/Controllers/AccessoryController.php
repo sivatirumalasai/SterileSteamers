@@ -9,7 +9,8 @@ use App\Models\ProductFeature;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Rennokki\Plans\Models\PlanModel;
+use Auth;
 class AccessoryController extends Controller
 {
     /**
@@ -19,7 +20,7 @@ class AccessoryController extends Controller
      */
     public function index()
     {
-        return view('admin.accessories.index');
+        return view('admin.accessories.index',['title'=>'accessories']);
     }
 
     /**
@@ -29,7 +30,7 @@ class AccessoryController extends Controller
      */
     public function create()
     {
-        return view('admin.accessories.add');
+        return view('admin.accessories.add',['title'=>'accessories']);
     }
 
     /**
