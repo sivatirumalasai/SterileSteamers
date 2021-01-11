@@ -9,4 +9,8 @@ class ServiceCategory extends Model
 {
     use HasFactory;
     protected $guarded=[];
+    public function plans()
+    {
+        return $this->hasMany(ServiceCategoryPlan::class);
+    }
 }

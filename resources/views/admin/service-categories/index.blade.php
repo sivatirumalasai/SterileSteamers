@@ -31,7 +31,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Service-Category({{ $service->name }})</h3>
-                <a href="{{route('service-categories-create',['id'=>$service->id])}}">+ Add Service-Category</a>
+                <a href="{{route('services.categories.create',['service'=>$service->id])}}">+ Add Service-Category</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -49,23 +49,23 @@
                   </tr>
                   </thead>
                   <tbody>
-                    @foreach ($service->categories as $index=>$service)
+                    @foreach ($service->categories as $index=>$category)
                     <tr>
                       <td>{{ $index+1 }}</td>
-                    <td><img width="50"  src="{{Storage::url($service->image)}}" alt=""></td>
+                    <td><img width="50"  src="{{Storage::url($category->image)}}" alt=""></td>
 
-                      <td>{{ $service->name }}</td>
-                      <td>{{ $service->description}}
+                      <td>{{ $category->name }}</td>
+                      <td>{{ $category->description}}
                       </td>
-                      <td> {{ ($service->status)? 'Available':"Not Available" }}</td>
-                      <td>{{ $service->created_at->format('Y-m-d') }}</td>
+                      <td> {{ ($category->status)? 'Available':"Not Available" }}</td>
+                      <td>{{ $category->created_at->format('Y-m-d') }}</td>
                       <td>
-                        <a href="{{ route('service-plans',['id'=>$service->id]) }}"><button type="button" class="btn btn-block btn-outline-info">Plans</button></a>
+                        <a href="{{ route('services.plans.index',['service'=>$category->id]) }}"><button type="button" class="btn btn-block btn-outline-info">Plans</button></a>
                       </td>
                       <td>
-                        <div class="row"><a href="{{ route('service-categories-edit',['id'=>$service->id]) }}" ><button class="btn btn-block btn-outline-secondary">
+                        <div class="row"><a href="{{ route('services.categories.edit',['service'=>$service->id,'category'=>$category->id]) }}" ><button class="btn btn-block btn-outline-secondary">
                           <i class="fas fa-edit"></i> </button>
-                          </a><form action="{{ route('services.destroy', $service->id) }}" method="POST">
+                          </a><form action="{{ route('services.categories.destroy', ['service'=>$service->id,'category'=>$category->id]) }}" method="POST">
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-block btn-outline-danger">

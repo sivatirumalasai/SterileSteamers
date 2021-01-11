@@ -57,7 +57,7 @@
                       <td> {{ ($plan->status)? 'Available':"Not Available" }}</td>
                       <td>{{ $plan->created_at->format('Y-m-d') }}</td>
                       <td>
-                        <a href="{{ route('plan-feature',['id'=>$plan->id]) }}"><button type="button" class="btn btn-block btn-outline-info">Features</button></a>
+                        <a href="{{ route('plans.features.index',['plan'=>$plan->id]) }}"><button type="button" class="btn btn-block btn-outline-info">Features</button></a>
                       </td>
                           <td>
                             <div class="row"><a ><button class="btn btn-block btn-outline-secondary">

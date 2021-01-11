@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('header')
+@include('layouts.header')
+@stop
 @section('content')
 				<!-- Content -->
 				<div class="template-content">
@@ -310,4 +313,7 @@
 					
 				</div>
 	
-@endsection
+				@stop
+				@section('footer')
+				@include('layouts.footer')
+				@endsection

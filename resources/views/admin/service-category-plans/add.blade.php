@@ -9,13 +9,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Services</h1>
+            <h1>Service-Category-Plans</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url("admin/dashboard")}}">Home</a></li>
               <li class="breadcrumb-item "><a href="{{ route('services.index') }}">Services</a> </li>
-              <li class="breadcrumb-item "><a href="{{ route('service-categories',['id'=>$service->id]) }}">Services-Categories</a> </li>
+              <li class="breadcrumb-item "><a href="{{ route('services.categories.index',['service'=>$category->id]) }}">Services-Categories</a> </li>
               <li class="breadcrumb-item active">Add</li>
             </ol>
           </div>
@@ -32,11 +32,11 @@
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Add Service-Category</h3>
+                  <h3 class="card-title">Add Service-Category-Plan</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route("service-categories-store",['id'=>$service->id]) }}" >
+                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route("services.plans.store",['service'=>$category->id]) }}" >
                     @csrf
                   <div class="card-body">
                     <div class="row">
@@ -46,6 +46,34 @@
                           <input type="text" value="{{ old('name') }}" name="name" class="form-control" id="InputEmail1" placeholder="Enter Name">
                         </div>
                       </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="inputtype">Type*</label>
+                          <input type="text" value="{{ old('type') }}" name="type" class="form-control" id="inputtype" placeholder="Enter Type">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label for="actual_price">Actual Price*</label>
+                          <input type="text" value="{{ old('actual_price') }}" name="actual_price" class="form-control" id="actual_price" placeholder="Enter actual price">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label for="discount_price">Discount Price(Final Price)*</label>
+                          <input type="text" value="{{ old('discount_price') }}" name="discount_price" class="form-control" id="discount_price" placeholder="Enter discount price">
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label for="duration">Duration (in mins)*</label>
+                          <input type="text" value="{{ old('duration') }}" name="duration" class="form-control" id="duration" placeholder="Enter duration ">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="InputFile">Service Image* </label>
@@ -60,8 +88,6 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
                             <label for="InputDescription">Description*</label>

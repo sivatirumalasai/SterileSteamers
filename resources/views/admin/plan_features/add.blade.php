@@ -35,7 +35,7 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route('product-feature-store',['id'=>$plan->id]) }}" >
+                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route('plans.features.store',['plan'=>$plan->id]) }}" >
                     @csrf
                   <div class="card-body">
                     <div class="row">

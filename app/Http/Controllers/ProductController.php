@@ -49,9 +49,6 @@ class ProductController extends Controller
     {
         $paths=[];
         foreach ($request->product_images as $file) {
-            // generate a new filename. getClientOriginalExtension() for the file extension
-            $filename = 'product-' . time() . '.' . $file->getClientOriginalExtension();
-        
             // save to storage/app/photos as the new $filename
             $path=Storage::disk('public')->put('products', $file, 'public');
 
@@ -95,7 +92,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        return "edit";
+        $product=Product::where('code',$id)->first();
+        if($product){
+            return view('admin.products.edit',['product'=>$product,'title'=>'products']);
+        }
+        return redirect()->back();
     }
 
     /**
@@ -107,7 +108,36 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return "update";
+        $paths=[];
+        if($request->has('status')){
+            $status=true;
+        }
+        else{
+            $status=false;
+        }
+        $data=[
+            'name'=>$request->product_name,
+            'code'=>$request->code,
+            'actual_price'=>$request->price,
+            'discount'=>$request->discount,
+            'description'=>$request->description,
+            'short_description'=>$request->short_description,
+            'status'=>$status
+        ];
+        if($request->product_images){
+            foreach ($request->product_images as $file) {    
+                // save to storage/app/photos as the new $filename
+                $path=Storage::disk('public')->put('products', $file, 'public');
+    
+                $paths[]=$path;
+            
+            }
+            
+            $data['images']=json_encode($paths);
+        }
+        Product::where('code',$id)->update($data);
+        Toastr::success('Product Updated Successfully');
+        return redirect()->route('products.index');
     }
 
     /**
@@ -129,66 +159,7 @@ class ProductController extends Controller
         Toastr::success('Product Deleted Successfully');
         return redirect()->route('products.index');
     }
-    public function accessories($id)
-    {
-        $product=Product::where('code',$id)->first();
-        if($product){
-            return view('admin.product_accessories.index',['product'=>$product]);
-        }
-        return redirect()->back();
-    }
-    public function createAccessories($id)
-    {
-        $product=Product::where('code',$id)->first();
-        if($product){
-            return view('admin.product_accessories.add',['product'=>$product,'title'=>'products']);
-        }
-        return redirect()->back();
-    }
-    public function storeAccessories(AddAccessoryToProduct $request, $id)
-    {
-        $product=Product::where('code',$id)->first();
-        if($product){
-            ProductContains::updateOrCreate(['accessory_id'=>$request->accessories,'product_id'=>$product->id],['status'=>1,'no_of_items'=>$request->no_of_items]);
-        }
-        Toastr::success('Product-Accessory Deleted Successfully');
-        return redirect()->route('product-accessories',['id'=>$id,'title'=>'products']);
-    }
-    public function features($id)
-    {
-        $product=Product::where('code',$id)->first();
-        if($product){
-            return view('admin.product_features.index',['product'=>$product,'title'=>'products']);
-        }
-        return redirect()->back();
-    }
-    public function createFeature($id)
-    {
-        $product=Product::where('code',$id)->first();
-        if($product){
-            return view('admin.product_features.add',['product'=>$product,'title'=>'products']);
-        }
-        return redirect()->back();
-    }
-    public function storeFeature(AddFeatureToProduct $request, $id)
-    {
-        $product=Product::where('code',$id)->first();
-        if($product){
-            // save to storage/app/photos as the new $filename
-            $path=Storage::disk('public')->put('products', $request->feature_images, 'public');
-            ProductFeature::updateOrCreate(['name'=>$request->name,'product_id'=>$product->id],['status'=>1,'image'=>$path,'description'=>$request->description]);
-        }
-        Toastr::success('Product-Accessory Deleted Successfully');
-        return redirect()->route('product-feature',['id'=>$id]);
-    }
-    public function specifications($id)
-    {
-        $product=Product::where('code',$id)->first();
-        if($product){
-            return view('admin.specifications.add',['product'=>$product,'title'=>'products']);
-        }
-        return redirect()->back();
-    }
+    
     public function createspecifications($id)
     {
         $product=Product::where('code',$id)->first();

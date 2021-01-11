@@ -5,7 +5,7 @@
 
     <head>
 
-        <title>Product-Info</title>
+        <title>Sterilie Steamrs {{ $title }}</title>
         <meta name="keywords" content="" />
         <meta name="description" content="" />		
 
@@ -27,16 +27,15 @@
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('style/revolution/navigation.css') }}"/> 
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('style/base.css') }}"/> 
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('style/responsive.css') }}"/> 
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('image-slide.scss') }}"/> 
+        {{-- <link rel="stylesheet" type="text/css" href="{{ URL::asset('image-slide.scss') }}"/>  --}}
 
         <script type="text/javascript" src="{{ URL::asset('script/jquery.min.js') }}"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
 
-    <body class="template-page-about-style-1">
+    <body class="template-page-book-your-wash">
 
-        
-    @extends('layouts.header')
+    @yield('header') 
     @yield("content")
-    @extends('layouts.footer')
+    @yield('footer')

@@ -30,7 +30,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Plan Features ({{ $plan->name }})</h3>
-                <a href="{{route('plan-feature-create',['id'=>$plan->id])}}">+ Add feature</a>
+                <a href="{{route('plans.features.create',['plan'=>$plan->id])}}">+ Add feature</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -59,7 +59,7 @@
                           <td>
                             <div class="row"><a ><button class="btn btn-block btn-outline-secondary">
                               <i class="fas fa-edit"></i> </button>
-                              </a><form action="{{ route('accessories.destroy', $accessory->code) }}" method="POST">
+                              </a><form action="{{ route('accessories.destroy', $feature->id) }}" method="POST">
                                 @method('DELETE')
                                 @csrf
                                 <button class="btn btn-block btn-outline-danger">

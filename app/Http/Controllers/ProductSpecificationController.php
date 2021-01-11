@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Service;
-use App\Models\ServiceCategory;
-use App\Models\ServiceCategoryPlan;
-use Brian2694\Toastr\Facades\Toastr;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
-class ServiceController extends Controller
+class ProductSpecificationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($product_id)
     {
-        return view('admin.services.index',['title'=>'services']);
+        $product=Product::where('code',$product_id)->first();
+        if($product){
+            return view('admin.specifications.add',['product'=>$product,'title'=>'products']);
+        }
+        return redirect()->back();
     }
 
     /**
@@ -28,7 +28,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('admin.services.add',['title'=>'services']);
+        //
     }
 
     /**
@@ -39,16 +39,7 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        // save to storage/app/photos as the new $filename
-
-        $status=false;
-        if($request->has('status')){
-            $status=true;
-        }
-        $path=Storage::disk('public')->put('services', $request->service_image, 'public');
-        $Service=Service::create(['name'=>$request->name,'status'=>$status,'image'=>$path,'description'=>$request->description]);
-        Toastr::success('Service Created Successfully');
-        return redirect()->route('services.create');
+        //
     }
 
     /**

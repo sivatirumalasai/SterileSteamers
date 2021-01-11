@@ -110,7 +110,7 @@ class PlanController extends Controller
         if ($plans) {
 
             $plans->features;
-            return view('admin.plan_features.index',['plan'=>$plans]);
+            return view('admin.plan_features.index',['plan'=>$plans,'title'=>'plans']);
         }
         else{
             toastr()->error('Plan Not Found');
@@ -123,7 +123,7 @@ class PlanController extends Controller
         if ($plan) {
         $plan_features=$plan->features()->select(['code'])->get();
     	$features_list=Features::whereNotIN('code',$plan_features)->orderBy('code','asc')->get();
-            return view('admin.plan_features.add',['plan'=>$plan,'features_list'=>$features_list]);
+            return view('admin.plan_features.add',['plan'=>$plan,'features_list'=>$features_list,'title'=>'plans']);
         }
         else{
             toastr()->error('Plan Not Found');
@@ -132,25 +132,6 @@ class PlanController extends Controller
     }
     public function storeFeature(Request $request, $id)
     {
-        $plan=PlanModel::find($id);
-        if ($plan) {
-            $feature=Features::where('code',$request->plan_feature)->first();
-            PlanFeatureModel::updateOrCreate(['plan_id'=>$plan->id,'code'=>$request->plan_feature],
-            [
-                'name'=>$feature->name,
-                'code'=>$feature->code,
-                'description'=>$request->description,
-                'type'=>$request->feature_type,
-                'limit'=>$request->limit
-            ]);
-            $plan_features=$plan->features()->select(['code'])->get();
-            $features_list=Features::whereNotIN('code',$plan_features)->orderBy('code','asc')->get();
-            toastr()->success($feature->name.' addded successfully');
-            return view('admin.plan_features.add',['plan'=>$plan,'features_list'=>$features_list]);
-        }
-        else{
-            toastr()->error('Plan Not Found');
-            return redirect()->route('plans.index');
-        }
+        
     }
 }

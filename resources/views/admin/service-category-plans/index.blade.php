@@ -9,13 +9,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Service-Categories({{ $service->name }})</h1>
+            <h1>Service-Category-Plans({{ $category->name }})</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url("admin/dashboard")}}">Home</a></li>
-              <li class="breadcrumb-item"><a href="{{ route("services.index") }}">Services</a></li>
-              <li class="breadcrumb-item active">Service-Category</li>
+              <li class="breadcrumb-item"><a href="{{ route("services.categories.index",['service'=>$category->id]) }}">Service-Category({{ $category->name }})</a></li>
+              <li class="breadcrumb-item active">Service-Category-Plan</li>
             </ol>
           </div>
         </div>
@@ -30,8 +30,8 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Service-Category({{ $service->name }})</h3>
-                <a href="{{route('service-categories-create',['id'=>$service->id])}}">+ Add Service-Category</a>
+                <h3 class="card-title">Service-Category-Plan({{ $category->name }})</h3>
+                <a href="{{route('services.plans.create',['service'=>$category->id])}}">+ Add Service-Category-Plan</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -40,32 +40,30 @@
                   <tr>
                     <th>Slno</th>
                     <th>Image</th>
-                    <th>Service Name</th>
-                    <th>Description</th>
+                    <th>Plan Name</th>
+                    <th>Actual Price</th>
+                    <th>Discount Price</th>
                     <th>status</th>
                     <th>Created at</th>
-                    <th>Categories</th>
                     <th>Controles</th>
                   </tr>
                   </thead>
                   <tbody>
-                    @foreach ($service->categories as $index=>$service)
+                    @foreach ($category->plans as $index=>$plan)
                     <tr>
                       <td>{{ $index+1 }}</td>
-                    <td><img width="50"  src="{{Storage::url($service->image)}}" alt=""></td>
+                    <td><img width="50"  src="{{Storage::url($plan->image)}}" alt=""></td>
 
-                      <td>{{ $service->name }}</td>
-                      <td>{{ $service->description}}
+                      <td>{{ $plan->name }}</td>
+                      <td>{{ $plan->actual_price}}/-
                       </td>
-                      <td> {{ ($service->status)? 'Available':"Not Available" }}</td>
-                      <td>{{ $service->created_at->format('Y-m-d') }}</td>
+                      <td>{{ $plan->discount_price }}/-</td>
+                      <td> {{ ($plan->status)? 'Available':"Not Available" }}</td>
+                      <td>{{ $plan->created_at->format('Y-m-d') }}</td>
                       <td>
-                        <a href="{{ route('service-plans',['id'=>$plan->id]) }}"><button type="button" class="btn btn-block btn-outline-info">Plans</button></a>
-                      </td>
-                      <td>
-                        <div class="row"><a href="{{ route('services.edit',['id'=>$service->id]) }}" ><button class="btn btn-block btn-outline-secondary">
+                        <div class="row"><a href="{{ route('services.plans.edit',['service'=>$category->id,'plan'=>$plan->id]) }}" ><button class="btn btn-block btn-outline-secondary">
                           <i class="fas fa-edit"></i> </button>
-                          </a><form action="{{ route('services.destroy', $service->id) }}" method="POST">
+                          </a><form action="{{ route('services.plans.destroy', ['service'=>$category->id,'plan'=>$plan->id]) }}" method="POST">
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-block btn-outline-danger">
@@ -81,8 +79,9 @@
                     <tr>
                       <th>Slno</th>
                       <th>Image</th>
-                      <th>Service Name</th>
-                      <th>Description</th>
+                      <th>Plan Name</th>
+                      <th>Actual Price</th>
+                      <th>Discount Price</th>
                       <th>status</th>
                       <th>Created at</th>
                       <th>Controles</th>

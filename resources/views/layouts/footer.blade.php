@@ -155,7 +155,7 @@
 				<script type="text/javascript" src="{{ URL::asset('script/template/jquery.template.searchForm.js') }}"></script>
 				<script type="text/javascript" src="{{ URL::asset('script/template/jquery.template.testimonial.js') }}"></script>
 				<script type="text/javascript" src="{{ URL::asset('script/public.js') }}"></script>
-                <script type="text/javascript"  src="{{ URL::asset("image-slide.js") }}"></script>
+                {{-- <script type="text/javascript"  src="{{ URL::asset("image-slide.js") }}"></script> --}}
                 <script>
                     const imageList=[];
                     

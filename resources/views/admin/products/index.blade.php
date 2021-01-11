@@ -51,7 +51,6 @@
                   </thead>
                   <tbody>
                     @foreach (App\Models\Product::all() as $item=>$product)
-                    
                   <tr>
                     <td>{{ $item+1 }}</td>
                     @foreach(json_decode($product->images) as $product_image) 
@@ -63,18 +62,18 @@
                     <td>{{ $product->actual_price }}</td>
                     <td>{{ $product->created_at->format('Y-m-d') }}</td>
                     <td>
-                      <a href="{{ route('product-feature',['id'=>$product->code]) }}"><button type="button" class="btn btn-block btn-outline-info">Features</button></a>
+                      <a href="{{ route('products.features.index',['product'=>$product->code]) }}"><button type="button" class="btn btn-block btn-outline-info">Features</button></a>
                     </td>
                       <td>
-                        <a href="{{ route('product-specifications-create',['id'=>$product->code]) }}"><button type="button" class="btn btn-block btn-outline-warning">Specifications</button>
+                        <a href="{{ route('products.specifications.index',['product'=>$product->code]) }}"><button type="button" class="btn btn-block btn-outline-warning">Specifications</button>
                         </a>
                       </td>
                       <td>
-                        <a href="{{ route('product-accessories',['id'=>$product->code]) }}"><button type="button" class="btn btn-block btn-outline-primary">Accessories</button>
+                        <a href="{{ route('products.accessories.index',['product'=>$product->code]) }}"><button type="button" class="btn btn-block btn-outline-primary">Accessories</button>
                         </a>
                       </td>
                       <td>
-                        <div class="row"><a ><button class="btn btn-block btn-outline-secondary">
+                        <div class="row"><a href="{{ route('products.edit',$product->code) }}"><button class="btn btn-block btn-outline-secondary">
                           <i class="fas fa-edit"></i> </button>
                           </a>
                           <form action="{{ route('products.destroy', $product->code) }}" method="POST">

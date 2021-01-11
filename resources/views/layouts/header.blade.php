@@ -19,9 +19,9 @@
                 <!-- Default menu-->
                 <div class="template-component-menu-default">
                     <ul class="sf-menu">
-                        <li><a href="{{ route('home') }}" class="template-state-selected" style="color: #222222 !important">Home</a></li>
+                        <li><a href="{{ route('home') }}" class="template-state" style="color: @if($title=='products') #199CDB @else #222222  @endif !important">Home</a></li>
                         <li >
-                            <a href="#" style="color: #199CDB !important">Products</a>
+                            <a href="#" style="color: @if($title=='Products') #199CDB @else #222222  @endif!important">Products</a>
                             <ul>
                                 @foreach (App\Models\Product::all() as $product)
                                 <li><a href="{{ route("product-info",['id'=>$product->code]) }}">{{ $product->name."(".$product->code.')' }}</a></li>	
@@ -30,7 +30,7 @@
                             </ul>
                         </li>
                         <li >
-                            <a href="{{ route("accessories-list") }}" style="color: #222222 !important">Accessories</a>
+                            <a href="{{ route("accessories-list") }}" style="color: @if($title=='Accessories') #199CDB @else #222222  @endif !important">Accessories</a>
                             {{-- <ul>
                                 @foreach (App\Models\Accessory::all() as $accessory)
                                 <li><a href="{{ route("accessory-info",['id'=>$accessory->code]) }}">{{ $accessory->name."(".$accessory->code.')' }}</a></li>	
@@ -39,7 +39,16 @@
                             </ul> --}}
                         </li>
                         <li >
-                            <a href="{{ route("contact") }}" style="color: #222222 !important">Contact</a>
+                            <a href="#" style="color: @if($title=='Services') #199CDB @else #222222  @endif !important">Services</a>
+                            <ul>
+                                @foreach (App\Models\Service::all() as $service)
+                                <li><a href="{{ route("service-info",['id'=>$service->id]) }}">{{ $service->name }}</a></li>	
+                                @endforeach
+                                
+                            </ul>
+                        </li>
+                        <li >
+                            <a href="{{ route("contact") }}" style="color: @if($title=='contact') #199CDB @else #222222  @endif!important">Contact</a>
                         </li>
                     </ul>
                 </div>
@@ -105,14 +114,14 @@
         </div>
 
         <!-- Social icons -->
-        <div class="template-header-top-icon-list template-component-social-icon-list-1" style="display: none">
+        <div class="template-header-top-icon-list template-component-social-icon-list-1" >
             <ul class="template-component-social-icon-list">
-                <li><a href="https://twitter.com/quanticalabs" class="template-icon-social-twitter" target="_blank"></a></li>
-                <li><a href="https://www.facebook.com/QuanticaLabs" class="template-icon-social-facebook" target="_blank"></a></li>
-                <li><a href="https://dribbble.com/quanticalabs" class="template-icon-social-dribbble" target="_blank"></a></li>
-                <li><a href="book-your-wash.html" class="template-icon-meta-cart"></a></li>
-                <li><a href="#" class="template-icon-meta-search"></a></li>
-                <li><a href="#" class="template-icon-meta-menu"></a></li>
+                {{-- <li><a href="https://twitter.com/quanticalabs" class="template-icon-social-twitter" target="_blank"></a></li>
+                <li><a href="https://www.facebook.com/QuanticaLabs" class="template-icon-social-facebook" target="_blank"></a></li> --}}
+                {{-- <li><a href="#" class="template-icon-social-dribbble" target="_blank"></a></li> --}}
+                <li><a href="{{ route('user-cart') }}" style="color: @if($title=='UserCart') #199CDB @else #222222  @endif!important" class="template-icon-meta-cart"></a></li>
+                <li><a href="#" style="color: #222222 !important" class="template-icon-meta-search"></a></li>
+                <li><a href="#" style="color: #222222 !important" class="template-icon-meta-menu"></a></li>
             </ul>
         </div>
 

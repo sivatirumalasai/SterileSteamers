@@ -30,8 +30,8 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Specifications</h3>
-                <a href="{{route('product-specifications-create',['id'=>Request::route("id")])}}">+ Add Specifications</a>
+                <h3 class="card-title">Specifications({{ $product->name }})</h3>
+                <a href="{{route('products.specifications.create',['product'=>$product->code])}}">+ Add Specifications</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

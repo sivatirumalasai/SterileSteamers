@@ -4,21 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use App\Models\ServiceCategory;
-use App\Models\ServiceCategoryPlan;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ServiceController extends Controller
+class ServiceCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return view('admin.services.index',['title'=>'services']);
+        $services=Service::find($id);
+        if($services){
+            return view('admin.service-categories.index',['title'=>'services','service'=>$services]);
+        }
+        toastr()->error('Invalid Service Id');
+        return route('services.index');
     }
 
     /**
@@ -26,9 +30,14 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('admin.services.add',['title'=>'services']);
+        $services=Service::find($id);
+        if($services){
+            return view('admin.service-categories.add',['title'=>'services','service'=>$services]);
+        }
+        toastr()->error('Invalid Service Id');
+        return route('services.index');
     }
 
     /**
@@ -37,18 +46,21 @@ class ServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
-        // save to storage/app/photos as the new $filename
-
-        $status=false;
-        if($request->has('status')){
-            $status=true;
+        $services=Service::find($id);
+        if($services){
+            $status=false;
+            if($request->has('status')){
+                $status=true;
+            }
+            $path=Storage::disk('public')->put('services', $request->service_image, 'public');
+            ServiceCategory::create(['service_id'=>$id,'name'=>$request->name,'status'=>$status,'image'=>$path,'description'=>$request->description]);
+            Toastr::success('Service Created Successfully');
+            return redirect()->route('services.create');        
         }
-        $path=Storage::disk('public')->put('services', $request->service_image, 'public');
-        $Service=Service::create(['name'=>$request->name,'status'=>$status,'image'=>$path,'description'=>$request->description]);
-        Toastr::success('Service Created Successfully');
-        return redirect()->route('services.create');
+        toastr()->error('Invalid Service Id');
+        return route('services.index');
     }
 
     /**

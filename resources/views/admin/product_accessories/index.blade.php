@@ -31,7 +31,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Product-Accessories</h3>
-                <a href="{{route('product-accessories-create',['id'=>$product->code])}}">+ Add Accessories</a>
+                <a href="{{route('products.accessories.create',['product'=>$product->code])}}">+ Add Accessories</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

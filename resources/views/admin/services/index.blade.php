@@ -59,7 +59,7 @@
                       <td> {{ ($service->status)? 'Available':"Not Available" }}</td>
                       <td>{{ $service->created_at->format('Y-m-d') }}</td>
                       <td>
-                        <a href="{{ route('service-categories',['id'=>$service->id]) }}"><button type="button" class="btn btn-block btn-outline-info">Categories</button></a>
+                        <a href="{{ route('services.categories.index',['service'=>$service->id]) }}"><button type="button" class="btn btn-block btn-outline-info">Categories</button></a>
                       </td>
                       <td>
                         <div class="row"><a href="{{ route('services.edit',['service'=>$service->id]) }}" ><button class="btn btn-block btn-outline-secondary">

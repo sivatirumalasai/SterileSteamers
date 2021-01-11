@@ -14,7 +14,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url("admin/dashboard")}}">Home</a></li>
-              <li class="breadcrumb-item "><a href="{{ route('products.index') }}">Product</a></li>
+              <li class="breadcrumb-item "><a href="{{ route('products.index') }}">Product({{ $product->name }})</a></li>
               <li class="breadcrumb-item active">Product-Features</li>
             </ol>
           </div>
@@ -30,8 +30,8 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Product-Features</h3>
-                <a href="{{route('product-feature-create',['id'=>Request::route('id')])}}">+ Add Features</a>
+                <h3 class="card-title">Product-Features({{ $product->name }})</h3>
+                <a href="{{route('products.features.create',['product'=>$product->code])}}">+ Add Features</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -55,7 +55,7 @@
                       <td> {{ ($accessory->status)? 'Available':"Not Available" }}</td>
                       <td>{{ $accessory->created_at->format('Y-m-d') }}</td>
                           <td>
-                            <div class="row"><a ><button class="btn btn-block btn-outline-secondary">
+                            <div class="row"><a href="{{ route('products.features.edit',['product'=>$product->code,'feature'=>$accessory->id]) }}"><button class="btn btn-block btn-outline-secondary">
                               <i class="fas fa-edit"></i> </button>
                               </a><a > <button class="btn btn-block btn-outline-danger">
                                 <i class="fas fa-trash"></i></button>

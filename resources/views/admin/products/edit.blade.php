@@ -9,13 +9,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Product-Features</h1>
+            <h1>Products({{ $product->name }})</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url("admin/dashboard")}}">Home</a></li>
-              <li class="breadcrumb-item "><a href="{{ route('product-accessories',['id'=>$product->code]) }}">Product-Features</a></li>
-              <li class="breadcrumb-item active">Add</li>
+              <li class="breadcrumb-item "><a href="{{ route('products.index') }}"> Products</a></li>
+              <li class="breadcrumb-item active">Edit ({{ $product->name }})</li>
             </ol>
           </div>
         </div>
@@ -31,26 +31,49 @@
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Add Product-Feature</h3>
+                  <h3 class="card-title">Edit Product</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route("products.features.store",['product'=>$product->code]) }}" >
+                <form action="{{ route("products.update",['product'=>$product->code]) }}" method="POST" enctype="multipart/form-data"  >
                     @csrf
+                    @method('PUT')
                   <div class="card-body">
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="InputEmail1">Name*</label>
-                          <input type="text" name="name" class="form-control" id="InputEmail1" placeholder="Enter Name">
+                          <input type="text" name="product_name" value="{{ $product->name }}" class="form-control" id="InputEmail1" placeholder="Enter Name">
                         </div>
                       </div>
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label for="InputFile">accessory Images* </label>
+                          <label for="Inputcode">Code*</label>
+                          <input type="text" name="code" value="{{ $product->code }}"  class="form-control" id="Inputcode" placeholder="Enter Product Code">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="InputEmail1">Acritual Price*</label>
+                          <input type="text" name="price"  value="{{ $product->actual_price }}" class="form-control" id="InputEmail1" placeholder="Enter Name">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="Inputdiscount">Discount*</label>
+                          <input type="text" name="discount" value="{{ $product->discount }}" class="form-control" id="Inputdiscount" placeholder="Enter discount">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="InputFile">Product Images* </label>
                           <div class="input-group">
                             <div class="custom-file">
-                              <input type="file" name="feature_images" class="custom-file-input" id="InputFile">
+                              <input type="file" name="product_images[]" multiple value="{{ $product->product_images }}" class="custom-file-input" id="InputFile">
                               <label class="custom-file-label" for="InputFile">Choose file</label>
                             </div>
                             <div class="input-group-append">
@@ -60,24 +83,29 @@
                         </div>
                       </div>
                     </div>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="form-group">
-                              <label for="InputDescription">Description*</label>
-                              <textarea  rows="4" name="description" class="form-control" id="InputDescription" placeholder="Enter Description"></textarea>
-                          </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="InputDescription">Description*</label>
+                            <textarea rows="3" name="description" class="form-control" id="InputDescription" placeholder="Enter Description">{{ $product->description }}</textarea>
                         </div>
                       </div>
-
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="InputSDescription">Short Description(Note)*</label>
+                          <textarea rows="3" name="short_description" class="form-control" id="InputSDescription" placeholder="Enter Short Description">{{ $product->short_description }}</textarea>
+                        </div>
+                      </div>
+                    </div>
                     <div class="form-check">
-                      <input type="checkbox" name="status" class="form-check-input" id="exampleCheck1">
+                      <input type="checkbox" name="status" {{ ($product->status)? "checked":"" }} class="form-check-input" id="exampleCheck1">
                       <label class="form-check-label" for="exampleCheck1">status</label>
                     </div>
                   </div>
                   <!-- /.card-body -->
   
                   <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                   </div>
                 </form>
               </div>
