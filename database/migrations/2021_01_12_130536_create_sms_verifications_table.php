@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserCartsTable extends Migration
+class CreateSmsVerificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateUserCartsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_carts', function (Blueprint $table) {
-            $table->id();
+        Schema::create('sms_verifications', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('contact_number');
+            $table->string('code');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateUserCartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_carts');
+        Schema::dropIfExists('sms_verifications');
     }
 }

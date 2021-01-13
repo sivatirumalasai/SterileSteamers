@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::prefix('verify/')->group(function () {
+    Route::post('start', 'Auth\PhoneVerificationController@startVerification');
+    Route::post('verify', 'Auth\PhoneVerificationController@verifyCode');
+});
+
+Route::get('products','WebServices\WebServicesController@products');
+Route::get('product/{product_id}','WebServices\WebServicesController@productDetails');

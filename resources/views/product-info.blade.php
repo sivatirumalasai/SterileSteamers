@@ -61,7 +61,7 @@
 				<div class="template-space template-component-space-2"></div>
 				
 				<!-- Button -->
-				<a href="#" class="template-component-button">Our Services</a>
+				<a href="#" class="template-component-button">Add To Cart</a>
 				
 			</div>
 		

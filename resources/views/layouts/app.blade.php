@@ -4,7 +4,9 @@
 <html>
 
     <head>
-
+        @if(!isset($title))
+        @php($title="")
+        @endif  
         <title>Sterilie Steamrs {{ $title }}</title>
         <meta name="keywords" content="" />
         <meta name="description" content="" />		

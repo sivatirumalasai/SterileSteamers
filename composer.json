@@ -22,10 +22,10 @@
         "brian2694/laravel-toastr": "^5.54",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "8.12.3",
-        "laravel/tinker": "^2.5",
-        "rennokki/plans":"*"
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^8.18",
+        "laravel/tinker": "^2.3",
+        "twilio/sdk": "^6.1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

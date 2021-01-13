@@ -57,5 +57,8 @@ Route::group(['prefix' => 'admin'], function () {
     //services controller
     Route::resource('services', ServiceController::class);
     Route::resource('services.plans', ServicePlanController::class);
-   // Route::resource('services.categories', ServiceCategoryController::class);
+    Route::resource('services.categories', ServiceCategoryController::class);
 });
+//Auth::routes();
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

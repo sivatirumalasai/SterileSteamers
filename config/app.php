@@ -230,5 +230,11 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+    'twilio' => [
+        'account_sid' => env('TWILIO_ACCOUNT_SID'),
+        'auth_token' => env('TWILIO_AUTH_TOKEN'),
+        'verification_sid' => env('TWILIO_VERIFICATION_SID'),
+        'authy_api_key' => env('ACCOUNT_SECURITY_API_KEY', ''),
+    ],
 
 ];
