@@ -24,3 +24,7 @@ Route::prefix('verify/')->group(function () {
 
 Route::get('products','WebServices\WebServicesController@products');
 Route::get('product/{product_id}','WebServices\WebServicesController@productDetails');
+Route::get('accessories','WebServices\WebServicesController@accessories');
+Route::get('accessory/{accessory_id}','WebServices\WebServicesController@accessoryDetails');
+Route::get('services','WebServices\WebServicesController@services');
+Route::get("serviceCategories/{service_id}",'WebServices\WebServicesController@serviceCategories');
