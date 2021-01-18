@@ -28,7 +28,8 @@ Route::get('accessory-info/{id}','WebSite\AccessoryController@accessoryInfo')->n
 Route::get('service-info/{id}','WebSite\ServiceController@serviceInfo')->name('service-info');
 Route::get('service-category/{id}','WebSite\ServiceCategoryController@index')->name('service-category');
 Route::get('user-cart','WebSite\CartController@index')->name("user-cart");
-//Route::resource('services.categories', WebSite\ServiceCategoryController::class);
+Route::get('sai','WebSite\ProductController@sai');
+Route::post('AddToCart','WebSite\CartController@addToCart');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function () {

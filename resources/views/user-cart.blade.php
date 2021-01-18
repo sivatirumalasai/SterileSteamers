@@ -34,57 +34,66 @@
 
                     <!-- Content -->
                     <div class="template-component-booking-item-content">
-
+                        @php
+                         $total=0; 
+                         $quantity=0;  
+                        @endphp
                         <!-- Service list -->
                         <ul class="template-component-booking-service-list">
-                            {{-- @forelse (App\Models\UserCart::get() as $item) --}}
+                            @forelse ($cart_items as $item)
                                 <!-- Service -->
                             <li data-id="exterior-hand-wash" class="template-clear-fix">
 
                                 <!-- Name -->
                                 <div class="template-component-booking-service-name">
-                                    <span>Exterior Hand Wash</span>					
+                                    <span>{{ $item->model->name }}</span>					
                                     <a href="#" class="template-component-more-link">
                                         <span>More...</span>
                                         <span>Less...</span>
                                     </a>
                                     <div class="template-component-more-content">
-                                        We hand wash your paint with a pH neutral shampoo, we remove dirt without damaging paint or trims. Your car&#309;s 
-                                        exterior is chamois-dried to prevent water marks forming on the paint and high pressure air is used to remove 
-                                        water from panel joins and trim.					
+                                        {{ $item->model->description }}					
                                     </div>
                                 </div>
 
                                 <!-- Duration -->
                                 <div class="template-component-booking-service-duration">
                                     <span class="template-icon-booking-meta-duration"></span>
-                                    <span class="template-component-booking-service-duration-value">10</span>
+                                    <span class="template-component-booking-service-duration-value">{{ $item->quantity }}</span>
+                                    @if($item->model_type=='App\Models\Product' || $item->model_type=='App\Models\Accessory')
+                                    <span class="template-component-booking-service-duration-unit">unit(s)</span>
+                                    @else
                                     <span class="template-component-booking-service-duration-unit">min</span>
+                                    @endif
                                 </div>
-
+                                @php
+                                 $price=$item->quantity*$item->price;
+                                 $total+=$price;  
+                                 $quantity+=$item->quantity;  
+                                @endphp
                                 <!-- Price -->
                                 <div class="template-component-booking-service-price">
                                     <span class="template-icon-booking-meta-price"></span>
-                                    <span class="template-component-booking-service-price-currency">$</span>
-                                    <span class="template-component-booking-service-price-value"></span>
-                                    <span class="template-component-booking-service-price-unit">7</span>
-                                    <span class="template-component-booking-service-price-decimal">.95</span>
+                                    <span class="template-component-booking-service-price-currency">Rs</span>
+                                    <span class="template-component-booking-service-price-value">{{ $price }}</span>
+                                    <span class="template-component-booking-service-price-unit"></span>
+                                    <span class="template-component-booking-service-price-decimal"></span>
                                 </div>
 
                                 <!-- Button -->
                                 <div class="template-component-button-box">
                                     <div class="handle-counter" id="handleCounter">
                                         <button class="counter-minus btn btn-primary">-</button>
-                                        <input type="text" name="name" value="1" >
+                                        <input type="text" name="name" value="{{ $item->quantity }}" >
                                         <button class="counter-plus btn btn-primary">+</button>
                                     </div>
                                     {{-- <a href="#" class="template-component-button">Select</a> --}}
                                 </div>
 
                             </li>
-                            {{-- @empty
+                            @empty
                                 <li>No Cart Items</li>
-                            @endforelse --}}
+                            @endforelse
                             
 
 
@@ -117,23 +126,25 @@
 
                             <!-- Duration -->
                             <li class="template-component-booking-summary-duration">
-                                <div class="template-icon-booking-meta-total-duration"></div>
+                                <div class="template-icon-booking-meta-total-price"></div>
                                 <h5>
-                                    <span>0</span>
+                                    {{ $quantity }}
+                                   
+                                    {{-- <span>0</span>
                                     <span>h</span>
                                     &nbsp;
                                     <span>0</span>
-                                    <span>min</span>
+                                    <span>min</span> --}}
                                 </h5>
-                                <span>Duration</span>
+                                <span>Quantity</span>
                             </li>
 
                             <!-- Price -->
-                            <li class="template-component-booking-summary-price ">
+                            <li class="template-component-booking-summary-price">
                                 <div class="template-icon-booking-meta-total-price"></div>
                                 <h5>
-                                    <span class="template-component-booking-summary-price-symbol">$</span>
-                                    <span class="template-component-booking-summary-price-value">0.00</span>
+                                    <span class="template-component-booking-summary-price-symbol">Rs</span>
+                                    <span  class="template-component-booking-summary-price-unit">{{ $total }}</span>
                                 </h5>
                                 <span>Total Price</span>				
                             </li>

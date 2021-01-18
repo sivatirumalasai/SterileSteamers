@@ -125,8 +125,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
                 
                 <li><a href="{{ route('user-cart') }}" style="color: @if($title=='UserCart') #199CDB @else #222222  @endif!important" class="template-icon-meta-cart"></a></li>
                 <li><a href="#" style="color: #222222 !important" class="template-icon-meta-search"></a></li>
-                <li><a href="#" style="color: #222222 !important"><button type="button" class="btn btn-info btn-lg template-icon-social-dribbble" onclick="myFunctionGetaccess()"></button>
+                @guest
+                <li id="loginBtn"><a href="#" style="color: #222222 !important"><button type="button" class="btn btn-info btn-lg template-icon-social-dribbble" onclick="myFunctionGetaccess()"></button>
                 </a></li>
+                @endguest
                 <li><a href="#" style="color: #222222 !important" class="template-icon-meta-menu"></a></li>
             </ul>
         </div>
@@ -140,20 +142,33 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
 <div id="myModalearlyaccess"> 
     <div class="close_btn_early" id="close_earlyacces">x</div> 
     <div class="webarapp_head_title">Login or Register</div>
-    <form onsubmit="return false;" id="advanced_features_form" action="" method="POST">
+    <form onsubmit="return false;" id="userSignIn" action="" method="POST">
         @csrf
         <div class="row">
-            
             <div class="col-sm-12 col-md-6">
               <div class="form-group mb-1">
                 <label for="phonenumber">Phone Number:</label>
-                <input type="tel" id="phonenumber" class="form-control" aria-describedby="username" placeholder="Ex: 9874563210" name="phonenumber" required="required">
+                <input type="tel" id="phonenumber" class="form-control" aria-describedby="username" placeholder="Ex: 9874563210" name="phone_number" required="required">
               </div>
             </div>
-              <div class="getearclyaccess">
-                <button type="submit" class="submiteaaly" id="advanced_features_sub_btn">Submit</button>
+            <div class="getearclyaccess">
+            <button type="submit" class="submiteaaly" id="requestOtp">Submit</button>
+            </div>
+        </div>
+    </form> 
+    <form onsubmit="return false;" id="otpSubmit" action="" method="POST" style="display: none">
+        @csrf
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <div class="form-group mb-1">
+                <label for="otpfield">Enter Otp:</label>
+                <input type="tel" id="otpfield" class="form-control" aria-describedby="username" placeholder="Ex: ******" name="token" required="required">
               </div>
             </div>
+            <div class="getearclyaccess">
+            <button type="submit" class="submiteaaly" id="otpSubmitbtn">Submit</button>
+            </div>
+        </div>
     </form>                                    
 </div>
 <!-- End of earlyaccess users details -->
@@ -194,7 +209,69 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
         </div>
     </div>
 </div>
+<script>
+	var baseurl="{{ url('') }}";
+	$(document).on('submit','#userSignIn',function(){
+        console.log('request for otp');
+        $("#requestOtp").html('Please Wait..');
+        $("#requestOtp").prop('disabled', true);
+		var form_data=new FormData(this);
+		$.ajax({
+			url: baseurl + "/api/verify/start",
+            type: "POST",
+            data: form_data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            mimeType: "multipart/form-data",
+            success: function (data) {
+                    console.log(data);
+                    $("#requestOtp").html('Submit');
+                    $("#requestOtp").prop('disabled', false);
+                    $("#userSignIn").hide();
+                    $("#otpSubmit").show();
+                    $("input[name=token]").val("");
+                    toastr.success(data.message);
+            },
+            error: function (error) {
+                console.log(error);  
+                $("#requestOtp").html('Submit');
+                $("#requestOtp").prop('disabled', false);              
+            }
 
+		});
+    });
+    $(document).on('submit','#otpSubmit',function(){
+        console.log('submit otp');
+        $("#otpSubmitbtn").html('Please Wait..');
+        $("#otpSubmitbtn").prop('disabled', true);
+        var form_data=new FormData(this);
+        form_data.append('phone_number',$("input[name=phone_number]").val())
+        form_data.append('environment','web');
+		$.ajax({
+			url: baseurl + "/api/verify/verify",
+            type: "POST",
+            data: form_data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            mimeType: "multipart/form-data",
+            success: function (data) {
+                    console.log(data);
+                    $("#otpSubmitbtn").html('Submit');
+                    $("#otpSubmitbtn").prop('disabled', false);
+                    $("#loginBtn").hide();
+                    toastr.success(data.message);
+            },
+            error: function (error) {
+                console.log(error); 
+                $("#otpSubmitbtn").html('Submit');
+                $("#otpSubmitbtn").prop('disabled', false);               
+            }
+
+		});
+	});
+</script>
 
 <style>
     #myModalearlyaccess {

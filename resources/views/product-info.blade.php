@@ -61,7 +61,11 @@
 				<div class="template-space template-component-space-2"></div>
 				
 				<!-- Button -->
-				<a href="#" class="template-component-button">Add To Cart</a>
+				@if($cart)
+				<a href="{{ route('user-cart') }}" class="template-component-button">Go to Cart</a>
+				@else
+				<a href="#" id="{{ $product->id }}" class="template-component-button addToCart">Add To Cart</a>
+				@endif
 				
 			</div>
 		
@@ -300,6 +304,42 @@
 	</div>
 	
 </div>
+<script>
+	var baseurl="{{ url('') }}";
+	$(document).on('click','.addToCart',function(){
+		console.log('add item to cart');
+		var form_data=new FormData();
+		form_data.append('item_type','product');
+		form_data.append('item_id',this.id);
+		form_data.append('_token',"{{ csrf_token() }}");
+		$.ajax({
+			url: baseurl + "/AddToCart",
+		type: "POST",
+		data: form_data,
+		cache: false,
+		processData: false,
+		contentType: false,
+		mimeType: "multipart/form-data",
+		success: function (data) {
+				console.log(data);
+				toastr.success('Successfully Added');
+		},
+		error: function (error) {
+			console.log(error);
+			if(error.status==401){
+				myFunctionGetaccess();
+				return false;
+			}
+			else{
+				var error_text=JSON.parse(error.responseText);
+				toastr.error(error_text.message);
+			}
+			
+		}
+
+		});
+	});
+</script>
 @stop
 @section('footer')
 @include('layouts.footer')	
