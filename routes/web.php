@@ -29,6 +29,7 @@ Route::get('service-info/{id}','WebSite\ServiceController@serviceInfo')->name('s
 Route::get('service-category/{id}','WebSite\ServiceCategoryController@index')->name('service-category');
 Route::get('user-cart','WebSite\CartController@index')->name("user-cart");
 Route::get('sai','WebSite\ProductController@sai');
+Route::get('logincheck','WebSite\ProductController@logincheck');
 Route::post('AddToCart','WebSite\CartController@addToCart');
 
 Route::group(['prefix' => 'admin'], function () {
@@ -61,5 +62,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('services.categories', ServiceCategoryController::class);
 });
 //Auth::routes();
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

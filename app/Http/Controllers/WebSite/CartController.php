@@ -4,6 +4,7 @@ namespace App\Http\Controllers\WebSite;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\UserCart;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,16 +19,24 @@ class CartController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('index');
     }
     public function index()
     {
         $cart_items=[];
-        $user=Auth::user();
+        $user=User::find(2);
+        //$user=Auth::user();
         if($user){
-            $cart_items=$user->cartItems;
+            $cart_items=$user->cartItems->map(function ($cart_item)
+            {
+                return $cart_item->model=$cart_item->model;
+            });
         }
         return view('user-cart',['cart_items'=>$cart_items,'title'=>'UserCart']);
+    }
+    public function sai()
+    {  
+        dd(Auth::user());
     }
     public function AddToCart(Request $request)
     {   

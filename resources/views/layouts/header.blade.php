@@ -258,6 +258,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
             mimeType: "multipart/form-data",
             success: function (data) {
                     console.log(data);
+                   // window.location.reload();
                     $("#otpSubmitbtn").html('Submit');
                     $("#otpSubmitbtn").prop('disabled', false);
                     $("#loginBtn").hide();

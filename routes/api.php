@@ -28,3 +28,4 @@ Route::get('accessories','WebServices\WebServicesController@accessories');
 Route::get('accessory/{accessory_id}','WebServices\WebServicesController@accessoryDetails');
 Route::get('services','WebServices\WebServicesController@services');
 Route::get("serviceCategories/{service_id}",'WebServices\WebServicesController@serviceCategories');
+Route::get('cartItems/{user_id}','WebServices\WebServicesController@cartItems');

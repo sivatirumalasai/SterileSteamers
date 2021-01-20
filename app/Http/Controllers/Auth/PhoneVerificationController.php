@@ -123,7 +123,7 @@ class PhoneVerificationController extends Controller
                     $user=User::updateOrCreate(['mobile'=>$phone_number],['mobile'=>$phone_number,'password'=>Hash::make('123456')]);
                     $user->refresh();
                     if($request->has('environment')){
-                        Auth::attempt(['mobile'=>$user->mobile,'password'=>'123456']);
+                        $auth=Auth::attempt(['mobile'=>$user->mobile,'password'=>'123456']);
                     }
                     return response()->json(['message'=>"Verification Succss",'data'=>$user], 200);
                 }
