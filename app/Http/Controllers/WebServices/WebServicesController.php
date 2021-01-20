@@ -7,6 +7,7 @@ use App\Models\Accessory;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\UserCart;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -16,11 +17,20 @@ class WebServicesController extends Controller
     public function products()
     {
         $products=Product::where('status',1)->paginate(15);
+        // dd($products->links());
+        // if($products->links){
+        //     $products->links->map(function ($link)
+        //     {
+        //         $link->label=(string)$link->label;
+        //         return $link;
+        //     });
+        // }
         $products->map(function ($product, $key) {
             foreach(json_decode($product->images) as $product_image){
                 $product->images=url(Storage::url($product_image));
                 break;
             }
+            
             unset($product->created_at);
             unset($product->updated_at);
             unset($product->status);
@@ -30,6 +40,7 @@ class WebServicesController extends Controller
     public function productDetails($product_id)
     {
         $product=Product::where('status',1)->where('id',$product_id)->first();
+        
         if($product){
             $images=[];
             foreach(json_decode($product->images) as $product_image){
@@ -167,7 +178,6 @@ class WebServicesController extends Controller
         if($user){
             $cart_items=$user->cartItems->map(function ($cart_item)
             {
-                
                     unset($cart_item->model->id);
                     unset($cart_item->model->created_at);
                     unset($cart_item->model->updated_at);
@@ -199,5 +209,21 @@ class WebServicesController extends Controller
             return response()->json(['message'=>'success','data'=>$cart_items]);
         }
         return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+    }
+    public function AddToCart(Request $request)
+    {   
+        if($request->has('item_id')){
+            if($request->item_type==='product'){
+                $user=User::find($request->user_id);
+                if($user){
+                    $product=Product::find($request->item_id);                    
+                    $cart_order=UserCart::updateOrCreate(['model_id' => $product->id,
+                    'model' => get_class($product),'user_id'=>$user->id],['quantity'=>1,'price'=>$product->actual_price]);
+                    return  response()->json(['message'=>'Product Added to cart','data'=>$cart_order]);
+                }
+                return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+            }
+            return  response()->json(['message'=>'invalid data'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+        }
     }
 }
