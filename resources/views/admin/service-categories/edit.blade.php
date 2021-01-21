@@ -9,13 +9,14 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Services</h1>
+            <h1>Services categories ({{ $category->name }})</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url("admin/dashboard")}}">Home</a></li>
               <li class="breadcrumb-item "><a href="{{ route('services.index') }}">Services</a> </li>
-              <li class="breadcrumb-item active">Add</li>
+              <li class="breadcrumb-item "><a href="{{ route('services.categories.index',['service'=>$category->service_id]) }}">Services-Categories</a> </li>
+              <li class="breadcrumb-item active">Edit</li>
             </ol>
           </div>
         </div>
@@ -31,18 +32,19 @@
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Add Service</h3>
+                  <h3 class="card-title">Edit Service-Category ({{ $category->name }})</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route("services.store") }}" >
+                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route('services.categories.update',['service'=>$category->service_id,'category'=>$category->id]) }}" >
                     @csrf
+                    @method('PUT')
                   <div class="card-body">
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label for="InputEmail1">Name*</label>
-                          <input type="text" value="{{ old('name') }}" name="name" class="form-control" id="InputEmail1" placeholder="Enter Name">
+                          <input type="text" value="{{ $category->name }}" name="name" class="form-control" id="InputEmail1" placeholder="Enter Name">
                         </div>
                       </div>
                       <div class="col-sm-6">
@@ -50,7 +52,7 @@
                           <label for="InputFile">Service Image* </label>
                           <div class="input-group">
                             <div class="custom-file">
-                              <input type="file" value="{{ old('service_image') }}" name="service_image" required class="custom-file-input" id="InputFile">
+                              <input type="file" value="{{ $category->service_image }}" name="service_image" class="custom-file-input" id="InputFile">
                               <label class="custom-file-label" for="InputFile">Choose file</label>
                             </div>
                             <div class="input-group-append">
@@ -63,14 +65,14 @@
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label for="service_icon">Service Icon* </label>
+                          <label for="service_icon">Service Image* </label>
                           <div class="input-group">
                             <div class="custom-file">
-                              <input type="file" value="{{ old('service_icon') }}" name="service_icon" required class="custom-file-input" id="service_icon">
+                              <input type="file" value="{{ $category->service_icon }}" name="service_icon" class="custom-file-input" id="service_icon">
                               <label class="custom-file-label" for="service_icon">Choose file</label>
                             </div>
                             <div class="input-group-append">
-                              <span class="input-group-text" id="InputColor">Upload</span>
+                              <span class="input-group-text" id="service_icon">Upload</span>
                             </div>
                           </div>
                         </div>
@@ -78,13 +80,13 @@
                       <div class="col-sm-6">
                         <div class="form-group">
                             <label for="InputDescription">Description*</label>
-                            <textarea rows="3" name="description" class="form-control" id="InputDescription" placeholder="Enter Description">{{ old('description') }}</textarea>
+                            <textarea rows="3" name="description" class="form-control" id="InputDescription" placeholder="Enter Description">{{ $category->description }}</textarea>
                         </div>
                       </div>
                     </div>
 
                     <div class="form-check">
-                      <input type="checkbox" name="status" checked class="form-check-input" id="exampleCheck1">
+                      <input type="checkbox" name="status" {{ $category->status? "checked":"" }} class="form-check-input" id="exampleCheck1">
                       <label class="form-check-label" for="exampleCheck1">status</label>
                     </div>
                   </div>

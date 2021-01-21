@@ -80,9 +80,14 @@ class ServiceCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($service,$id)
     {
-        //
+        $category=ServiceCategory::find($id);
+        if($category){
+            return view('admin.service-categories.edit',['category'=>$category,'title'=>'services']);
+        }
+        Toastr::error('Invalid Service Category Id');
+        return redirect()->back();
     }
 
     /**
@@ -92,9 +97,39 @@ class ServiceCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $service, $id)
     {
-        //
+        $service=ServiceCategory::where('id',$id)->first();
+        if($service){
+            // save to storage/app/photos as the new $filename
+            $status=false;
+            if($request->has('status')){
+                $status=true;
+            }
+            $data=[
+                'status'=>$status,
+                'name'=>$request->name,
+                'description'=>$request->description
+            ];
+            if($request->service_image){
+                $path=Storage::disk('public')->put('services', $request->service_image, 'public');
+                $data['image']=$path;
+            }
+            if($request->service_icon){
+                $icon=Storage::disk('public')->put('services', $request->service_icon, 'public');
+                $data['icon']=$icon;
+            }
+            $update=ServiceCategory::where('id',$id)->update($data);
+            if($update){
+                Toastr::success('Service Updated Successfully');
+                return redirect()->route('services.index');
+            }
+            Toastr::error('Error while update');
+            return redirect()->back();
+            
+        }
+        Toastr::error('Invalid Service Id');
+            return redirect()->back();
     }
 
     /**

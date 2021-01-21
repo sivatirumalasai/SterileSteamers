@@ -46,7 +46,8 @@ class ServiceController extends Controller
             $status=true;
         }
         $path=Storage::disk('public')->put('services', $request->service_image, 'public');
-        $Service=Service::create(['name'=>$request->name,'status'=>$status,'image'=>$path,'description'=>$request->description]);
+        $icon=Storage::disk('public')->put('services', $request->service_icon, 'public');
+        $Service=Service::create(['name'=>$request->name,'status'=>$status,'icon'=>$icon,'image'=>$path,'description'=>$request->description]);
         Toastr::success('Service Created Successfully');
         return redirect()->route('services.create');
     }
@@ -70,7 +71,12 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $service=Service::find($id);
+        if($service){
+            return view('admin.services.edit',['service'=>$service,'title'=>'services']);
+        }
+        Toastr::error('Invalid Service Id');
+        return redirect()->back();
     }
 
     /**
@@ -82,7 +88,37 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $service=Service::where('id',$id)->first();
+        if($service){
+            // save to storage/app/photos as the new $filename
+            $status=false;
+            if($request->has('status')){
+                $status=true;
+            }
+            $data=[
+                'status'=>$status,
+                'name'=>$request->name,
+                'description'=>$request->description
+            ];
+            if($request->service_image){
+                $path=Storage::disk('public')->put('services', $request->service_image, 'public');
+                $data['image']=$path;
+            }
+            if($request->service_icon){
+                $icon=Storage::disk('public')->put('services', $request->service_icon, 'public');
+                $data['icon']=$icon;
+            }
+            $update=Service::where('id',$id)->update($data);
+            if($update){
+                Toastr::success('Service Updated Successfully');
+                return redirect()->route('services.index');
+            }
+            Toastr::error('Error while update');
+            return redirect()->back();
+            
+        }
+        Toastr::error('Invalid Service Id');
+            return redirect()->back();
     }
 
     /**

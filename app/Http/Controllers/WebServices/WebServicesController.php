@@ -22,7 +22,6 @@ class WebServicesController extends Controller
                 $product->images=url(Storage::url($product_image));
                 break;
             }
-            
             unset($product->created_at);
             unset($product->updated_at);
             unset($product->status);
@@ -138,6 +137,7 @@ class WebServicesController extends Controller
         {
             $service->service_id=$service->id;
             $service->image=url(Storage::url($service->image));
+            $service->icon=$service->icon?url(Storage::url($service->icon)):"";
             unset($service->id);
             unset($service->created_at);
             unset($service->updated_at);
@@ -169,6 +169,8 @@ class WebServicesController extends Controller
                     $category->plans=[];
                 }
                 $category->image=url(Storage::url($category->image));
+
+                $category->icon=$category->icon?url(Storage::url($category->icon)):"";
                 unset($category->created_at);
                 unset($category->updated_at);
                 unset($category->status);
