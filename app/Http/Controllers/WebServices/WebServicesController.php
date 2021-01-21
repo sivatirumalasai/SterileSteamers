@@ -103,7 +103,15 @@ class WebServicesController extends Controller
             unset($accessory->updated_at);
             unset($accessory->status);
         });
-        return response()->json(['message'=>'success','data'=>$accessories]);
+        $data=collect($accessories);
+        $links=collect($data['links']);
+        $links=$links->map(function ($link)
+        {
+            $link['label']=$link['label']."";
+            return $link;
+        });
+        $data['links']=$links;
+        return response()->json(['message'=>'success','data'=>$data]);
     }
     public function accessoryDetails($accessory_id)
     {
