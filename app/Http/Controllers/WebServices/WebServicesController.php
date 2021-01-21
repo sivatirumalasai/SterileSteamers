@@ -17,14 +17,6 @@ class WebServicesController extends Controller
     public function products()
     {
         $products=Product::where('status',1)->paginate(15);
-        // dd($products->links());
-        // if($products->links){
-        //     $products->links->map(function ($link)
-        //     {
-        //         $link->label=(string)$link->label;
-        //         return $link;
-        //     });
-        // }
         $products->map(function ($product, $key) {
             foreach(json_decode($product->images) as $product_image){
                 $product->images=url(Storage::url($product_image));
@@ -35,7 +27,15 @@ class WebServicesController extends Controller
             unset($product->updated_at);
             unset($product->status);
         });
-        return response()->json(['message'=>'success','data'=>$products]);
+        $data=collect($products);
+        $links=collect($data['links']);
+        $links=$links->map(function ($link)
+        {
+            $link['label']=$link['label']."";
+            return $link;
+        });
+        $data['links']=$links;
+        return response()->json(['message'=>'success','data'=>$data]);
     }
     public function productDetails($product_id)
     {
@@ -210,16 +210,32 @@ class WebServicesController extends Controller
         }
         return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
     }
-    public function AddToCart(Request $request)
+    public function addToCart(Request $request)
     {   
         if($request->has('item_id')){
-            if($request->item_type==='product'){
-                $user=User::find($request->user_id);
+            if($request->has('item_type')){
+                $user=User::find($request->json('user_id'));
                 if($user){
-                    $product=Product::find($request->item_id);                    
-                    $cart_order=UserCart::updateOrCreate(['model_id' => $product->id,
-                    'model' => get_class($product),'user_id'=>$user->id],['quantity'=>1,'price'=>$product->actual_price]);
-                    return  response()->json(['message'=>'Product Added to cart','data'=>$cart_order]);
+                    if($request->json('item_type')=='product'){
+                        $product=Product::find((int)$request->json('item_id'));  
+                    }
+                    else{
+                        $product=Accessory::find((int)$request->json('item_id'));  
+                    }
+                    if($product){
+                        $cart_order=UserCart::where('model_type', get_class($product))->where('model_id',$product->id)->where('user_id',$user->id)->first();
+                        if($cart_order){
+                            $cart_order->quantity=$request->json('quantity');
+                            $cart_order->save();
+                        }
+                        else{
+                            $cart_order=UserCart::create(['model_id' => $product->id,
+                            'model_type' => get_class($product),'user_id'=>$user->id,'quantity'=>$request->json('quantity'),'price'=>$product->actual_price]);
+                        }          
+                        
+                        return  response()->json(['message'=>'Product Added to cart','data'=>$this->cartItems($user->id)->original['data']]);
+                    }
+                    return response()->json(['message'=>'Invalid Item','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
                 }
                 return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
             }

@@ -29,4 +29,4 @@ Route::get('accessory/{accessory_id}','WebServices\WebServicesController@accesso
 Route::get('services','WebServices\WebServicesController@services');
 Route::get("serviceCategories/{service_id}",'WebServices\WebServicesController@serviceCategories');
 Route::get('cartItems/{user_id}','WebServices\WebServicesController@cartItems');
-Route::post('AddToCart','WebSite\CartController@addToCart');
+Route::post('AddToCart','WebServices\WebServicesController@addToCart');
