@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Accessory;
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\ServiceVanDetail;
 use App\Models\User;
 use App\Models\UserCart;
 use Illuminate\Http\JsonResponse;
@@ -39,18 +40,15 @@ class WebServicesController extends Controller
     public function productDetails($product_id)
     {
         $product=Product::where('status',1)->where('id',$product_id)->first();
-        
         if($product){
             $images=[];
             foreach(json_decode($product->images) as $product_image){
                 $images[]=url(Storage::url($product_image));
             }
-            
             $product->images=$images;
             $product->specifications;
             $product->features->map(function ($item,$key)
             {
-
                 unset($item->created_at);
                 unset($item->updated_at);
                 unset($item->status);
@@ -80,11 +78,13 @@ class WebServicesController extends Controller
             unset($product->updated_at);
             unset($product->status);
             unset($product->id);
-            unset($product->specifications->created_at);
-            unset($product->specifications->updated_at);
-            unset($product->specifications->status);
-            unset($product->specifications->id);
-            unset($product->specifications->product_id);
+            if($product->specifications){
+                unset($product->specifications->created_at);
+                unset($product->specifications->updated_at);
+                unset($product->specifications->status);
+                unset($product->specifications->id);
+                unset($product->specifications->product_id);
+            }
             return response()->json(['message'=>'success','data'=>$product]);
         }
         
@@ -148,6 +148,7 @@ class WebServicesController extends Controller
     public function serviceCategories($service_id)
     {
         $service=Service::where('id',$service_id)->where('status',1)->first();
+        $trucks=ServiceVanDetail::where('status',1)->get();
         $categories=[];
         if($categories=$service->categories){
             $categories->map(function ($category,$cindex)
@@ -180,7 +181,21 @@ class WebServicesController extends Controller
         else{
             $service->categories=[];
         }
-        return response()->json(['message'=>'success','data'=>$categories]);
+        if($trucks){
+            $trucks->map(function($truck,$index){
+                $truck->truck_id=$truck->id;
+                unset($truck->id);
+                unset($truck->owner_name);
+                unset($truck->owner_mobile);
+                unset($truck->status);
+                unset($truck->created_at);
+                unset($truck->updated_at);
+            });
+        }
+        else{
+            $trucks=[];
+        }
+        return response()->json(['message'=>'success','data'=>$categories,'trucks'=>$trucks]);
     }
     public function cartItems($user_id)
     {

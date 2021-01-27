@@ -11,7 +11,7 @@ class AccessoryController extends Controller
 {
     public function index()
     {
-        dd(Auth::check());
+       // dd(Auth::check());
         return view('accessory-list',['title'=>'Accessories']);
     }
     public function accessoryInfo($id)    
