@@ -129,6 +129,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
                 <li id="loginBtn"><a href="{{ route('login') }}" style="color: #222222 !important"><button type="button" class="btn btn-info btn-lg template-icon-social-dribbble" ></button>
                 </a></li>
                 @endguest
+                @auth
+                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+                    Logout
+                </a>  </li>  
+                <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>    
+                @endauth
                 <li><a href="#" style="color: #222222 !important" class="template-icon-meta-menu"></a></li>
             </ul>
         </div>
