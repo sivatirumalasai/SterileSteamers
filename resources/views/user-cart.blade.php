@@ -82,10 +82,10 @@
 
                                 <!-- Button -->
                                 <div class="template-component-button-box">
-                                    <div class="handle-counter" id="handleCounter">
-                                        <button class="counter-minus btn btn-primary">-</button>
-                                        <input type="text" name="name" value="{{ $item->quantity }}" >
-                                        <button class="counter-plus btn btn-primary">+</button>
+                                    <div class="handle-counter">
+                                        <button class="counter-minus btn btn-primary dec button">-</button>
+                                        <input type="text" name="name" itemType={{ ($item->model_type=='App\Models\Product')? 'Product':'Accessory' }} id="{{ $item->id }}" value="{{ $item->quantity }}" >
+                                        <button class="counter-plus btn btn-primary inc button">+</button>
                                     </div>
                                     {{-- <a href="#" class="template-component-button">Select</a> --}}
                                 </div>
@@ -266,7 +266,59 @@
         $('#template-booking').booking();
     });
 </script>
-<script src="{{ URL::asset('app/js/handleCounter.js') }}"></script>
+<script>
+    incrementVar = 0;
+    var baseurl="{{ url('/') }}";
+    var token="{{ csrf_token() }}";
+$('.inc.button').click(function(){
+    var $this = $(this),
+    $input = $this.prev('input'),
+    $parent = $input.closest('div'),
+    newValue = parseInt($input.val())+1;
+    $parent.find('.inc').addClass('a'+newValue);
+    console.log('increment',newValue);
+    $input.val(newValue);
+    incrementVar += newValue;
+    var itemId=$input.attr('id');
+    var itemType=$input.attr("itemType");
+    if(Number.isInteger(newValue) && newValue>0){
+        $.ajax({
+            type: "POST",
+            url: baseurl+'/AddItemToCart',
+            data: {item_type:itemType,_token:token,item_id:itemId,quantity:newValue},
+            cache: false,
+            success: function(data){
+                window.location.reload();
+            }
+        });
+    }
+});
+$('.dec.button').click(function(){
+    var $this = $(this),
+    $input = $this.next('input'),
+    $parent = $input.closest('div'),
+    newValue = parseInt($input.val())-1;
+    console.log('decrement',$input.attr('id'));
+    $parent.find('.inc').addClass('a'+newValue);
+    $input.val(newValue);
+    incrementVar += newValue;
+    var itemId=$input.attr('id');
+    var itemType=$input.attr("itemType");
+    if(Number.isInteger(newValue) && newValue>0){
+        $.ajax({
+            type: "POST",
+            url: baseurl+'/AddItemToCart',
+            data: {item_type:itemType,_token:token,item_id:itemId,quantity:newValue},
+            cache: false,
+            success: function(data){
+                window.location.reload();
+            }
+        });
+    }
+});
+
+</script>
+{{-- <script src="{{ URL::asset('app/js/handleCounter.js') }}"></script>
     <script>
         $(function ($) {
             var options = {
@@ -285,9 +337,9 @@
 			$('#handleCounter3').handleCounter({maximize: 100})
         })
         function valChanged(d) {
-//            console.log(d)
+           console.log(d)
         }
-    </script>
+    </script> --}}
 @stop
 @section('footer')
 @include('layouts.footer')

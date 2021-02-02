@@ -7,7 +7,7 @@
 				<div class="template-content">
 
 					<!-- Main -->
-					<div class="template-section template-main">
+					<div class="template-section template-main" >
 					
 						<!-- Layout -->
 						<div class="template-content-layout template-content-layout-sidebar-right template-clear-fix">

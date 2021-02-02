@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 Route::get('/', function () {
     return view('welcome',['title'=>'']);
@@ -31,6 +35,7 @@ Route::get('user-cart','WebSite\CartController@index')->name("user-cart");
 Route::get('sai','WebSite\ProductController@sai');
 Route::get('logincheck','WebSite\ProductController@logincheck');
 Route::post('AddToCart','WebSite\CartController@addToCart');
+Route::post('AddItemToCart','WebSite\CartController@addToCart');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function () {
@@ -61,10 +66,3 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('services.plans', ServicePlanController::class);
     Route::resource('services.categories', ServiceCategoryController::class);
 });
-//Auth::routes();
-
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-//Auth::routes();
-
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
