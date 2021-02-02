@@ -69,14 +69,14 @@
 								<li><a href="https://twitter.com/quanticalabs" class="template-icon-social-twitter" target="_blank"></a></li>
 								<li><a href="https://www.facebook.com/QuanticaLabs" class="template-icon-social-facebook" target="_blank"></a></li>
 								<li><a href="https://dribbble.com/quanticalabs" class="template-icon-social-dribbble" target="_blank"></a></li>
-								<li><a href="https//themeforest.net/user/QuanticaLabs/portfolio?ref=quanticalabs" class="template-icon-social-envato" target="_blank"></a></li>
+								<li><a href="https://themeforest.net/user/QuanticaLabs/portfolio?ref=quanticalabs" class="template-icon-social-envato" target="_blank"></a></li>
 								<li><a href="https://www.behance.net/quanticalabs" class="template-icon-social-behance" target="_blank"></a></li>
 								<li><a href="https://www.youtube.com/user/quanticalabs" class="template-icon-social-youtube" target="_blank"></a></li>
 							</ul>
 							
 							<!-- Copyright -->
 							<div class="template-footer-bottom-copyright">
-								By <a href="https//quanticalabs.com" target="_blank">QuanticaLabs</a> &copy; 2016 <a href="https//themeforest.net/user/QuanticaLabs/portfolio?ref=quanticalabs" target="_blank">Auto Spa Template</a>
+								By <a href="https://quanticalabs.com" target="_blank">QuanticaLabs</a> &copy; 2016 <a href="https://themeforest.net/user/QuanticaLabs/portfolio?ref=quanticalabs" target="_blank">Auto Spa Template</a>
 							</div>
 							
 						</div>
@@ -122,7 +122,7 @@
 				<script type="text/javascript" src="{{ URL::asset('script/jquery.responsiveElement.js') }}"></script>
 				<script type="text/javascript" src="{{ URL::asset('script/jquery.touchSwipe.min.js') }}"></script>
 				<script type="text/javascript" src="{{ URL::asset('script/DateTimePicker.min.js') }}"></script>
-				<script type="text/javascript" src="https//maps.google.com/maps/api/js"></script>  
+				<script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>  
 				
 				<!-- Revolution Slider files -->
 				<script type="text/javascript" src="{{ URL::asset('script/revolution/jquery.themepunch.revolution.min.js') }}"></script>
@@ -161,7 +161,7 @@
                     const imageList=[];
                     
 				</script>
-				<script src="https//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+				<script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 				{!! Toastr::message() !!}
             </body>
 			
