@@ -17,8 +17,7 @@ class ProductController extends Controller
     {
         $product=Product::where('code',$id)->first();
         if($product){
-            //$user=Auth::user();
-            $user=User::find(2);
+            $user=Auth::user();
             $cart=false;
             if($user){
                 if($product->cartOrders()->where('user_id', $user->id)->first()){

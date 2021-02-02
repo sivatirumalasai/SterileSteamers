@@ -27,14 +27,15 @@
 
                     <div class="signin-form">
                         <h2 class="form-title">Sign up</h2>
-                        <form method="POST" class="register-form" id="login-form">
+                        <form method="POST" action="{{ route('login') }}" class="register-form" id="login-form">
+                            @csrf
                             <div class="form-group">
-                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="your_name" id="your_name" placeholder="Your Name"/>
+                                <label for="email"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                             </div>
                             <div class="form-group">
-                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                                <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />

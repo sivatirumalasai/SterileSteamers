@@ -323,6 +323,7 @@
 		success: function (data) {
 				console.log(data);
 				toastr.success('Successfully Added');
+				window.location=baseurl+"/user-cart";
 		},
 		error: function (error) {
 			console.log(error);

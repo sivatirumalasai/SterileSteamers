@@ -304,7 +304,7 @@ $('.dec.button').click(function(){
     incrementVar += newValue;
     var itemId=$input.attr('id');
     var itemType=$input.attr("itemType");
-    if(Number.isInteger(newValue) && newValue>0){
+    if(Number.isInteger(newValue) ){
         $.ajax({
             type: "POST",
             url: baseurl+'/AddItemToCart',

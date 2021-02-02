@@ -122,11 +122,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
             <ul class="template-component-social-icon-list">
                 {{-- <li><a href="https://twitter.com/quanticalabs" class="template-icon-social-twitter" target="_blank"></a></li>
                 <li><a href="https://www.facebook.com/QuanticaLabs" class="template-icon-social-facebook" target="_blank"></a></li> --}}
-                
+                {{-- onclick="myFunctionGetaccess()" --}}
                 <li><a href="{{ route('user-cart') }}" style="color: @if($title=='UserCart') #199CDB @else #222222  @endif!important" class="template-icon-meta-cart"></a></li>
                 <li><a href="#" style="color: #222222 !important" class="template-icon-meta-search"></a></li>
                 @guest
-                <li id="loginBtn"><a href="#" style="color: #222222 !important"><button type="button" class="btn btn-info btn-lg template-icon-social-dribbble" onclick="myFunctionGetaccess()"></button>
+                <li id="loginBtn"><a href="{{ route('login') }}" style="color: #222222 !important"><button type="button" class="btn btn-info btn-lg template-icon-social-dribbble" ></button>
                 </a></li>
                 @endguest
                 <li><a href="#" style="color: #222222 !important" class="template-icon-meta-menu"></a></li>
