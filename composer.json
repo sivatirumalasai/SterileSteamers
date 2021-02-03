@@ -26,6 +26,7 @@
         "laravel/framework": "^8.18",
         "laravel/tinker": "^2.3",
         "laravel/ui": "^3.2",
+        "razorpay/razorpay": "^2.5",
         "twilio/sdk": "^6.1.0"
     },
     "require-dev": {

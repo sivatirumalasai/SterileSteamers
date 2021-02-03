@@ -14,7 +14,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url("admin/dashboard")}}">Home</a></li>
-              <li class="breadcrumb-item "><a href="{{ route("product-accessories",['id'=>$product->code]) }}">Product-Accessories</a> </li>
+              <li class="breadcrumb-item "><a href="{{ route("products.accessories.index",['product'=>$product->code]) }}">Product-Accessories</a> </li>
               <li class="breadcrumb-item active">Add</li>
             </ol>
           </div>
@@ -35,7 +35,7 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route("product-accessories-store",['id'=>$product->code]) }}" >
+                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route("products.accessories.store",['product'=>$product->code]) }}" >
                     @csrf
                   <div class="card-body">
                     <div class="row">
