@@ -15,7 +15,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url("admin/dashboard")}}">Home</a></li>
               <li class="breadcrumb-item "><a href="{{ route('services.index') }}">Services</a> </li>
-              <li class="breadcrumb-item "><a href="{{ route('service-categories',['id'=>$service->id]) }}">Services-Categories</a> </li>
+              <li class="breadcrumb-item "><a href="{{ route('services.categories.index',['service'=>$service->id]) }}">Services-Categories</a> </li>
               <li class="breadcrumb-item active">Add</li>
             </ol>
           </div>
@@ -36,7 +36,7 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route("service-categories-store",['id'=>$service->id]) }}" >
+                <form role="form" method="POST" enctype="multipart/form-data" action="{{ route("services.categories.store",['service'=>$service->id]) }}" >
                     @csrf
                   <div class="card-body">
                     <div class="row">
