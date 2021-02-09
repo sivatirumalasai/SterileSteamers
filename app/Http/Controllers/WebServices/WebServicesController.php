@@ -284,4 +284,28 @@ class WebServicesController extends Controller
             return  response()->json(['message'=>'invalid data'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
         }
     }
+    public function updateProfile(Request $request)
+    {
+        if($request->has('user_id')){
+            $user=User::find($request->user_id);
+            if($user){
+                if($request->has('name')){
+                    $user->name=$request->name;
+                }
+                if($request->has('email')){
+                    $user->email=$request->email;
+                }
+                if($request->profile_pic){
+                    $path=Storage::disk('public')->put('users', $request->profile_pic, 'public');
+                    $user->profile_pic=$path;
+                }
+                $user->save();
+                $user->profile_pic=($user->profile_pic)? url(Storage::url($user->profile_pic)):null;
+                
+                return response()->json(['message'=>'success','data'=>$user]);
+            }
+            return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+        }
+        return  response()->json(['message'=>'invalid data User Id missing'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+    }
 }
