@@ -12,6 +12,7 @@ use App\Models\UserCart;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Rennokki\Plans\Models\PlanModel;
 
 class WebServicesController extends Controller
 {
@@ -149,6 +150,7 @@ class WebServicesController extends Controller
     {
         $service=Service::where('id',$service_id)->where('status',1)->first();
         $trucks=ServiceVanDetail::where('status',1)->get();
+        $features=PlanModel::all();
         $categories=[];
         if($categories=$service->categories){
             $categories->map(function ($category,$cindex)
@@ -195,7 +197,22 @@ class WebServicesController extends Controller
         else{
             $trucks=[];
         }
-        return response()->json(['message'=>'success','data'=>$categories,'trucks'=>$trucks]);
+        if($features){
+            $features->map(function($plan,$index){
+                $plan->addon_id=$plan->id;
+                $plan->duration=$plan->duration.' mins';
+                unset($plan->id);
+                unset($plan->metadata);
+                unset($plan->currency);
+                unset($plan->status);
+                unset($plan->created_at);
+                unset($plan->updated_at);
+            });
+        }
+        else{
+            $features=[];
+        }
+        return response()->json(['message'=>'success','data'=>$categories,'trucks'=>$trucks,'addOns'=>$features]);
     }
     public function cartItems($user_id)
     {

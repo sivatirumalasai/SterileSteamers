@@ -43,6 +43,19 @@ Route::get('logincheck','WebSite\ProductController@logincheck');
 Route::post('AddToCart','WebSite\CartController@addToCart');
 Route::post('AddItemToCart','WebSite\CartController@addToCart');
 
+//payment
+Route::get('paymentpage',function ()
+{
+    return view('payWithRazorpay'); 
+});
+
+Route::post('payment','WebSite\PaymentController@payment')->name('payment');
+
+Route::get('pay','WebSite\PaymentController@pay')->name('pay');
+
+Route::post('dopayment','WebSite\PaymentController@dopayment')->name('dopayment');
+
+
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function () {
         return view('admin.dashboard',['title'=>'dashboard']);
