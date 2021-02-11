@@ -7,10 +7,12 @@ use App\Http\Controllers\WebSite\PaymentController;
 use App\Models\Accessory;
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\ServiceCategoryPlan;
 use App\Models\ServiceVanDetail;
 use App\Models\User;
 use App\Models\UserCart;
 use App\Models\UserOrder;
+use App\Models\UserOrderAddOn;
 use App\Models\UserOrderDetail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -314,14 +316,14 @@ class WebServicesController extends Controller
     public function createOrderSummery(Request $request)
     {
         if($request->has("order_type")){
-            if($request->order_type==='product'){
-                $user=User::find($request->user_id);
-                if($user){
-                    $paymentcontroller=new PaymentController;
+            $user=User::find($request->user_id);
+            if($user){
+                
+                $paymentcontroller=new PaymentController;
+                if($request->order_type==='product'){
                     if($user->cartItems()->count()){
                         $order=UserOrder::create([
                             'user_id'=>$user->id,
-                            
                             'quantity'=>$user->cartItems->sum('quantity'),
                             'actual_amount'=>$user->cartItems->sum('price'),
                             'discount_amount'=>0,
@@ -338,14 +340,14 @@ class WebServicesController extends Controller
                             $total_discount=0;
                             foreach($user->cartItems as $cart_item){
                                 $total_actual_price+=$cart_item->model->actual_price;
-                                $total_discount+=$cart_item->model->discount;
+                                $total_discount+=($cart_item->model->actual_price-$cart_item->model->discount);
                                 $order->orderDetails()->save(new UserOrderDetail([
                                     'model_id'=>$cart_item->model_id,
                                     'model_type'=>$cart_item->model_type,
                                     'quantity'=>$cart_item->quantity,
                                     'actual_amount'=>$cart_item->model->actual_price,
-                                    'discount_amount'=>$cart_item->model->discount,
-                                    'final_amount'=>$cart_item->model->actual_price-$cart_item->model->discount,
+                                    'discount_amount'=>$cart_item->model->actual_price-$cart_item->model->discount,
+                                    'final_amount'=>$cart_item->model->discount,
                                 ]));
                                 $cart_item->delete();
                             }
@@ -359,12 +361,64 @@ class WebServicesController extends Controller
                     }
                     return  response()->json(['message'=>'Cart Empty'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
                 }
-                else{
-                    return  response()->json(['message'=>'invalid User'],JsonResponse::HTTP_UNAUTHORIZED);
+                if($request->order_type==='service'){
+                    $service=ServiceCategoryPlan::find($request->service_plan_id);
+                    if($service){
+                       //'model_id' => $product->id,
+                       //'model_type' => get_class($product)
+                       $order=UserOrder::create([
+                        'user_id'=>$user->id,
+                        'quantity'=>1,
+                        'actual_amount'=>$service->actual_price,
+                        'discount_amount'=>$service->actual_price-$service->discount_price,
+                        'final_amount'=>$service->discount_price,
+                        'first_name'=>$request->first_name,
+                        'last_name'=>$request->last_name,
+                        'mobile'=>$request->mobile,
+                        'email'=>$request->email,
+                        'address'=>$request->address,
+                        'user_message'=>$request->user_message
+                    ]);
+                    if($order){
+                        $order->orderDetails()->save(new UserOrderDetail([
+                            'model_id'=>$service->id,
+                            'model_type'=>get_class($service),
+                            'quantity'=>1,
+                            'actual_amount'=>$service->actual_price,
+                            'discount_amount'=>$service->actual_price-$service->discount_price,
+                            'final_amount'=>$service->discount_price,
+                        ]));
+                        $total_actual_price=$service->actual_amount;
+                        $total_discount=$service->actual_price-$service->discount_price;
+                        foreach($request->add_ons as $add_on){
+                            $add_on_plan=PlanModel::find($add_on);
+                            if($add_on_plan){
+                                $total_actual_price+=$add_on_plan->price;
+                                $total_discount+=0;
+                                $order->orderAddons()->save(new UserOrderAddOn([
+                                    'model_id'=>$add_on_plan->id,
+                                    'model_type'=>get_class($add_on_plan),
+                                    'quantity'=>1,
+                                    'actual_amount'=>$add_on_plan->price,
+                                    'discount_amount'=>0,
+                                    'final_amount'=>$add_on_plan->price,
+                                ]));
+                            }
+                        }
+                        $order->actual_amount=$total_actual_price;
+                        $order->discount_amount=$total_discount;
+                        $order->final_amount=$total_actual_price-$total_discount;
+                        $order->order_id=$paymentcontroller->generateOrderId(['amount'=>$total_actual_price-$total_discount,'id'=>$order->id]);
+                        $order->save();
+                        return  response()->json(['message'=>'success','data'=>$order],JsonResponse::HTTP_OK);  
+                    } 
                 }
+                return  response()->json(['message'=>'Invalid Service Selected'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
             }
-            if($request->order_type==='service'){
-
+            return  response()->json(['message'=>'invalid Order Type'],JsonResponse::HTTP_UNAUTHORIZED);
+            }
+            else{
+                return  response()->json(['message'=>'invalid User'],JsonResponse::HTTP_UNAUTHORIZED);
             }
         }
         return  response()->json(['message'=>'invalid data'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);

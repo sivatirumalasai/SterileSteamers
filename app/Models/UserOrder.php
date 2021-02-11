@@ -14,6 +14,10 @@ class UserOrder extends Model
     {
         return $this->hasMany(UserOrderDetail::class);
     }
+    public function orderAddons()
+    {
+        return $this->hasMany(UserOrderAddOn::class);
+    }
     public function model()
     {
         return $this->morphTo();
