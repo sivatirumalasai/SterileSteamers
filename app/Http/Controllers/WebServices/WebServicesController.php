@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\WebServices;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\WebSite\PaymentController;
 use App\Models\Accessory;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\ServiceVanDetail;
 use App\Models\User;
 use App\Models\UserCart;
+use App\Models\UserOrder;
+use App\Models\UserOrderDetail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -279,7 +282,7 @@ class WebServicesController extends Controller
                     }
                     return response()->json(['message'=>'Invalid Item','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
                 }
-                return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+                return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_UNAUTHORIZED);
             }
             return  response()->json(['message'=>'invalid data'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
         }
@@ -307,5 +310,63 @@ class WebServicesController extends Controller
             return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
         }
         return  response()->json(['message'=>'invalid data User Id missing'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+    }
+    public function createOrderSummery(Request $request)
+    {
+        if($request->has("order_type")){
+            if($request->order_type==='product'){
+                $user=User::find($request->user_id);
+                if($user){
+                    $paymentcontroller=new PaymentController;
+                    if($user->cartItems()->count()){
+                        $order=UserOrder::create([
+                            'user_id'=>$user->id,
+                            
+                            'quantity'=>$user->cartItems->sum('quantity'),
+                            'actual_amount'=>$user->cartItems->sum('price'),
+                            'discount_amount'=>0,
+                            'final_amount'=>$user->cartItems->sum('price')-0,
+                            'first_name'=>$request->first_name,
+                            'last_name'=>$request->last_name,
+                            'mobile'=>$request->mobile,
+                            'email'=>$request->email,
+                            'address'=>$request->address,
+                            'user_message'=>$request->user_message
+                        ]);
+                        if($order){
+                            $total_actual_price=0;
+                            $total_discount=0;
+                            foreach($user->cartItems as $cart_item){
+                                $total_actual_price+=$cart_item->model->actual_price;
+                                $total_discount+=$cart_item->model->discount;
+                                $order->orderDetails()->save(new UserOrderDetail([
+                                    'model_id'=>$cart_item->model_id,
+                                    'model_type'=>$cart_item->model_type,
+                                    'quantity'=>$cart_item->quantity,
+                                    'actual_amount'=>$cart_item->model->actual_price,
+                                    'discount_amount'=>$cart_item->model->discount,
+                                    'final_amount'=>$cart_item->model->actual_price-$cart_item->model->discount,
+                                ]));
+                                $cart_item->delete();
+                            }
+                            $order->actual_amount=$total_actual_price;
+                            $order->discount_amount=$total_discount;
+                            $order->final_amount=$total_actual_price-$total_discount;
+                            $order->order_id=$paymentcontroller->generateOrderId(['amount'=>$total_actual_price-$total_discount,'id'=>$order->id]);
+                            $order->save();
+                            return  response()->json(['message'=>'success','data'=>$order],JsonResponse::HTTP_OK); 
+                        }
+                    }
+                    return  response()->json(['message'=>'Cart Empty'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+                }
+                else{
+                    return  response()->json(['message'=>'invalid User'],JsonResponse::HTTP_UNAUTHORIZED);
+                }
+            }
+            if($request->order_type==='service'){
+
+            }
+        }
+        return  response()->json(['message'=>'invalid data'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
     }
 }

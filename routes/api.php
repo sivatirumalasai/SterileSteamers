@@ -31,3 +31,5 @@ Route::get("serviceCategories/{service_id}",'WebServices\WebServicesController@s
 Route::get('cartItems/{user_id}','WebServices\WebServicesController@cartItems');
 Route::post('AddToCart','WebServices\WebServicesController@addToCart');
 Route::post('profileUpdate','WebServices\WebServicesController@updateProfile');
+Route::post("AddOrderSummery",'WebServices\WebServicesController@createOrderSummery');
+//Route::get('orderid','WebSite\PaymentController@generateOrderId');

@@ -393,38 +393,36 @@
 
                         <!-- Service list -->
                         <ul class="template-component-booking-service-list">
-
-                            <!-- Service -->
-                            <li data-id="exterior-hand-wash" class="template-clear-fix">
+                            @foreach ($plans as $plan)
+                                <!-- Service -->
+                            <li data-id="addons{{ $plan->id }}" class="template-clear-fix">
 
                                 <!-- Name -->
                                 <div class="template-component-booking-service-name">
-                                    <span>Exterior Hand Wash</span>					
+                                    <span>{{ $plan->name }}</span>					
                                     <a href="#" class="template-component-more-link">
                                         <span>More...</span>
                                         <span>Less...</span>
                                     </a>
                                     <div class="template-component-more-content">
-                                        We hand wash your paint with a pH neutral shampoo, we remove dirt without damaging paint or trims. Your car&#309;s 
-                                        exterior is chamois-dried to prevent water marks forming on the paint and high pressure air is used to remove 
-                                        water from panel joins and trim.					
+                                        {{ $plan->description }}					
                                     </div>
                                 </div>
 
                                 <!-- Duration -->
                                 <div class="template-component-booking-service-duration">
                                     <span class="template-icon-booking-meta-duration"></span>
-                                    <span class="template-component-booking-service-duration-value">10</span>
+                                    <span class="template-component-booking-service-duration-value">{{ $plan->duration }}</span>
                                     <span class="template-component-booking-service-duration-unit">min</span>
                                 </div>
 
                                 <!-- Price -->
                                 <div class="template-component-booking-service-price">
                                     <span class="template-icon-booking-meta-price"></span>
-                                    <span class="template-component-booking-service-price-currency">$</span>
-                                    <span class="template-component-booking-service-price-value"></span>
-                                    <span class="template-component-booking-service-price-unit">7</span>
-                                    <span class="template-component-booking-service-price-decimal">.95</span>
+                                    <span class="template-component-booking-service-price-currency">Rs</span>
+                                    <span class="template-component-booking-service-price-value">{{ $plan->price }}</span>
+                                    {{-- <span class="template-component-booking-service-price-unit">{{ $plan->price }}</span>
+                                    <span class="template-component-booking-service-price-decimal">.00</span> --}}
                                 </div>
 
                                 <!-- Button -->
@@ -433,8 +431,10 @@
                                 </div>
 
                             </li>
+                            @endforeach
+                            
 
-                            <!-- Service -->
+                            {{-- <!-- Service -->
                             <li data-id="towel-hand-dry" class="template-clear-fix">
                                 <div class="template-component-booking-service-name">
                                     <span>Towel Hand Dry</span>					
@@ -774,7 +774,7 @@
                                 <div class="template-component-button-box">
                                     <a href="#" class="template-component-button">Select</a>
                                 </div>
-                            </li>
+                            </li> --}}
 
                         </ul>
 

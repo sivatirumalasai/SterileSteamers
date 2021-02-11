@@ -37,7 +37,6 @@ class PaymentController extends Controller
     }
     public function pay() {
         $api = new Api(config('razorpay.razor_key'), config('razorpay.razor_secret'));
-
         // Orders
         $order  = $api->order->create(array('receipt' => '123', 'amount' => 100, 'currency' => 'INR')); // Creates order
         $orderId = $order['id']; // Get the created Order ID
@@ -48,7 +47,15 @@ class PaymentController extends Controller
         $payment  = $api->payment->fetch("pay_GXtOZ0TaaVKsxW"); // Returns a particular payment
         dd($payment);
     }
-
+    public function generateOrderId($data)
+    {
+        $api = new Api(config('razorpay.razor_key'), config('razorpay.razor_secret'));
+        // Orders
+        $order  = $api->order->create(array('receipt' => $data['id'], 'amount' => $data['amount'], 'currency' => 'INR')); // Creates order
+        $orderId = $order['id']; // Get the created Order ID
+        //$order  = $api->order->fetch($orderId);
+       return $orderId;
+    }
     public function dopayment(Request $request) {
         //Input items of form
         $input = $request->all();
