@@ -203,7 +203,7 @@ class WebServicesController extends Controller
         if($features){
             $features->map(function($plan,$index){
                 $plan->addon_id=$plan->id;
-                $plan->duration=$plan->duration.' mins';
+                $plan->duration=$plan->duration;
                 unset($plan->id);
                 unset($plan->metadata);
                 unset($plan->currency);
