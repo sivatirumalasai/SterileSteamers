@@ -35,7 +35,7 @@ Route::get('/contact', function () {
 Route::get('product-info/{id}','WebSite\ProductController@productInfo')->name('product-info');
 Route::get("accessories-list",'WebSite\AccessoryController@index')->name('accessories-list');
 Route::get('accessory-info/{id}','WebSite\AccessoryController@accessoryInfo')->name('accessory-info');
-Route::get('service-info/{id}','WebSite\ServiceController@serviceInfo')->name('service-info');
+Route::get('service-info/{id?}','WebSite\ServiceController@serviceInfo')->name('service-info');
 Route::get('service-category/{id}','WebSite\ServiceCategoryController@index')->name('service-category');
 Route::get('user-cart','WebSite\CartController@index')->name("user-cart");
 Route::get('sai','WebSite\ProductController@sai');
@@ -84,4 +84,5 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('services', ServiceController::class);
     Route::resource('services.plans', ServicePlanController::class);
     Route::resource('services.categories', ServiceCategoryController::class);
+    Route::resource('orders', OrderController::class);
 });

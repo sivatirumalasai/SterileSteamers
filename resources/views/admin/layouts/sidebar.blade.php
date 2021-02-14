@@ -72,6 +72,22 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{route("orders.index")}}" class="nav-link {{ ($title==='Orders')? "active": "" }}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Orders
+              </p>
+            </a>
+          </li>
+          {{-- <li class="nav-item">
+            <a href="{{route("services.index")}}" class="nav-link {{ ($title==='services')? "active": "" }}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Services Requests
+              </p>
+            </a>
+          </li> --}}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

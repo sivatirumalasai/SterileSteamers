@@ -8,9 +8,14 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    public function serviceInfo($id)    
-    {
-        $service=Service::where('id',$id)->first();
+    public function serviceInfo($id=0)    
+    {   
+        if($id==0){
+            $service=Service::first();
+        }
+        else{
+            $service=Service::where('id',$id)->first();
+        }
         if($service){
             return view('service-info',["service"=>$service,'title'=>'Services']);
         }

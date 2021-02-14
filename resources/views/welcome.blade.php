@@ -1532,24 +1532,25 @@ section p {
   <span class="ribbon top-left ribbon-primary">
   <small>Hello!</small>
   </span> 
-  <h1>Join Funda Clear Now</h1>
-	<div class="subscribe-widget">
+  <h1>looking for Services!!!</h1>
+	{{-- <div class="subscribe-widget">
   <!-- form -->
   <form id="subscribe-form">
   <input type="email" name="email" placeholder="Your Email Please" class="email-form" required>
   <button type="submit" class="button">Subscribe</button>
   </form>
   <!-- end form-->
-  </div>
-  <p>Close the Pop up or You can Go Home Now.</p>
+  </div> --}}
+  <p>Close the Pop up or You can Visit Services Here.</p>
   <div id="option">
-  <a href="#" id="home" class="boxi">Home</a> 
+  <a href="{{ route('service-info') }}" id="home" class="boxi">Services</a> 
   <em>or</em>
   <a href="#" id="close" class="boxi closei">Close</a>
   <p class="adstext"><u>Advertisement</u></p>
   <div class='video-wrapper'>
   <div class='video'>
-  <iframe id="player" width="290" height="200" src="https://www.youtube.com/embed/GAamW074WdM" frameborder="0" allowfullscreen></iframe>
+	  <img id="player" style="float: left;padding-left: 20%;" src="media/image/sample/460x678/image_01.jpg" alt="">
+  {{-- <iframe id="player" width="290" height="200" src="https://www.youtube.com/embed/GAamW074WdM" frameborder="0" allowfullscreen></iframe> --}}
   </div>
   </div>
   </div></div>
@@ -1604,6 +1605,7 @@ $('.closei').each(function(){
   $(this).click(function() {
   $box.css('backgroundColor', color);
   $(".popScroll").hide();
+  $("body").removeClass("overlay");
   $(".popScroll").css("z-index:10");
   $box.addClass('open');
   $box.find('p').html(content);
