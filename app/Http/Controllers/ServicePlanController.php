@@ -67,7 +67,7 @@ class ServicePlanController extends Controller
                 'description'=>$request->description
                 ]);
             Toastr::success('Service Category Plan  Created Successfully');
-            return redirect()->route('service-plans-create',['id'=>$id]);        
+            return redirect()->route('services.plans.index',['service'=>$id]);        
         }
         toastr()->error('Invalid Service Id');
         return route('services.index');
