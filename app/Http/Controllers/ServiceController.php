@@ -127,8 +127,17 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($service)
     {
-        //
+        $service_plan=Service::find($service);
+        if($service_plan){            
+            foreach($service_plan->categories as $category){
+                $category->plans()->delete();
+                $category->delete();
+            }
+            $service_plan->delete();
+
+        }
+        return redirect()->back();
     }
 }
