@@ -42,6 +42,17 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
                                 
                             </ul> --}}
                         </li>
+                        <li>
+                            <a href="#" style="color: @if($title=='blogs') #199CDB @else #222222  @endif !important">Why STEAM?</a>
+                            <ul>
+                                <li><a href="{{ route('work_smarter') }}" >WORK SMARTER</a></li>
+                                <li><a href="{{ route("protect_the_earth") }}" >PROCTECT THE EARTH</a></li>
+                                <li><a href="{{ route("save_money") }}" >SAVE MONEY</a></li>
+                                <li><a href="blog-large-image-left-sidebar.html" >Blog Large Image - Left Sidebar</a></li>
+                                <li><a href="single-post-right-sidebar.html" >Single Post - Right Sidebar</a></li>
+                                <li><a href="single-post-left-sidebar.html" >Single Post - Left Sidebar</a></li>
+                            </ul>
+                        </li>
                         <li >
                             <a href="#" style="color: @if($title=='Services') #199CDB @else #222222  @endif !important">Services</a>
                             <ul>

@@ -298,7 +298,14 @@ class WebServicesController extends Controller
                     $user->name=$request->name;
                 }
                 if($request->has('email')){
-                    $user->email=$request->email;
+                    if($user->email==Null){
+                        $email_verify=User::where('email',$request->email)->first();
+                        if($email_verify){
+                            return response()->json(['message'=>'Email has Already taken','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+                        }
+                        $user->email=$request->email;
+                    }
+                    
                 }
                 if($request->profile_pic){
                     $path=Storage::disk('public')->put('users', $request->profile_pic, 'public');
@@ -377,7 +384,10 @@ class WebServicesController extends Controller
                         'mobile'=>$request->mobile,
                         'email'=>$request->email,
                         'address'=>$request->address,
-                        'user_message'=>$request->user_message
+                        'user_message'=>$request->user_message,
+                        'booking_date'=>$request->booking_date,
+                        'latitude'=>$request->latitude,
+                        'longitude'=>$request->logitude,
                     ]);
                     if($order){
                         $order->orderDetails()->save(new UserOrderDetail([
@@ -419,6 +429,20 @@ class WebServicesController extends Controller
             }
             else{
                 return  response()->json(['message'=>'invalid User'],JsonResponse::HTTP_UNAUTHORIZED);
+            }
+        }
+        return  response()->json(['message'=>'invalid data'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+    }
+    public function orderUpdate(Request $request)
+    {
+        if($request->has('order_id')){
+            $order_details=UserOrder::where('order_id',$request->order_id)->first();
+            if($order_details){
+                $order_details->txn_id=$request->payment_id;
+                $order_details->txn_msg=$request->payment_msg;
+                $order_details->txn_status=$request->payment_status;
+                $order_details->save(); 
+                return  response()->json(['message'=>'success','data'=>$order_details],JsonResponse::HTTP_OK); 
             }
         }
         return  response()->json(['message'=>'invalid data'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
