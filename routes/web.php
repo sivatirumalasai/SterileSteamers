@@ -49,20 +49,20 @@ Route::get('paymentpage',function ()
     return view('payWithRazorpay'); 
 });
 
-Route::get('work_smarter',function ()
+Route::get('WorkSmarter',function ()
 {
     return view('blogs.work_smarter',['title'=>'blogs']);
-})->name('work_smarter');
+})->name('WorkSmarter');
 
-Route::get("protect_the_earth",function ()
+Route::get("ProtectTheEarth",function ()
 {
     return view('blogs.protect_the_earth',['title'=>'blogs']);
-})->name('protect_the_earth');
+})->name('ProtectTheEarth');
 
-Route::get("save_money",function ()
+Route::get("SaveMoney",function ()
 {
     return view('blogs.save_money',['title'=>'blogs']);
-})->name('save_money');
+})->name('SaveMoney');
 
 
 Route::post('payment','WebSite\PaymentController@payment')->name('payment');

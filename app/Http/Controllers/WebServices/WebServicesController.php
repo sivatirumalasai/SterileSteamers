@@ -359,7 +359,7 @@ class WebServicesController extends Controller
                                     'discount_amount'=>$cart_item->model->actual_price-$cart_item->model->discount,
                                     'final_amount'=>$cart_item->model->discount,
                                 ]));
-                                $cart_item->delete();
+                               // $cart_item->delete();
                             }
                             $order->actual_amount=$total_actual_price;
                             $order->discount_amount=$total_discount;
@@ -445,9 +445,44 @@ class WebServicesController extends Controller
                 $order_details->txn_msg=$request->payment_msg;
                 $order_details->txn_status=$request->payment_status;
                 $order_details->save(); 
+                if($request->payment_status==1){
+                    $user=User::find($order_details->user_id);
+                    if($user){
+                        $user->cartItems()->delete();
+                    }
+                }
                 return  response()->json(['message'=>'success','data'=>$order_details],JsonResponse::HTTP_OK); 
             }
         }
         return  response()->json(['message'=>'invalid data'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+    }
+    public function userOrders($user_id)
+    {
+        $user=User::find($user_id);
+        if($user){
+            $orders=$user->orders->map(function($order){
+                if($order->orderDetails){
+                    $order->orderDetails->map(function ($order_detail)    
+                    {
+                        $order_detail->model;
+                        if($order_detail->model){
+                            foreach(json_decode($order_detail->model->images) as $product_image){
+                                $order_detail->model->images=url(Storage::url($product_image));
+                                break;
+                            }
+                            unset($order_detail->model->created_at);
+                            unset($order_detail->model->updated_at);
+                            unset($order_detail->model->status);
+                        }
+                        
+                    });
+                    
+                }
+                return $order;
+            });
+            return  response()->json(['message'=>'success','data'=>$orders],JsonResponse::HTTP_OK); 
+        }
+        return  response()->json(['message'=>'invalid User Id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+
     }
 }

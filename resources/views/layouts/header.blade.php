@@ -47,7 +47,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
                             <ul>
                                 <li><a href="{{ route('WorkSmarter') }}" >WORK SMARTER</a></li>
                                 <li><a href="{{ route("ProtectTheEarth") }}" >PROCTECT THE EARTH</a></li>
-                                <li><a href="{{ route("save_money") }}" >SAVE MONEY</a></li>
+                                <li><a href="{{ route("SaveMoney") }}" >SAVE MONEY</a></li>
                                 <li><a href="blog-large-image-left-sidebar.html" >Blog Large Image - Left Sidebar</a></li>
                                 <li><a href="single-post-right-sidebar.html" >Single Post - Right Sidebar</a></li>
                                 <li><a href="single-post-left-sidebar.html" >Single Post - Left Sidebar</a></li>

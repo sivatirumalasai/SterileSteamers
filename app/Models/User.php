@@ -47,4 +47,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserCart::class);
     }
+    public function orders()
+    {
+        return $this->hasMany(UserOrder::class);
+    }
 }

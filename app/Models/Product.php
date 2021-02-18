@@ -9,6 +9,10 @@ class Product extends Model
 {
     use HasFactory;
     protected $guarded=[];
+    public function orders()
+    {
+        return $this->morphMany(UserOrderDetail::class, 'model');
+    }
     public function cartOrders()
     {
         return $this->morphMany(UserCart::class, 'model');
