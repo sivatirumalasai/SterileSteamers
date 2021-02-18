@@ -340,7 +340,10 @@ class WebServicesController extends Controller
                             'mobile'=>$request->mobile,
                             'email'=>$request->email,
                             'address'=>$request->address,
-                            'user_message'=>$request->user_message
+                            'user_message'=>$request->user_message,
+                            'booking_date'=>$request->booking_date,
+                            'latitude'=>$request->latitude,
+                            'longitude'=>$request->logitude,
                         ]);
                         if($order){
                             $total_actual_price=0;
