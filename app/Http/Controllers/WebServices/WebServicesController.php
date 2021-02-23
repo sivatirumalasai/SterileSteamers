@@ -538,4 +538,59 @@ class WebServicesController extends Controller
         });
         return response()->json(['message'=>'success','data'=>$service_orders]);
     }
+    public function serviceDetails($order_id)
+    {
+        $service_order=UserOrder::where('order_id',$order_id)->where("delivery_status",0)->where('txn_status',1)->first();
+        if($service_order){
+            $service=$service_order->orderDetails()->where('model_type','App\Models\ServiceCategoryPlan')->first();
+            if($service){
+                $service->service_name=$service->model->category->service->name;
+                $service->category_name=$service->model->category->name;
+                $service->plan_name=$service->model->name;
+                $service->total_amount_paid=$service_order->final_amount;
+                $service->service_amount=$service->final_amount;
+                $service->servcie_duration=$service->model->duration;
+                $service->status='pending';
+                $service->service_date=$service_order->booking_date;
+                $service->order_id=$service_order->order_id;
+                $service->latitude=$service_order->latitude;
+                $service->longitude=$service_order->longitude;
+                $service->addOns=[];
+                if($service_order->orderAddons()->count()){
+                    $service->addOns=$service_order->orderAddons->map(function ($add_on)
+                    {
+                        $add_on->name=$add_on->model->name;
+                        $add_on->duration=$add_on->model->duration;
+                        unset($add_on->id);
+                        unset($add_on->user_order_id);
+                        unset($add_on->model_id);
+                        unset($add_on->model_type);
+                        unset($add_on->quantity);
+                        unset($add_on->actual_amount);
+                        unset($add_on->discount_amount);
+                        unset($add_on->updated_at);
+                        unset($add_on->created_at);
+                        unset($add_on->model);
+                        return $add_on;
+                    });
+                }
+                unset($service->id);
+                unset($service->user_order_id);
+                unset($service->model_id);
+                unset($service->model_type);
+                unset($service->quantity);
+                unset($service->actual_amount);
+                unset($service->discount_amount);
+                unset($service->final_amount);
+                unset($service->updated_at);
+                unset($service->created_at);
+                unset($service->model);
+                unset($service->order);
+                return response()->json(['message'=>'success','data'=>$service]);
+            }
+            return  response()->json(['message'=>'service data unavailable'],JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        return  response()->json(['message'=>'invalid order id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+
+    }
 }
