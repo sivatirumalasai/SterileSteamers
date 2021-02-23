@@ -15,6 +15,6 @@ class UserOrderDetail extends Model
     }
     public function order()
     {
-        return $this->belongsTo('App\UserOrder');
+        return $this->belongsTo(UserOrder::class,'user_order_id','id')->where("delivery_status",0)->where('txn_status',1);
     }
 }

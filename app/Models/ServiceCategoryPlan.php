@@ -9,4 +9,12 @@ class ServiceCategoryPlan extends Model
 {
     use HasFactory;
     protected $guarded=[];
+    public function model()
+    {
+        return $this->morphTo();
+    }
+    public function category()
+    {
+        return $this->belongsTo(ServiceCategory::class,'service_category_id');
+    }
 }

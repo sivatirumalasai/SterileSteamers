@@ -460,16 +460,25 @@ class WebServicesController extends Controller
     {
         $user=User::find($user_id);
         if($user){
-            $orders=$user->orders->map(function($order){
+            $user_orders=UserOrder::where('user_id',$user->id)->paginate(10);
+            $orders=$user_orders->map(function($order){
                 if($order->orderDetails){
                     $order->orderDetails->map(function ($order_detail)    
                     {
                         $order_detail->model;
                         if($order_detail->model){
-                            foreach(json_decode($order_detail->model->images) as $product_image){
-                                $order_detail->model->images=url(Storage::url($product_image));
-                                break;
+                            if($order_detail->model_type==='App\Models\ServiceCategoryPlan'){
+                                $order_detail->order_type="service";
+                                $order_detail->model->images=url(Storage::url($order_detail->model->image));
                             }
+                            else{
+                                $order_detail->order_type="product";
+                                foreach(json_decode($order_detail->model->images) as $product_image){
+                                    $order_detail->model->images=url(Storage::url($product_image));
+                                    break;
+                                }
+                            }
+                            
                             unset($order_detail->model->created_at);
                             unset($order_detail->model->updated_at);
                             unset($order_detail->model->status);
@@ -480,9 +489,49 @@ class WebServicesController extends Controller
                 }
                 return $order;
             });
+            $links=collect($user_orders['links']);
+            $links=$links->map(function ($link)
+            {
+                $link['label']=$link['label']."";
+                return $link;
+            });
+            $orders['links']=$links;
             return  response()->json(['message'=>'success','data'=>$orders],JsonResponse::HTTP_OK); 
         }
         return  response()->json(['message'=>'invalid User Id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
 
+    }
+    public function pendingServices()
+    {
+        
+        $orders=UserOrderDetail::where('model_type','App\Models\ServiceCategoryPlan')->whereHas('order', function ($query) {
+            return $query->where("delivery_status",0)->where('txn_status',1);
+        })->with(['order','model'])->get();
+        $service_orders=$orders->map(function ($service)
+        {
+            if($order=$service->order){
+                $service->service_name=$service->model->category->service->name;
+                $service->category_name=$service->model->category->name;
+                $service->plan_name=$service->model->name;
+                $service->price=$order->final_amount;
+                $service->status='pending';
+                unset($service->id);
+                unset($service->user_order_id);
+                unset($service->model_id);
+                unset($service->model_type);
+                unset($service->quantity);
+                unset($service->actual_amount);
+                unset($service->discount_amount);
+                unset($service->final_amount);
+                unset($service->updated_at);
+                unset($service->created_at);
+                $service->service_date=$order->booking_date;
+                $service->order_id=$order->order_id;
+                $service->addOns=$order->orderAddons;
+
+                return $service;
+            }
+        });
+        return response()->json(['message'=>'success','data'=>$service_orders]);
     }
 }

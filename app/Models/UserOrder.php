@@ -12,11 +12,15 @@ class UserOrder extends Model
     
     public function orderDetails()
     {
-        return $this->hasMany(UserOrderDetail::class);
+        return $this->hasMany(UserOrderDetail::class)->with('model');
+    }
+    public function serviceOrders()
+    {
+        return $this->hasOne(UserOrderDetail::class)->where('model_type','App\Models\ServiceCategoryPlan')->with('model');
     }
     public function orderAddons()
     {
-        return $this->hasMany(UserOrderAddOn::class);
+        return $this->hasMany(UserOrderAddOn::class)->with('model');
     }
     public function model()
     {
