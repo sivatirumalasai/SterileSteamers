@@ -527,8 +527,12 @@ class WebServicesController extends Controller
                 unset($service->created_at);
                 $service->service_date=$order->booking_date;
                 $service->order_id=$order->order_id;
+                $service->latitude=$order->latitude;
+                $service->longitude=$order->longitude;
                 $service->addOns=$order->orderAddons;
-
+                unset($service->model);
+                unset($service->order);
+                unset($service->addOns);
                 return $service;
             }
         });

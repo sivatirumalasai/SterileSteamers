@@ -35,4 +35,5 @@ Route::post("AddOrderSummery",'WebServices\WebServicesController@createOrderSumm
 Route::post('OrderUpdate','WebServices\WebServicesController@orderUpdate');
 Route::get("UserOrders/{user_id}",'WebServices\WebServicesController@userOrders');
 Route::get('PendingServices','WebServices\WebServicesController@pendingServices');
+Route::get("ServiceDetails",'WebServices\WebServicesController@serviceDetails');
 //Route::get('orderid','WebSite\PaymentController@generateOrderId');
