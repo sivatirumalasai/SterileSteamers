@@ -461,7 +461,7 @@ class WebServicesController extends Controller
     {
         $user=User::find($user_id);
         if($user){
-            $user_orders=UserOrder::whereNotNull('order_id')->where('user_id',$user->id)->orderBy('id','desc')->paginate(10);
+            $user_orders=UserOrder::whereNotNull('order_id')->where('user_id',$user->id)->orderBy('id','desc')->paginate(3);
             $orders=$user_orders->map(function($order){
                 if($order->orderDetails){
                     $order->orderDetails->map(function ($order_detail)    
@@ -500,6 +500,7 @@ class WebServicesController extends Controller
                 unset($order->user_id);
                 return $order;
             });
+            $user_orders=collect($user_orders);
             $orders1['orders']=collect($orders);
             $links=collect($user_orders['links']);
             $links=$links->map(function ($link)
