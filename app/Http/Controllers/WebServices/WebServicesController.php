@@ -461,7 +461,7 @@ class WebServicesController extends Controller
     {
         $user=User::find($user_id);
         if($user){
-            $user_orders=UserOrder::where('user_id',$user->id)->paginate(10);
+            $user_orders=UserOrder::whereNotNull('order_id')->where('user_id',$user->id)->orderBy('id','desc')->paginate(10);
             $orders=$user_orders->map(function($order){
                 if($order->orderDetails){
                     $order->orderDetails->map(function ($order_detail)    
@@ -470,34 +470,45 @@ class WebServicesController extends Controller
                         if($order_detail->model){
                             if($order_detail->model_type==='App\Models\ServiceCategoryPlan'){
                                 $order_detail->order_type="service";
-                                $order_detail->model->images=url(Storage::url($order_detail->model->image));
+                                $order_detail->images=url(Storage::url($order_detail->model->image));
+                                $order_detail->service_name=$order_detail->model->category->service->name;
+                                $order_detail->category_name=$order_detail->model->category->name;
+                                $order_detail->name=$order_detail->model->name;
                             }
                             else{
                                 $order_detail->order_type="product";
                                 foreach(json_decode($order_detail->model->images) as $product_image){
-                                    $order_detail->model->images=url(Storage::url($product_image));
+                                    $order_detail->images=url(Storage::url($product_image));
+                                    $order_detail->name=$order_detail->model->name;
                                     break;
                                 }
                             }
-                            
-                            unset($order_detail->model->created_at);
-                            unset($order_detail->model->updated_at);
-                            unset($order_detail->model->status);
+                            unset($order_detail->id);
+                            unset($order_detail->user_order_id);
+                            unset($order_detail->model);
+                            unset($order_detail->model_id);
+                            unset($order_detail->model_type);
+                            // unset($order_detail->model->created_at);
+                            // unset($order_detail->model->updated_at);
+                            // unset($order_detail->model->status);
                         }
                         
                     });
                     
                 }
+                unset($order->id);
+                unset($order->user_id);
                 return $order;
             });
+            $orders1['orders']=collect($orders);
             $links=collect($user_orders['links']);
             $links=$links->map(function ($link)
             {
                 $link['label']=$link['label']."";
                 return $link;
             });
-            $orders['links']=$links;
-            return  response()->json(['message'=>'success','data'=>$orders],JsonResponse::HTTP_OK); 
+            $orders1['links']=$links;
+            return  response()->json(['message'=>'success','data'=>$orders1],JsonResponse::HTTP_OK); 
         }
         return  response()->json(['message'=>'invalid User Id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
 
