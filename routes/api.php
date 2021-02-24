@@ -36,5 +36,7 @@ Route::post('OrderUpdate','WebServices\WebServicesController@orderUpdate');
 Route::get("UserOrders/{user_id}",'WebServices\WebServicesController@userOrders');
 Route::get('PendingServices','WebServices\WebServicesController@pendingServices');
 Route::get("ServiceDetails/{service_id}",'WebServices\WebServicesController@serviceDetails');
-Route::post('UpdateService','WebServices\WebServicesController@serviceDetails');
+Route::post('AcceptService','WebServices\WebServicesController@acceptService');
+Route::post('CompleteService','WebServices\WebServicesController@completeService');
+Route::get('OperatorServicesHistory/{operator_id}','WebServices\WebServicesController@operatorServicesHistory');
 //Route::get('orderid','WebSite\PaymentController@generateOrderId');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WebServices;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\WebSite\PaymentController;
 use App\Models\Accessory;
+use App\Models\OperatorService;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\ServiceCategoryPlan;
@@ -592,5 +593,86 @@ class WebServicesController extends Controller
         }
         return  response()->json(['message'=>'invalid order id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
 
+    }
+    public function acceptService(Request $request)
+    {
+        $service_order=UserOrder::where('order_id',$request->json('order_id'))->where("delivery_status",0)->where('txn_status',1)->first();
+        if($service_order){
+            $service_order->delivery_status=3;
+            $service_order->delivery_message="in progress";
+            $service_order->save();
+            OperatorService::updateOrCreate(["user_order_id"=>$service_order->id],['user_id'=>$request->json('user_id')]);
+            return response()->json(['message'=>'success','data'=>$service_order]);
+        }
+        return  response()->json(['message'=>'invalid order id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+    }
+    public function completeService(Request $request)
+    {
+        $service_order=UserOrder::where('order_id',$request->json('order_id'))->where('user_id',$request->json('user_id'))->where('txn_status',1)->first();
+        if($service_order){
+            if($service_order->delivery_status==0 || $service_order->delivery_status==2 || $service_order->delivery_status==1){
+                return  response()->json(['message'=>"you can't change status of order:status code".$service_order->delivery_status],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+            }
+            $service_order->delivery_status=1;
+            $service_order->delivery_message="completed";
+            $service_order->save();
+            $operatorService=OperatorService::where("user_order_id",$service_order->id)->first();
+            if($request->has("rating")){
+                $operatorService->rating=$request->json('rating');
+            }
+            if($request->has('comment')){
+                $operatorService->comments=$request->json("comment");
+            }
+            $operatorService->save();
+            return response()->json(['message'=>'success','data'=>$service_order]);
+        }
+        return  response()->json(['message'=>'invalid order id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+    }
+    public function operatorServicesHistory($user_id)
+    {
+        $user=User::where('id',$user_id)->where('user_type','operator')->first();
+        if($user){
+            $service_orders=$user->servicesHistory->map(function ($service)
+        {
+            if($order=$service->order){
+                $service->service_name=$order->orderDetails()->first()->model->category->service->name;
+                $service->category_name=$order->orderDetails()->first()->model->category->name;
+                $service->plan_name=$order->orderDetails()->first()->model->name;
+                $service->price=$order->final_amount;
+                $status='pending';
+                if($order->delivery_status==1){
+                    $status='completed';
+                }
+                else if($order->delivery_status==2){
+                    $status='Rejected';
+                }
+                else if($order->delivery_status==3){
+                    $status='inprogress';
+                }
+                $service->status=$status;
+                unset($service->id);
+                unset($service->user_order_id);
+                unset($service->model_id);
+                unset($service->model_type);
+                unset($service->quantity);
+                unset($service->actual_amount);
+                unset($service->discount_amount);
+                unset($service->final_amount);
+                unset($service->updated_at);
+                unset($service->created_at);
+                $service->service_date=$order->booking_date;
+                $service->order_id=$order->order_id;
+                $service->latitude=$order->latitude;
+                $service->longitude=$order->longitude;
+                $service->addOns=$order->orderAddons;
+                unset($service->model);
+                unset($service->order);
+                unset($service->addOns);
+                return $service;
+            }
+        });
+            return response()->json(['message'=>'success','data'=>$service_orders]);
+        }
+        return  response()->json(['message'=>'invalid operator id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
     }
 }

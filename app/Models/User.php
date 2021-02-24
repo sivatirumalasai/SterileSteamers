@@ -51,4 +51,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserOrder::class);
     }
+    public function servicesHistory()
+    {
+        return $this->hasMany(OperatorService::class,'user_id')->with("order");
+    }
 }
