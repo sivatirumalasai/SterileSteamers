@@ -64,6 +64,16 @@ Route::get("SaveMoney",function ()
     return view('blogs.save_money',['title'=>'blogs']);
 })->name('SaveMoney');
 
+Route::get("Testimonials",function ()
+{
+    return view('blogs.testimonials',['title'=>'blogs']);
+})->name('Testimonials');
+
+Route::get("SteamCarWash",function ()
+{
+    return view('blogs.steam_car_wash',['title'=>'blogs']);
+})->name('SteamCarWash');
+
 
 Route::post('payment','WebSite\PaymentController@payment')->name('payment');
 
