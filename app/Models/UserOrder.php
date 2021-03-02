@@ -26,4 +26,8 @@ class UserOrder extends Model
     {
         return $this->morphTo();
     }
+    public function onGoingOrder()
+    {
+        return $this->hasOne(OperatorService::class,'user_order_id');
+    }
 }

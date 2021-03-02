@@ -15,6 +15,7 @@ class CreateServiceVanDetailsTable extends Migration
     {
         Schema::create('service_van_details', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
             $table->string('name')->nullable();
             $table->string('code')->nullable();
             $table->string('owner_name')->nullable();

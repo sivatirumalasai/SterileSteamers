@@ -55,4 +55,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(OperatorService::class,'user_id')->with("order");
     }
+    public function serviceVan()
+    {
+        return $this->hasOne(ServiceVanDetail::class,'user_id');
+    }
 }

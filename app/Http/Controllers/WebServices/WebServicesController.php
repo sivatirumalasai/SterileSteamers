@@ -305,8 +305,19 @@ class WebServicesController extends Controller
                             return response()->json(['message'=>'Email has Already taken','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
                         }
                         $user->email=$request->email;
+                    } 
+                }
+                if($request->has('latitude')){
+                    if($service_van=$user->serviceVan){
+                        $service_van->latitude=$request->latitude;
+                        $service_van->save();
                     }
-                    
+                }
+                if($request->has('longitude')){
+                    if($service_van=$user->serviceVan){
+                        $service_van->latitude=$request->longitude;
+                        $service_van->save();
+                    }
                 }
                 if($request->profile_pic){
                     $path=Storage::disk('public')->put('users', $request->profile_pic, 'public');
@@ -684,6 +695,24 @@ class WebServicesController extends Controller
             }
         });
             return response()->json(['message'=>'success','data'=>$service_orders]);
+        }
+        return  response()->json(['message'=>'invalid operator id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+    }
+    public function currentService($user_id)
+    {
+        $user=User::where('id',$user_id)->where('user_type','customer')->first();
+        if($user){
+            //$service=$user->serviceVan;
+            $user_service_order=$user->orders()->where('delivery_status',3)->first();
+            if($user_service_order){
+                if($on_going_order=$user_service_order->onGoingOrder){
+                    $operator=User::find($on_going_order->user_id);
+                    $vandetails=$operator->serviceVan;
+                    return response()->json(['message'=>'success','data'=>$vandetails]);
+                }
+            }
+            
+            return response()->json(['message'=>'success','data'=>[]]);
         }
         return  response()->json(['message'=>'invalid operator id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
     }

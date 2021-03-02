@@ -39,4 +39,5 @@ Route::get("ServiceDetails/{service_id}",'WebServices\WebServicesController@serv
 Route::post('AcceptService','WebServices\WebServicesController@acceptService');
 Route::post('CompleteService','WebServices\WebServicesController@completeService');
 Route::get('OperatorServicesHistory/{operator_id}','WebServices\WebServicesController@operatorServicesHistory');
+Route::get("CurrentService/{user_id}","WebServices\WebServicesController@currentService");
 //Route::get('orderid','WebSite\PaymentController@generateOrderId');
