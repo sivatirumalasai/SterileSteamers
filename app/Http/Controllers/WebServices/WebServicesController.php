@@ -19,6 +19,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Rennokki\Plans\Models\PlanModel;
+use stdClass;
 
 class WebServicesController extends Controller
 {
@@ -715,7 +716,7 @@ class WebServicesController extends Controller
                 }
             }
             
-            return response()->json(['message'=>'success','data'=>[]]);
+            return response()->json(['message'=>'success','data'=>new stdClass]);
         }
         return  response()->json(['message'=>'invalid operator id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
     }
