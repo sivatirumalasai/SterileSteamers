@@ -708,7 +708,10 @@ class WebServicesController extends Controller
                 if($on_going_order=$user_service_order->onGoingOrder){
                     $operator=User::find($on_going_order->user_id);
                     $vandetails=$operator->serviceVan;
-                    return response()->json(['message'=>'success','data'=>$vandetails]);
+                    $data['vandetails']=$vandetails;
+                    $data['orderDetails']['latitude']=$user_service_order->latitude;
+                    $data['orderDetails']['longitude']=$user_service_order->longitude;
+                    return response()->json(['message'=>'success','data'=>$data]);
                 }
             }
             
