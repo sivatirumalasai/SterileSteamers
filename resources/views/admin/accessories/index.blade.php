@@ -62,7 +62,7 @@
                       <td> {{ ($accessory->status)? 'Available':"Not Available" }}</td>
                       <td>{{ $accessory->created_at->format('Y-m-d') }}</td>
                           <td>
-                            <div class="row"><a ><button class="btn btn-block btn-outline-secondary">
+                            <div class="row"><a  href="{{ route('accessories.edit',['accessory'=>$accessory->code]) }}"><button class="btn btn-block btn-outline-secondary">
                               <i class="fas fa-edit"></i> </button>
                               </a><form action="{{ route('accessories.destroy', $accessory->code) }}" method="POST">
                                 @method('DELETE')

@@ -328,7 +328,8 @@
 		error: function (error) {
 			console.log(error);
 			if(error.status==401){
-				myFunctionGetaccess();
+				window.location.href=baseurl+'/login';
+				//myFunctionGetaccess();
 				return false;
 			}
 			else{

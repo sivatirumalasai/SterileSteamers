@@ -90,7 +90,11 @@ class AccessoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $accessory=Accessory::where('code',$id)->first();
+        if($accessory){
+            return view('admin.accessories.add',['title'=>'accessories','accessory'=>$accessory]);
+        }
+        return redirect()->back();
     }
 
     /**
@@ -100,9 +104,41 @@ class AccessoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AddAccessoryRequest $request,$id)
     {
-        //
+        $accessory=Accessory::where('code',$id)->first();
+        if($request->hasFile('accessory_images')){
+            $paths=[];
+            foreach ($request->accessory_images as $file) {        
+                // save to storage/app/photos as the new $filename
+                $path=Storage::disk('public')->put('accessories', $file, 'public');
+    
+                $paths[]=$path;
+            
+            }
+            $accessory->images=json_encode($paths);
+        }
+        
+        
+        if($request->has('status')){
+            $status=true;
+        }
+        else{
+            $status=false;
+        }
+        $accessory->name=$request->accessory_name;
+        $accessory->code=$request->accessory_code;
+        $accessory->actual_price=$request->price;
+        $accessory->discount=$request->discount;
+        $accessory->category=$request->catagories;
+        $accessory->description=$request->description;
+        $accessory->short_description=$request->short_description;
+        $accessory->weight=$request->weight;
+        $accessory->dimensions=$request->dimensions;
+        $accessory->length=$request->length;
+        $accessory->status=$status;
+        Toastr::success('Product Added Successfully');
+        return redirect()->back();
     }
 
     /**
