@@ -300,7 +300,7 @@ class WebServicesController extends Controller
                     $user->name=$request->name;
                 }
                 if($request->has('email')){
-                    if($user->email==Null){
+                    if($user->email!=Null){
                         $email_verify=User::where('email',$request->email)->first();
                         if($email_verify){
                             return response()->json(['message'=>'Email has Already taken','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
@@ -308,15 +308,15 @@ class WebServicesController extends Controller
                         $user->email=$request->email;
                     } 
                 }
-                if($request->has('latitude')){
+                if($request->has('latitude') && $request->latitude!=""){
                     if($service_van=$user->serviceVan){
                         $service_van->latitude=$request->latitude;
                         $service_van->save();
                     }
                 }
-                if($request->has('longitude')){
+                if($request->has('longitude') && $request->longitude!=""){
                     if($service_van=$user->serviceVan){
-                        $service_van->latitude=$request->longitude;
+                        $service_van->longitude=$request->longitude;
                         $service_van->save();
                     }
                 }

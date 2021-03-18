@@ -64,4 +64,8 @@ class PaymentController extends Controller
         print_r($input);
         exit;
     }
+    public function paymentSuccess(Request $request)
+    {
+        dd($request->all());
+    }
 }

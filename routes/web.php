@@ -48,6 +48,7 @@ Route::get('paymentpage',function ()
 {
     return view('payWithRazorpay'); 
 });
+Route::post('PaymentSuccess','PaymentController@paymentSuccess')->name("payment_success");
 
 Route::get('WorkSmarter',function ()
 {
@@ -74,6 +75,7 @@ Route::get("SteamCarWash",function ()
     return view('blogs.steam_car_wash',['title'=>'blogs']);
 })->name('SteamCarWash');
 
+Route::post('OrderSummeryForm',"WebSite\CartController@createOrder");
 
 Route::post('payment','WebSite\PaymentController@payment')->name('payment');
 

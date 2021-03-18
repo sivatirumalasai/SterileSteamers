@@ -114,7 +114,7 @@
                             <span>/</span>
                             <span>4</span>	
                         </span>
-                        <h3>Booking summary</h3>
+                        <h3>Order summary</h3>
                         <h5>Please provide us with your contact information.</h5>
                     </div>
 
@@ -155,7 +155,7 @@
 
                     <!-- Content -->
                     <div class="template-component-booking-item-content template-margin-top-reset">
-
+                    <form action="#" id="OrderSummeryForm" onsubmit="return false">
                         <!-- Layout -->
                         <ul class="template-layout-50x50 template-layout-margin-reset template-clear-fix">
 
@@ -234,7 +234,7 @@
                             <!-- Message -->
                             <li>
                                 <div class="template-component-form-field">
-                                    <label for="booking-form-message">Message *</label>
+                                    <label for="booking-form-message">Address *</label>
                                     <textarea rows="1" cols="1" name="booking-form-message" id="booking-form-message"></textarea>
                                 </div>						
                             </li>
@@ -247,7 +247,7 @@
                             <input type="submit" value="Confirm Booking" class="template-component-button" name="booking-form-submit" id="booking-form-submit"/>
                             <input type="hidden" value="" name="booking-form-data" id="booking-form-data"/>
                         </div> 
-
+                        </form>
                     </div>
 
                 </li>
@@ -316,7 +316,23 @@ $('.dec.button').click(function(){
         });
     }
 });
-
+$("#booking-form-submit").on('click',function () {
+    
+    let first_name=$("#booking-form-first-name").val();
+    console.log('submit',first_name);
+    $.ajax({
+            type: "POST",
+            url: baseurl+'/OrderSummeryForm',
+            data: new FormData(this),
+            cache: false,
+            success: function(data){
+               console.log('data',data);
+            },
+            error:function(error){
+                console.log('error',error);
+            }
+        });
+});
 </script>
 {{-- <script src="{{ URL::asset('app/js/handleCounter.js') }}"></script>
     <script>
