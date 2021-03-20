@@ -40,4 +40,7 @@ Route::post('AcceptService','WebServices\WebServicesController@acceptService');
 Route::post('CompleteService','WebServices\WebServicesController@completeService');
 Route::get('OperatorServicesHistory/{operator_id}','WebServices\WebServicesController@operatorServicesHistory');
 Route::get("CurrentService/{user_id}","WebServices\WebServicesController@currentService");
+//operatorCurrentService
+Route::get("OperatorCurrentService/{user_id}","WebServices\WebServicesController@operatorCurrentService");
+
 //Route::get('orderid','WebSite\PaymentController@generateOrderId');

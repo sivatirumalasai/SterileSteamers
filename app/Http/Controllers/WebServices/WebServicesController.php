@@ -719,4 +719,22 @@ class WebServicesController extends Controller
         }
         return  response()->json(['message'=>'invalid operator id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
     }
+    public function operatorCurrentService($user_id)
+    {
+        $user=User::where('id',$user_id)->where('user_type','operator')->first();
+        if($user){
+            //$service=$user->serviceVan;
+           $user_service_order=UserOrder::whereHas('onGoingOrder', function ($query) use($user) {
+                return $query->where('user_id', '=', $user->id);
+            })->where('delivery_status',3)->select(['order_id','txn_id','user_id','first_name','last_name','email','mobile','address','latitude','longitude'])->first();
+
+            if($user_service_order){
+                return response()->json(['message'=>'success','data'=>$user_service_order]);
+
+            }
+            
+            return response()->json(['message'=>'success','data'=>new stdClass]);
+        }
+        return  response()->json(['message'=>'invalid operator id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+    }
 }
