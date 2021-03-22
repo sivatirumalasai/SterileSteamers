@@ -96,7 +96,7 @@ class WebServicesController extends Controller
             return response()->json(['message'=>'success','data'=>$product]);
         }
         
-        return response()->json(['message'=>'Product Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+        return response()->json(['message'=>'Product Not found','data'=>new stdClass],JsonResponse::HTTP_FORBIDDEN);
     }
     public function accessories()
     {
@@ -136,7 +136,7 @@ class WebServicesController extends Controller
             return response()->json(['message'=>'success','data'=>$accessory]);
         }
         
-        return response()->json(['message'=>'Accessory Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+        return response()->json(['message'=>'Accessory Not found','data'=>new stdClass],JsonResponse::HTTP_FORBIDDEN);
     }
     public function services()
     {
@@ -284,9 +284,9 @@ class WebServicesController extends Controller
                         
                         return  response()->json(['message'=>'Product Added to cart','data'=>$this->cartItems($user->id)->original['data']]);
                     }
-                    return response()->json(['message'=>'Invalid Item','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+                    return response()->json(['message'=>'Invalid Item','data'=>new stdClass],JsonResponse::HTTP_FORBIDDEN);
                 }
-                return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_UNAUTHORIZED);
+                return response()->json(['message'=>'User Not found','data'=>new stdClass],JsonResponse::HTTP_UNAUTHORIZED);
             }
             return  response()->json(['message'=>'invalid data'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
         }
@@ -303,7 +303,7 @@ class WebServicesController extends Controller
                     if($user->email!=Null){
                         $email_verify=User::where('email',$request->email)->first();
                         if($email_verify){
-                            return response()->json(['message'=>'Email has Already taken','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+                            return response()->json(['message'=>'Email has Already taken','data'=>new stdClass],JsonResponse::HTTP_FORBIDDEN);
                         }
                         $user->email=$request->email;
                     } 
@@ -329,7 +329,7 @@ class WebServicesController extends Controller
                 
                 return response()->json(['message'=>'success','data'=>$user]);
             }
-            return response()->json(['message'=>'User Not found','data'=>[]],JsonResponse::HTTP_FORBIDDEN);
+            return response()->json(['message'=>'User Not found','data'=>new stdClass],JsonResponse::HTTP_FORBIDDEN);
         }
         return  response()->json(['message'=>'invalid data User Id missing'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
     }
@@ -710,15 +710,18 @@ class WebServicesController extends Controller
                     $operator=User::find($on_going_order->user_id);
                     $data=$operator->serviceVan;
                     $data['order_id']=$user_service_order->order_id;
-                    $data['operator_lat']=$user_service_order->latitude;
-                    $data['operator_long']=$user_service_order->longitude;
+                    $data['operator_lat']=$data->latitude;
+                    $data['operator_long']=$data->longitude;
+                    $data['latitude']=$user_service_order->latitude;
+                    $data['longitude']=$user_service_order->longitude;
+                    
                     return response()->json(['message'=>'success','data'=>$data]);
                 }
             }
             
             return response()->json(['message'=>'success','data'=>new stdClass]);
         }
-        return  response()->json(['message'=>'invalid operator id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+        return  response()->json(['message'=>'Invalid Customer id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
     }
     public function operatorCurrentService($user_id)
     {
