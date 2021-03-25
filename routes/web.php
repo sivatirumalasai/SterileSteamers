@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,4 +113,5 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('services.plans', ServicePlanController::class);
     Route::resource('services.categories', ServiceCategoryController::class);
     Route::resource('orders', OrderController::class);
+    Route::get('OrderUpdateStatus/{order_id}','OrderController@OrderUpdateStatus')->name('OrderUpdateStatus');
 });

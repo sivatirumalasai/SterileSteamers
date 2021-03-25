@@ -197,7 +197,7 @@
                             </li>		
 
                         </ul>
-
+{{-- 
                         <!-- Layout -->
                         <ul class="template-layout-33x33x33 template-layout-margin-reset template-clear-fix">
 
@@ -226,7 +226,7 @@
                                 </div>
                             </li>
 
-                        </ul>	
+                        </ul>	 --}}
 
                         <!-- Layout -->
                         <ul class="template-layout-100 template-layout-margin-reset template-clear-fix">
@@ -234,8 +234,8 @@
                             <!-- Message -->
                             <li>
                                 <div class="template-component-form-field">
-                                    <label for="booking-form-message">Address *</label>
-                                    <textarea rows="1" cols="1" name="booking-form-message" id="booking-form-message"></textarea>
+                                    <label for="booking-form-address">Address *</label>
+                                    <textarea rows="1" cols="1" name="booking-form-address" id="booking-form-address"></textarea>
                                 </div>						
                             </li>
 
@@ -317,13 +317,16 @@ $('.dec.button').click(function(){
     }
 });
 $("#booking-form-submit").on('click',function () {
-    
     let first_name=$("#booking-form-first-name").val();
+    let last_name=$("#booking-form-second-name").val();
+    let email=$("#booking-form-email").val();
+    let phone=$("#booking-form-phone").val();
+    let address=$("#booking-form-address").val();
     console.log('submit',first_name);
     $.ajax({
             type: "POST",
             url: baseurl+'/OrderSummeryForm',
-            data: new FormData(this),
+            data: {first_name:first_name,last_name:last_name,address:address,phone:phone,_token:"{{ csrf_token() }}",email:email},
             cache: false,
             success: function(data){
                console.log('data',data);

@@ -63,8 +63,10 @@
                         <td>Delivered</td>
                       @elseif($order->delivery_status==2)
                         <td>Rejected</td>
+                        @elseif($order->delivery_status==3)
+                        <td>Order-Accepted</td>
                       @else
-                      <td>Pending</td>
+                      <td>Awaiting-Confirmation</td>
                       @endif
                       <td>{{ $order->created_at->format('Y-m-d') }}</td>
                       <td>

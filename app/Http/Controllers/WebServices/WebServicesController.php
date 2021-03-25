@@ -620,15 +620,19 @@ class WebServicesController extends Controller
     }
     public function acceptService(Request $request)
     {
-        $service_order=UserOrder::where('order_id',$request->json('order_id'))->where("delivery_status",0)->where('txn_status',1)->first();
-        if($service_order){
-            $service_order->delivery_status=3;
-            $service_order->delivery_message="in progress";
-            $service_order->save();
-            OperatorService::updateOrCreate(["user_order_id"=>$service_order->id],['user_id'=>$request->json('user_id')]);
-            return response()->json(['message'=>'success','data'=>$service_order]);
+        $user=User::where('id',$request->json('user_id'))->where('user_type','operator')->first();
+        if($user){
+            $service_order=UserOrder::where('order_id',$request->json('order_id'))->where("delivery_status",0)->where('txn_status',1)->first();
+            if($service_order){
+                $service_order->delivery_status=3;
+                $service_order->delivery_message="in progress";
+                $service_order->save();
+                OperatorService::updateOrCreate(["user_order_id"=>$service_order->id],['user_id'=>$request->json('user_id')]);
+                return response()->json(['message'=>'success','data'=>$service_order]);
+            }
+            return  response()->json(['message'=>'invalid order id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
         }
-        return  response()->json(['message'=>'invalid order id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+        return  response()->json(['message'=>'Invalid Operator id'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
     }
     public function completeService(Request $request)
     {
@@ -713,8 +717,7 @@ class WebServicesController extends Controller
                     $data['operator_lat']=$data->latitude;
                     $data['operator_long']=$data->longitude;
                     $data['latitude']=$user_service_order->latitude;
-                    $data['longitude']=$user_service_order->longitude;
-                    
+                    $data['longitude']=$user_service_order->longitude;             
                     return response()->json(['message'=>'success','data'=>$data]);
                 }
             }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\WebSite;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\WebServices\WebServicesController;
+use App\Http\Requests\CreateOrderRequest;
 use App\Models\Accessory;
 use App\Models\Product;
 use App\Models\User;
@@ -95,7 +96,7 @@ class CartController extends Controller
         }
     
     }
-    public function createOrder(Request $request)
+    public function createOrder(CreateOrderRequest $request)
     {   
         $user=Auth::user();
         dd($user->cartItems);
