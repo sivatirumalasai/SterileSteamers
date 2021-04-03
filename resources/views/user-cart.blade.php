@@ -259,7 +259,48 @@
     </div>
 
 </div>
-
+<button id="rzp-button1" style="display: none">Pay</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>var options = {    
+    "key": "{{ config('razorpay.razor_key') }}",
+    "amount": "{{ $total*100 }}",
+    "currency": "INR",    
+    "name": "Sterlin Steamers",    
+    "description": "Test Transaction",    
+    "image": "https://13.232.249.110/media/image/logo.png",    
+    "order_id": "",
+    "handler": function (response){       
+        console.log(response); 
+        $.ajax({
+            type: "POST",
+            url: baseurl+'/successPayment',
+            data: {razorpay_order_id:response.razorpay_order_id,razorpay_payment_id:response.razorpay_payment_id,_token:"{{ csrf_token() }}"},
+            cache: false,
+            success: function(result){
+                toastr.success(result.message);
+                window.location.reload();
+                console.log('success',result);
+            },
+            error:function(error){
+                toastr.error(error.responseJSON.message);
+                console.log('error',error);
+            }  
+        });  
+        },    
+    "prefill": {        
+        "name": "Gaurav Kumar",        
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"    
+    },    
+    "notes": {        
+        "address": "Razorpay Corporate Office"    
+        },    
+    "theme": {
+        "color": "#3399cc"    
+        }
+    };
+    
+    </script>
 <script type="text/javascript">
     jQuery(document).ready(function($)
     {
@@ -328,10 +369,31 @@ $("#booking-form-submit").on('click',function () {
             url: baseurl+'/OrderSummeryForm',
             data: {first_name:first_name,last_name:last_name,address:address,phone:phone,_token:"{{ csrf_token() }}",email:email},
             cache: false,
-            success: function(data){
-               console.log('data',data);
+            success: function(result){
+                options.order_id=result.data.order_id;
+                options.amount=result.data.discount_amount*100;
+                console.log("amount",options.amount);
+                options.prefill.name=result.data.first_name+' '+result.data.last_name;
+                options.prefill.email=result.data.email;
+                options.prefill.contact=result.data.mobile;
+                options.notes.address=result.data.address;
+                $("#rzp-button1").click();
+                var rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response){
+                    console.log('failed',response);
+                    alert(response.error.code);        
+                    alert(response.error.description);        
+                    alert(response.error.source);        
+                    alert(response.error.step);        
+                    alert(response.error.reason);        
+                    alert(response.error.metadata.order_id);        
+                    alert(response.error.metadata.payment_id);
+                });
+                rzp1.open();
+                
             },
             error:function(error){
+                toastr.error(error.responseJSON.message)
                 console.log('error',error);
             }
         });

@@ -35,6 +35,31 @@ class PaymentController extends Controller
         \Session::put('success', 'Payment successful, your order will be despatched in the next 48 hours.');
         return redirect()->back();
     }
+    public function paymentById($payment_id)
+    {
+        //Input items of form
+        //get API Configuration 
+        $api = new Api(config('razorpay.razor_key'), config('razorpay.razor_secret'));
+        //Fetch payment information by razorpay_payment_id
+        $payment = $api->payment->fetch($payment_id);
+        return $payment;
+        // if(!empty($payment_id)) {
+        //     try {
+        //         $response = $api->payment->fetch($payment_id)->capture(array('amount'=>$payment['amount'])); 
+        //         return $response;
+
+        //     } catch (\Exception $e) {
+        //         return  $e->getMessage();
+        //         \Session::put('error',$e->getMessage());
+        //         return redirect()->back();
+        //     }
+
+        //     // Do something here for store payment details in database...
+        // }
+        
+        \Session::put('success', 'Payment successful, your order will be despatched in the next 48 hours.');
+        return redirect()->back();
+    }
     public function pay() {
         $api = new Api(config('razorpay.razor_key'), config('razorpay.razor_secret'));
         // Orders

@@ -57,7 +57,7 @@
                 <!-- /.col -->
                 <div class="col-sm-4 invoice-col">
                   <b>Invoice #007612</b><br>
-                  <b>Txn ID:</b> {{ $order->txn_id}}({{ ($order->txn_status)? 'Paid':"Rejected" }})<br>
+                  <b>Txn ID:</b> {{ $order->txn_id}}({{ ($order->txn_status==1)? 'Paid':"Rejected" }})<br>
                   <b>Payment Status:</b> {{ $order->txn_msg }}<br>
                   <b>Account Paid:</b> Rs:{{ $order->final_amount }} 
                   <b>     Discount :</b> Rs:{{ $order->discount_amount }}
@@ -155,8 +155,13 @@
               <div class="row no-print">
                 <div class="col-12">
                   {{-- <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a> --}}
+                  @if($order->delivery_status===4)
                   <a href="{{ route('OrderUpdateStatus',['order'=>$order->order_id]) }}"> <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Accept Order
                   </button></a>
+                  @elseif($order->delivery_status===3)
+                  <a href="{{ route('OrderCompleteStatus',['order'=>$order->order_id]) }}"> <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Accept Order
+                  </button></a>
+                  @endif
                 </div>
               </div>
             </div>

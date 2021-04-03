@@ -9,6 +9,8 @@ use App\Models\Accessory;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\UserCart;
+use App\Models\UserOrder;
+use App\Models\UserOrderDetail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -99,7 +101,6 @@ class CartController extends Controller
     public function createOrder(CreateOrderRequest $request)
     {   
         $user=Auth::user();
-        dd($user->cartItems);
         if($user){
             $paymentcontroller=new PaymentController;
             if($user->cartItems()->count()){
@@ -111,7 +112,7 @@ class CartController extends Controller
                     'final_amount'=>$user->cartItems->sum('price')-0,
                     'first_name'=>$request->first_name,
                     'last_name'=>$request->last_name,
-                    'mobile'=>$request->mobile,
+                    'mobile'=>$request->phone,
                     'email'=>$request->email,
                     'address'=>$request->address,
                     'user_message'=>$request->user_message,
@@ -133,7 +134,7 @@ class CartController extends Controller
                             'discount_amount'=>$cart_item->model->actual_price-$cart_item->model->discount,
                             'final_amount'=>$cart_item->model->discount,
                         ]));
-                        // $cart_item->delete();
+                        
                     }
                     $order->actual_amount=$total_actual_price;
                     $order->discount_amount=$total_discount;
@@ -146,7 +147,34 @@ class CartController extends Controller
             return  response()->json(['message'=>'Cart Empty'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
             
         }
-        return  response()->json(['message'=>'invalid Order Type'],JsonResponse::HTTP_UNAUTHORIZED);
+        return  response()->json(['message'=>'Please Login'],JsonResponse::HTTP_UNAUTHORIZED);
     }
-        
+    public function successPayment(Request $request)
+    {
+        //pay_GuV6el8PvDUG9s
+        if($request->has('razorpay_payment_id') && $request->has("razorpay_order_id")){
+            $paymentcontroller=new PaymentController();
+            $paymentDetails=$paymentcontroller->paymentById($request->razorpay_payment_id);
+            $orderDetails=UserOrder::where('order_id',$request->razorpay_order_id)->first();
+            if($orderDetails){
+                if($paymentDetails->status=='captured'){
+                    $orderDetails->txn_status=1;
+                    $orderDetails->txn_msg='captured';
+                    $orderDetails->booking_date=date('Y-m-d');
+                    $user=Auth::user();
+                    $user->cartItems()->delete();
+                return  response()->json(['message'=>'Payment has done successfully'],JsonResponse::HTTP_OK);
+                }
+                else{
+                    $orderDetails->txn_status=2;
+                    $orderDetails->txn_msg='Failed';
+                    $orderDetails->booking_date=date('Y-m-d');
+
+                return  response()->json(['message'=>'Payemnt rejected'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+                }
+                $orderDetails->save();
+            }
+            return  response()->json(['message'=>'Order Not found'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+        }
+    }   
 }

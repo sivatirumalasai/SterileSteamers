@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\OrderController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -76,6 +74,7 @@ Route::get("SteamCarWash",function ()
 })->name('SteamCarWash');
 
 Route::post('OrderSummeryForm',"WebSite\CartController@createOrder");
+Route::post("successPayment",'WebSite\CartController@successPayment');
 
 Route::post('payment','WebSite\PaymentController@payment')->name('payment');
 
@@ -114,4 +113,5 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('services.categories', ServiceCategoryController::class);
     Route::resource('orders', OrderController::class);
     Route::get('OrderUpdateStatus/{order_id}','OrderController@OrderUpdateStatus')->name('OrderUpdateStatus');
+    Route::get('OrderCompleteStatus/{order_id}','OrderController@OrderCompleteStatus')->name('OrderCompleteStatus');
 });

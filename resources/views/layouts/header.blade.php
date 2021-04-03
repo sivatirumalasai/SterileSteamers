@@ -139,7 +139,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
                 </a></li>
                 @endguest
                 @auth
-                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" style="color: #222222 !important">
                     Logout
                 </a>  </li>  
                 <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">

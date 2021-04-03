@@ -98,8 +98,25 @@ class OrderController extends Controller
                 return redirect()->back();
             }
             toastr()->warning("Payment not done for this order please check");
+            return redirect()->back();
+        }
+        toastr()->warning('Invalid Order Id ');
         return redirect()->back();
-            
+
+    }
+    //OrderCompleteStatus
+    public function OrderCompleteStatus($order_id)
+    {
+        $order=UserOrder::where('order_id',$order_id)->first();
+        if($order){
+            if($order->txn_status==1){
+                $order->delivery_status=1;
+                $order->save();
+                toastr()->warning('Order Accepted Successfully');
+                return redirect()->back();
+            }
+            toastr()->warning("Payment not done for this order please check");
+            return redirect()->back();
         }
         toastr()->warning('Invalid Order Id ');
         return redirect()->back();

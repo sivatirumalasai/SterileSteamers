@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests;
 
-use Brian2694\Toastr\Facades\Toastr;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
 
-class CreateOrderRequest extends FormRequest
+class CreateOrderRequest extends LaravelFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,16 +36,24 @@ class CreateOrderRequest extends FormRequest
             'address'=>'required'
         ];
     }
-    public function withValidator($validator)
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
     {
-        $messages = $validator->messages();
-
-        foreach ($messages->all() as $message)
-        {
-            toastr()->error ( $message, 'Error');
-        }
-
-        return $validator->errors()->all();
-
+        $errors = (new ValidationException($validator->errors()->first()));
+        throw new HttpResponseException(
+            response()->json(['status'=>false,'message' => $errors->validator], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+        );
     }
 }
