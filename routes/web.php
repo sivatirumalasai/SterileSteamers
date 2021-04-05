@@ -15,6 +15,9 @@ Route::get('login','Auth\LoginController@showLoginForm')->name('login');
 Route::post('login','Auth\LoginController@login');
 Route::get('register','Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register','Auth\LoginController@register');
+//admin login routes
+Route::get('/login/admin', 'Auth\LoginController@showAdminLoginForm');
+Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 
 Route::post('logout','Auth\LoginController@logout')->name('logout');
 
@@ -75,6 +78,7 @@ Route::get("SteamCarWash",function ()
 
 Route::post('OrderSummeryForm',"WebSite\CartController@createOrder");
 Route::post("successPayment",'WebSite\CartController@successPayment');
+Route::post("failedPayment",'WebSite\CartController@failedPayment');
 
 Route::post('payment','WebSite\PaymentController@payment')->name('payment');
 

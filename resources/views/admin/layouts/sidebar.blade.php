@@ -24,6 +24,15 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+               <li class="nav-item"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Logout
+                </p>
+               </a>  </li>  
+               <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                   {{ csrf_field() }}
+               </form>    
           <li class="nav-item">
             <a href="{{ url("admin/dashboard")}}" class="nav-link {{ ($title==='dashboard')? "active": "" }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>

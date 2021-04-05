@@ -26,8 +26,13 @@
                     </div>
 
                     <div class="signin-form">
-                        <h2 class="form-title">Sign up</h2>
+                        <h2 class="form-title">LogIn</h2>
+                            @isset($url)
+                        <form method="POST" action='{{ url("login/$url") }}' class="register-form" id="login-form">
+                        @else
                         <form method="POST" action="{{ route('login') }}" class="register-form" id="login-form">
+                        @endisset
+                            @csrf
                             @csrf
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-account material-icons-name"></i></label>

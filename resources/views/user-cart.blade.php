@@ -381,13 +381,21 @@ $("#booking-form-submit").on('click',function () {
                 var rzp1 = new Razorpay(options);
                 rzp1.on('payment.failed', function (response){
                     console.log('failed',response);
-                    alert(response.error.code);        
-                    alert(response.error.description);        
-                    alert(response.error.source);        
-                    alert(response.error.step);        
-                    alert(response.error.reason);        
-                    alert(response.error.metadata.order_id);        
-                    alert(response.error.metadata.payment_id);
+                    $.ajax({
+                        type: "POST",
+                        url: baseurl+'/failedPayment',
+                        data: {razorpay_order_id:response.error.metadata.order_id,razorpay_payment_id:response.error.metadata.payment_id,_token:"{{ csrf_token() }}",description:response.error.description,},
+                        cache: false,
+                        success: function(result){
+                            toastr.success(result.message);
+                            window.location.reload();
+                            console.log('success',result);
+                        },
+                        error:function(error){
+                            toastr.error(error.responseJSON.message);
+                            console.log('error',error);
+                        }  
+                    }); 
                 });
                 rzp1.open();
                 

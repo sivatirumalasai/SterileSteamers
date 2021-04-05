@@ -49,13 +49,17 @@
                   </tr>
                   </thead>
                   <tbody>
-                    @foreach (App\Models\UserOrder::whereNotNull('order_id')->get() as $index=>$order)
+                    @foreach (App\Models\UserOrder::whereNotNull('order_id')->orderBy('id','desc')->get() as $index=>$order)
                     <tr>
                       <td>{{ $index+1 }}</td>
 
                       <td>{{ $order->order_id }}</td>
                       {{-- <td>{{ ($order->txn_id)? $order->txn_id:"cancelled" }}</td> --}}
-                      <td> {{ ($order->txn_status)? 'Paid':"Rejected" }}</td>
+                      @if($order->txn_status)
+                      <td ><span class="success"></span> Paid</td>
+                      @else
+                      <td ><span class="danger"></span> Rejected</td>
+                      @endif
                       <td>{{ $order->final_amount }}</td>
                       <td>{{ $order->first_name." ".$order->last_name }}</td>
                       <td> {{ $order->mobile}}</td>
@@ -90,9 +94,12 @@
                     </tr>
                   </tfoot>
                 </table>
+
+              
               </div>
               <!-- /.card-body -->
             </div>
+            
             <!-- /.card -->
           </div>
           <!-- /.col -->
@@ -105,26 +112,26 @@
   </div>
   <!-- /.content-wrapper -->
   @endsection
-      @section("java-script")
-      <script src="{{URL::asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+  @section("java-script")
+  <script src="{{URL::asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{URL::asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{URL::asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
 <script src="{{URL::asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 <script>
-    $(function () {
-      $("#example1").DataTable({
-        "responsive": true,
-        "autoWidth": false,
-      });
-      $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-      });
-    });
-  </script>
+$(function () {
+  $("#example1").DataTable({
+    "responsive": true,
+    "autoWidth": false,
+  });
+  $('#example2').DataTable({
+    "paging": true,
+    "lengthChange": false,
+    "searching": false,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "responsive": true,
+  });
+});
+</script>
 @endsection

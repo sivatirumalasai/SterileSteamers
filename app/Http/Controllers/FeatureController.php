@@ -10,6 +10,15 @@ use Rennokki\Plans\Models\Features;
 class FeatureController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest:admin');
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

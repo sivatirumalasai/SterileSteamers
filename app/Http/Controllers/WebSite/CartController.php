@@ -139,7 +139,7 @@ class CartController extends Controller
                     $order->actual_amount=$total_actual_price;
                     $order->discount_amount=$total_discount;
                     $order->final_amount=$total_actual_price-$total_discount;
-                    $order->order_id=$paymentcontroller->generateOrderId(['amount'=>$total_actual_price-$total_discount,'id'=>$order->id]);
+                    $order->order_id=$paymentcontroller->generateOrderId(['amount'=>$total_actual_price,'id'=>$order->id]);
                     $order->save();
                     return  response()->json(['message'=>'success','data'=>$order],JsonResponse::HTTP_OK); 
                 }
@@ -161,6 +161,7 @@ class CartController extends Controller
                     $orderDetails->txn_status=1;
                     $orderDetails->txn_msg='captured';
                     $orderDetails->booking_date=date('Y-m-d');
+                    $orderDetails->save();
                     $user=Auth::user();
                     $user->cartItems()->delete();
                 return  response()->json(['message'=>'Payment has done successfully'],JsonResponse::HTTP_OK);
@@ -169,10 +170,27 @@ class CartController extends Controller
                     $orderDetails->txn_status=2;
                     $orderDetails->txn_msg='Failed';
                     $orderDetails->booking_date=date('Y-m-d');
-
+                    $orderDetails->save();
                 return  response()->json(['message'=>'Payemnt rejected'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
                 }
+                
+            }
+            return  response()->json(['message'=>'Order Not found'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+        }
+    } 
+    public function failedPayment(Request $request)
+    {
+        //pay_GuV6el8PvDUG9s
+        if($request->has('razorpay_payment_id') && $request->has("razorpay_order_id")){
+            $paymentcontroller=new PaymentController();
+            $paymentDetails=$paymentcontroller->paymentById($request->razorpay_payment_id);
+            $orderDetails=UserOrder::where('order_id',$request->razorpay_order_id)->first();
+            if($orderDetails){
+                $orderDetails->txn_status=2;
+                $orderDetails->txn_msg=$request->description;
+                $orderDetails->booking_date=date('Y-m-d');
                 $orderDetails->save();
+                return  response()->json(['message'=>'Payemnt Cancelled'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);                
             }
             return  response()->json(['message'=>'Order Not found'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
         }

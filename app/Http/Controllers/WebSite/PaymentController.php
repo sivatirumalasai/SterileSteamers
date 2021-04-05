@@ -76,7 +76,7 @@ class PaymentController extends Controller
     {
         $api = new Api(config('razorpay.razor_key'), config('razorpay.razor_secret'));
         // Orders
-        $order  = $api->order->create(array('receipt' => $data['id'], 'amount' => $data['amount'], 'currency' => 'INR')); // Creates order
+        $order  = $api->order->create(array('receipt' => $data['id'], 'amount' => $data['amount']*100, 'currency' => 'INR')); // Creates order
         $orderId = $order['id']; // Get the created Order ID
         //$order  = $api->order->fetch($orderId);
        return $orderId;
