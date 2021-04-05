@@ -403,7 +403,7 @@ class WebServicesController extends Controller
                         'user_message'=>$request->user_message,
                         'booking_date'=>$request->booking_date,
                         'latitude'=>$request->latitude,
-                        'longitude'=>$request->logitude,
+                        'longitude'=>$request->longitude,
                     ]);
                     if($order){
                         $order->orderDetails()->save(new UserOrderDetail([
