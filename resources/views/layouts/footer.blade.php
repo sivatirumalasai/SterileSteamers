@@ -122,7 +122,6 @@
 				<script type="text/javascript" src="{{ URL::asset('script/jquery.responsiveElement.js') }}"></script>
 				<script type="text/javascript" src="{{ URL::asset('script/jquery.touchSwipe.min.js') }}"></script>
 				<script type="text/javascript" src="{{ URL::asset('script/DateTimePicker.min.js') }}"></script>
-				<script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>  
 				
 				<!-- Revolution Slider files -->
 				<script type="text/javascript" src="{{ URL::asset('script/revolution/jquery.themepunch.revolution.min.js') }}"></script>
