@@ -3,7 +3,13 @@
 @include('layouts.header')
 @stop
 @section('content')
-
+<style>
+	.left_right_align{
+		float: left;
+		width: 48%;
+		margin: 0px 2% 0px 0px;
+	}
+</style>
 <!-- Content -->
 <div class="template-content">
 
@@ -21,12 +27,12 @@
 		<div class="template-layout-33x66 template-clear-fix">
 			
 			<!-- Left column -->
-			<div class="template-layout-column-left">
-				<img src="media/image/sample/460x678/image_01.jpg" alt=""/>
+			<div class="template-layout-column-left" style="visibility: visible;">
+				<img src="{{ URL::asset('media/image/sample/460x678/image_01.jpg') }}" alt=""/>
 			</div>
 			
 			<!-- Right column -->
-			<div class="template-layout-column-right">
+			<div class="template-layout-column-right" style="visibility: visible;">
 				
 				<!-- Text -->
 				<p class="template-padding-reset">
@@ -526,34 +532,34 @@
 			<div class="template-section-padding-1">
 				
 				<!-- Features list -->
-				<div class="template-component-feature-list template-component-feature-list-position-top">
+				<div class="template-component-feature-list template-component-feature-list-position-top template-clear-fix">
 					
 					<!-- Layout 50x50% -->
-					<ul class="template-layout-50x50 template-clear-fix">
+					<ul class="template-layout-25x25 template-clear-fix">
 						
 						<!-- Left column -->
-						<li class="template-layout-column-left">
+						<li class="template-layout-column-left left_right_align">
 							<span class="template-icon-feature-location-map"></span>
 							<h5>Convenience</h5>
 							<p>We are dedicated to providing quality service, customer satisfaction at a great value in multiple locations offering convenient hours.</p>
 						</li>
 						
 						<!-- Right column -->
-						<li class="template-layout-column-right">
+						<li class="template-layout-column-right left_right_align">
 							<span class="template-icon-feature-eco-nature"></span>
 							<h5>Organic products</h5>
 							<p>Our products are eco-friendly and interior products are all organic. We use less than a gallon of water with absolutely zero-waste.</p>											
 						</li>
 						
 						<!-- Left column -->
-						<li class="template-layout-column-left">
+						<li class="template-layout-column-left left_right_align">
 							<span class="template-icon-feature-team"></span>
 							<h5>Experienced Team</h5>
 							<p>Our crew members are all trained and skilled and fully equiped with equipment and supplies needed that we can deliver the best results.</p>											
 						</li>
 						
 						<!-- Right column -->
-						<li class="template-layout-column-right">
+						<li class="template-layout-column-right left_right_align">
 							<span class="template-icon-feature-spray-bottle"></span>
 							<h5>Great Value</h5>
 							<p>We offer multiple services at a great value to meet your needs. We offer a premium service while saving your time and money.</p>											

@@ -22,7 +22,7 @@
     </style>
     <script>
      let map, infoWindow;
-
+        let userlocation={};
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: -34.397, lng: 150.644 },
@@ -42,6 +42,8 @@ function initMap() {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
+          userlocation=pos;
+          console.log('pos',pos);
           infoWindow.setPosition(pos);
           infoWindow.setContent("Location found.");
           infoWindow.open(map);
@@ -56,6 +58,22 @@ function initMap() {
       handleLocationError(false, infoWindow, map.getCenter());
     }
   });
+  map.addListener("click", (mapsMouseEvent) => {
+    // Close the current InfoWindow.
+    infoWindow.close();
+    // Create a new InfoWindow.
+    infoWindow = new google.maps.InfoWindow({
+      position: mapsMouseEvent.latLng,
+    });
+    console.log("sai",mapsMouseEvent.latLng.toJSON());
+    userlocation=mapsMouseEvent.latLng.toJSON();
+    infoWindow.setContent(
+
+     // JSON.stringify(mapsMouseEvent.latLng.toJSON())
+    );
+    infoWindow.open(map);
+  });
+
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -384,14 +402,109 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8gGp4eCFFolHD2ezWhEojkGDF-DhWkVo&callback=initMap&libraries=&v=weekly" async ></script>
-
+<button id="rzp-button1" style="display: none">Pay</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>var options = {    
+    "key": "{{ config('razorpay.razor_key') }}",
+    "amount": "0",
+    "currency": "INR",    
+    "name": "Sterlin Steamers",    
+    "description": "Test Transaction",    
+    "image": "https://13.232.249.110/media/image/logo.png",    
+    "order_id": "",
+    "handler": function (response){       
+        console.log(response); 
+        $.ajax({
+            type: "POST",
+            url: baseurl+'/successPayment',
+            data: {razorpay_order_id:response.razorpay_order_id,razorpay_payment_id:response.razorpay_payment_id,_token:"{{ csrf_token() }}"},
+            cache: false,
+            success: function(result){
+                toastr.success(result.message);
+                window.location.reload();
+                console.log('success',result);
+            },
+            error:function(error){
+                toastr.error(error.responseJSON.message);
+                console.log('error',error);
+            }  
+        });  
+        },    
+    "prefill": {        
+        "name": "Gaurav Kumar",        
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"    
+    },    
+    "notes": {        
+        "address": "Razorpay Corporate Office"    
+        },    
+    "theme": {
+        "color": "#3399cc"    
+        }
+    };
+    
+    </script>
 <script type="text/javascript">
     jQuery(document).ready(function($)
     {
         $('#template-booking').booking();
     });
     $('#booking-form-submit').on('click',function () {
-       console.log('data',$("#booking-form-data").val()); 
+        if((Object.keys(userlocation).length)==2){
+            var service_data=$("#booking-form-data").val();
+            var first_name=$("#booking-form-first-name").val();
+            var last_name=$('#booking-form-second-name').val();
+            var email=$("#booking-form-email").val();
+            var mobile=$("#booking-form-phone").val();
+            var booking_date=$("#booking-form-date").val(); 
+            var address=$("#booking-form-address").val();
+            $.ajax({
+                type: "POST",
+                url: baseurl+'/ServiceRequest',
+                data: {service_data:service_data,userlocation:userlocation,_token:"{{ csrf_token() }}",address:address,bookind_date:booking_date,mobile:mobile,email:email,first_name:first_name,last_name:last_name
+                },
+                cache: false,
+                success: function(result){
+                    options.order_id=result.data.order_id;
+                    options.amount=result.data.actual_amount*100;
+                    console.log("amount",options.amount);
+                    options.prefill.name=result.data.first_name+' '+result.data.last_name;
+                    options.prefill.email=result.data.email;
+                    options.prefill.contact=result.data.mobile;
+                    options.notes.address=result.data.address;
+                    $("#rzp-button1").click();
+                    var rzp1 = new Razorpay(options);
+                    rzp1.on('payment.failed', function (response){
+                        console.log('failed',response);
+                        $.ajax({
+                            type: "POST",
+                            url: baseurl+'/failedPayment',
+                            data: {razorpay_order_id:response.error.metadata.order_id,razorpay_payment_id:response.error.metadata.payment_id,_token:"{{ csrf_token() }}",description:response.error.description,},
+                            cache: false,
+                            success: function(result){
+                                toastr.success(result.message);
+                                window.location.reload();
+                                console.log('success',result);
+                            },
+                            error:function(error){
+                                toastr.error(error.responseJSON.message);
+                                console.log('error',error);
+                            }  
+                        }); 
+                    });
+                    rzp1.open();
+                },
+                error:function(error){
+                    toastr.error(error.responseJSON.message);
+                    console.log('error',error);
+                }  
+            }); 
+            console.log('data',$("#booking-form-data").val(),userlocation); 
+        }
+        else{
+            alert('Please Select your location');
+        }
+       
     });
 </script>
 @stop

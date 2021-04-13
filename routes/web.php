@@ -80,6 +80,9 @@ Route::post('OrderSummeryForm',"WebSite\CartController@createOrder");
 Route::post("successPayment",'WebSite\CartController@successPayment');
 Route::post("failedPayment",'WebSite\CartController@failedPayment');
 
+Route::post('ServiceRequest','WebSite\ServiceController@serviceRequest');
+
+
 Route::post('payment','WebSite\PaymentController@payment')->name('payment');
 
 Route::get('pay','WebSite\PaymentController@pay')->name('pay');
