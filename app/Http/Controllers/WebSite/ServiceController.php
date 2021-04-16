@@ -15,6 +15,10 @@ use Rennokki\Plans\Models\PlanModel;
 
 class ServiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function serviceInfo($id=0)    
     {   
         if($id==0){

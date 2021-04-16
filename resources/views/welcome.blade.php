@@ -1518,13 +1518,6 @@ section p {
  
 	</style>
 
-	<!-- content -->
-    <section>
-		<h1><em>Smart Welcome Popup</em></h1>
-		<p><u>Smart Welcome PopUp</u> is the responsive css welcome popup to welcome your website visitors and ask them to subscribe for the newsletter or close the popup or go to some link.</p>
-  <hr/><em>Refresh me Please!</em>
-	  </section>
-  <!-- end -->
   
   <!-- Close Box -->
   {{-- <div class="box"> --}}

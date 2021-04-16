@@ -24,12 +24,16 @@ Route::post('logout','Auth\LoginController@logout')->name('logout');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
+
 Route::get('/', function () {
     return view('welcome',['title'=>'']);
 });
 Route::get('/home', function () {
     return view('welcome',['title'=>'SeterileSteamers']);
 })->name('home');
+Route::get('/home1', function () {
+    return view('welcome1',['title'=>'SeterileSteamers']);
+})->name('home1');
 Route::get('/contact', function () {
     return view('contact',['title'=>'SeterileSteamers']);
 })->name('contact');
@@ -39,7 +43,6 @@ Route::get('accessory-info/{id}','WebSite\AccessoryController@accessoryInfo')->n
 Route::get('service-info/{id?}','WebSite\ServiceController@serviceInfo')->name('service-info');
 Route::get('service-category/{id}','WebSite\ServiceCategoryController@index')->name('service-category');
 Route::get('user-cart','WebSite\CartController@index')->name("user-cart");
-Route::get('sai','WebSite\ProductController@sai');
 Route::get('logincheck','WebSite\ProductController@logincheck');
 Route::post('AddToCart','WebSite\CartController@addToCart');
 Route::post('AddItemToCart','WebSite\CartController@addToCart');
@@ -75,6 +78,9 @@ Route::get("SteamCarWash",function ()
 {
     return view('blogs.steam_car_wash',['title'=>'blogs']);
 })->name('SteamCarWash');
+
+
+
 
 Route::post('OrderSummeryForm',"WebSite\CartController@createOrder");
 Route::post("successPayment",'WebSite\CartController@successPayment');
