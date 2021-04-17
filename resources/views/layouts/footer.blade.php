@@ -138,6 +138,7 @@
 
 				<!-- Plugins files -->
 				<script type="text/javascript" src="{{ URL::asset('plugin/booking/jquery.booking.js') }}"></script>
+				<script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>  
 				
 				<!-- Components files -->
 				<script type="text/javascript" src="{{ URL::asset('script/template/jquery.template.tab.js') }}"></script>
