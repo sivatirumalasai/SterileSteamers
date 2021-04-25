@@ -11,6 +11,9 @@
 |
 */
 //Auth::routes();
+
+use App\Http\Controllers\HomeController;
+
 Route::get('login','Auth\LoginController@showLoginForm')->name('login');
 Route::post('login','Auth\LoginController@login');
 Route::get('register','Auth\RegisterController@showRegistrationForm')->name('register');
@@ -97,13 +100,8 @@ Route::post('dopayment','WebSite\PaymentController@dopayment')->name('dopayment'
 
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', function () {
-        return view('admin.dashboard',['title'=>'dashboard']);
-    })->name('dashboard');
-
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard',['title'=>'dashboard']);
-    });
+    Route::get('/', 'HomeController@dashboard')->name('dashboard');
+    Route::get('dashboard', 'HomeController@dashboard');
     //product controller
     Route::resource('products', ProductController::class);
     Route::resource('products.features', ProductFeatureController::class);
