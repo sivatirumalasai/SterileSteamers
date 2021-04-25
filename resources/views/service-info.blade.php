@@ -287,7 +287,7 @@
                                                 <!-- Price -->
                                                 <div class="template-component-booking-service-price">
                                                     <span class="template-icon-booking-meta-price"></span>
-                                                    <span class="template-component-booking-service-price-currency">$</span>
+                                                    <span class="template-component-booking-service-price-currency">Rs</span>
                                                     <span class="template-component-booking-service-price-value"></span>
                                                     <span class="template-component-booking-service-price-unit">{{ $plan->actual_price }}</span>
                                                     <span class="template-component-booking-service-price-decimal">.00</span>
