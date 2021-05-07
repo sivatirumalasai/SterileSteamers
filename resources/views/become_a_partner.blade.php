@@ -11,11 +11,11 @@
 						<div class="template-main">
 
 							<div class="template-header-bottom-page-title">
-								<h1>Contact style 1</h1>
+								<h1>Partnership</h1>
 							</div>
 
 							<div class="template-header-bottom-page-breadcrumb">
-								<a href="index.html">Home</a><span class="template-icon-meta-arrow-right-12"></span><a href="#">Contact style 1</a>
+								<a href="index.html">Home</a><span class="template-icon-meta-arrow-right-12"></span><a href="#">Become a Partner</a>
 							</div>
 						
 						</div>

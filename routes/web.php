@@ -38,8 +38,12 @@ Route::get('/home1', function () {
     return view('welcome1',['title'=>'SeterileSteamers']);
 })->name('home1');
 Route::get('/contact', function () {
-    return view('contact',['title'=>'SeterileSteamers']);
+    return view('contact',['title'=>'contact']);
 })->name('contact');
+Route::get("BecomeAPartner",function(){
+    return view('become_a_partner',['title'=>'BecomeAPartner']);
+})->name('BecomeAPartner');
+
 Route::get('product-info/{id}','WebSite\ProductController@productInfo')->name('product-info');
 Route::get("accessories-list",'WebSite\AccessoryController@index')->name('accessories-list');
 Route::get('accessory-info/{id}','WebSite\AccessoryController@accessoryInfo')->name('accessory-info');
@@ -49,6 +53,7 @@ Route::get('user-cart','WebSite\CartController@index')->name("user-cart");
 Route::get('logincheck','WebSite\ProductController@logincheck');
 Route::post('AddToCart','WebSite\CartController@addToCart');
 Route::post('AddItemToCart','WebSite\CartController@addToCart');
+
 
 //payment
 Route::get('paymentpage',function ()
