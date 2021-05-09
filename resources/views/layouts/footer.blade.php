@@ -161,8 +161,10 @@
                     const imageList=[];
                     
 				</script>
+				
 				<script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 				{!! Toastr::message() !!}
+				<script type="text/javascript" id="zsiqchat">var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode: "8b96547ce6587118c501d2b95f211d4aabb34db20ff58ff04867ddd79c33677ba1023359a79583d0d58e9acae25ad7ca", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.in/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);</script>
             </body>
 			
 		</html>
