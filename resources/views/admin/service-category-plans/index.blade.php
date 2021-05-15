@@ -45,6 +45,7 @@
                     <th>Discount Price</th>
                     <th>status</th>
                     <th>Created at</th>
+                    <th>Coupons</th>
                     <th>Controles</th>
                   </tr>
                   </thead>
@@ -60,6 +61,9 @@
                       <td>{{ $plan->discount_price }}/-</td>
                       <td> {{ ($plan->status)? 'Available':"Not Available" }}</td>
                       <td>{{ $plan->created_at->format('Y-m-d') }}</td>
+                      <td>
+                        <a href="{{ route('services.coupons.index',['service'=>$plan->id]) }}"><button type="button" class="btn btn-block btn-outline-info">Coupons</button></a>
+                      </td>
                       <td>
                         <div class="row"><a href="{{ route('services.plans.edit',['service'=>$category->id,'plan'=>$plan->id]) }}" ><button class="btn btn-block btn-outline-secondary">
                           <i class="fas fa-edit"></i> </button>

@@ -31,7 +31,7 @@ class ServicePlanController extends Controller
             return view('admin.service-category-plans.index',['title'=>'services','category'=>$category]);
         }
         toastr()->error('Invalid Service Id');
-        return route('services.index');
+        return redirect()->route('services.index');
     }
 
     /**
@@ -46,7 +46,7 @@ class ServicePlanController extends Controller
             return view('admin.service-category-plans.add',['title'=>'services','category'=>$category]);
         }
         toastr()->error('Invalid Service Id');
-        return route('services.index');
+        return redirect()->route('services.index');
     }
 
     /**
@@ -79,7 +79,7 @@ class ServicePlanController extends Controller
             return redirect()->route('services.plans.index',['service'=>$id]);        
         }
         toastr()->error('Invalid Service Id');
-        return route('services.index');
+        return redirect()->route('services.index');
     }
 
     /**
@@ -99,9 +99,14 @@ class ServicePlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($service,$plan_id)
     {
-        //
+        $category=ServiceCategoryPlan::find($plan_id);
+        if($category){
+            return view('admin.service-category-plans.edit',['category'=>$category,'title'=>'services']);
+        }
+        Toastr::error('Invalid Service Category Id');
+       return redirect()->back();
     }
 
     /**
@@ -111,9 +116,39 @@ class ServicePlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $service,$id)
     {
-        //
+        $service=ServiceCategoryPlan::where('id',$id)->first();
+        if($service){
+            // save to storage/app/photos as the new $filename
+            $status=false;
+            if($request->has('status')){
+                $status=true;
+            }
+            $data=[
+                'name'=>$request->name,
+                'actual_price'=>$request->actual_price,
+                'discount_price'=>$request->discount_price,
+                'type'=>$request->type,
+                'duration'=>$request->duration,
+                'status'=>$status,
+                'description'=>$request->description
+            ];
+            if($request->service_image){
+                $path=Storage::disk('public')->put('services', $request->service_image, 'public');
+                $data['image']=$path;
+            }
+            $update=ServiceCategoryPlan::where('id',$id)->update($data);
+            if($update){
+                Toastr::success('Service Plan  Updated Successfully');
+                return redirect()->route('services.plans.index',['service'=>$service->service_category_id]);   
+            }
+            Toastr::error('Error while update');
+            return redirect()->back();
+            
+        }
+        Toastr::error('Invalid Service Id');
+        return redirect()->back();
     }
 
     /**

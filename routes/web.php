@@ -14,6 +14,7 @@
 
 use App\Http\Controllers\HomeController;
 
+
 Route::get('login','Auth\LoginController@showLoginForm')->name('login');
 Route::post('login','Auth\LoginController@login');
 Route::get('register','Auth\RegisterController@showRegistrationForm')->name('register');
@@ -127,7 +128,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('services', ServiceController::class);
     Route::resource('services.plans', ServicePlanController::class);
     Route::resource('services.categories', ServiceCategoryController::class);
+    Route::resource('services.coupons', ServiceCouponsController::class);
     Route::resource('orders', OrderController::class);
+    Route::resource('coupons',CouponController::class);
     Route::get('OrderUpdateStatus/{order_id}','OrderController@OrderUpdateStatus')->name('OrderUpdateStatus');
     Route::get('OrderCompleteStatus/{order_id}','OrderController@OrderCompleteStatus')->name('OrderCompleteStatus');
 });

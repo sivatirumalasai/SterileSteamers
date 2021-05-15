@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
-use App\Models\ServiceCategory;
-use App\Models\ServiceCategoryPlan;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;

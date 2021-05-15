@@ -26,12 +26,14 @@ class ServiceCategoryController extends Controller
      */
     public function index($id)
     {
+        
         $services=Service::find($id);
+       // dd($services);
         if($services){
             return view('admin.service-categories.index',['title'=>'services','service'=>$services]);
         }
         toastr()->error('Invalid Service Id');
-        return route('services.index');
+        return redirect()->route('services.index');
     }
 
     /**
@@ -46,7 +48,7 @@ class ServiceCategoryController extends Controller
             return view('admin.service-categories.add',['title'=>'services','service'=>$services]);
         }
         toastr()->error('Invalid Service Id');
-        return route('services.index');
+        return redirect()->route('services.index');
     }
 
     /**
@@ -69,7 +71,7 @@ class ServiceCategoryController extends Controller
             return redirect()->route('services.create');        
         }
         toastr()->error('Invalid Service Id');
-        return route('services.index');
+        return redirect()->route('services.index');
     }
 
     /**
@@ -80,7 +82,6 @@ class ServiceCategoryController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -91,12 +92,13 @@ class ServiceCategoryController extends Controller
      */
     public function edit($service,$id)
     {
+        
         $category=ServiceCategory::find($id);
         if($category){
             return view('admin.service-categories.edit',['category'=>$category,'title'=>'services']);
         }
         Toastr::error('Invalid Service Category Id');
-        return redirect()->back();
+       return redirect()->back();
     }
 
     /**
@@ -138,7 +140,7 @@ class ServiceCategoryController extends Controller
             
         }
         Toastr::error('Invalid Service Id');
-            return redirect()->back();
+        return redirect()->back();
     }
 
     /**

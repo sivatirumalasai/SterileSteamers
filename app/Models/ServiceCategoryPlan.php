@@ -17,4 +17,8 @@ class ServiceCategoryPlan extends Model
     {
         return $this->belongsTo(ServiceCategory::class,'service_category_id');
     }
+    public function coupons()
+    {
+        return $this->hasMany(ServiceCategoryCoupon::class,'service_category_plan_id');
+    }
 }
