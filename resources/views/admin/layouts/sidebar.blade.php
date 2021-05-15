@@ -89,6 +89,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{route("coupons.index")}}" class="nav-link {{ ($title==='coupons')? "active": "" }}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Coupons
+              </p>
+            </a>
+          </li>
           {{-- <li class="nav-item">
             <a href="{{route("services.index")}}" class="nav-link {{ ($title==='services')? "active": "" }}">
               <i class="nav-icon fas fa-th"></i>

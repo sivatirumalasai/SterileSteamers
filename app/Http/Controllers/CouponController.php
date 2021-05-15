@@ -8,7 +8,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ServiceController extends Controller
+class CouponController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -53,10 +53,21 @@ class ServiceController extends Controller
         if($request->has('status')){
             $status=true;
         }
-        $path=Storage::disk('public')->put('coupons', $request->service_image, 'public');
-        $Service=Coupon::create(['name'=>$request->name,'status'=>$status,'icon'=>$icon,'image'=>$path,'description'=>$request->description]);
-        Toastr::success('Service Created Successfully');
-        return redirect()->route('services.create');
+        $path=Storage::disk('public')->put('coupons', $request->coupon_image, 'public');
+        $Service=Coupon::create([
+            'coupon_name'=>$request->coupon_name,
+            'coupon_code'=>$request->coupon_code,
+            'status'=>$status,
+            'image'=>$path,
+            'user_type'=>$request->user_type,
+            'user_limit'=>$request->user_limit,
+            'type'=>$request->coupon_type,
+            'amount'=>$request->amount,
+            'valid_from'=>$request->valid_from,
+            'valid_to'=>$request->valid_to
+        ]);
+        Toastr::success('Coupon Created Successfully');
+        return redirect()->route('coupons.create');
     }
 
     /**
@@ -103,9 +114,15 @@ class ServiceController extends Controller
                 $status=true;
             }
             $data=[
+                'coupon_name'=>$request->coupon_name,
+                'coupon_code'=>$request->coupon_code,
                 'status'=>$status,
-                'name'=>$request->name,
-                'description'=>$request->description
+                'user_type'=>$request->user_type,
+                'user_limit'=>$request->user_limit,
+                'type'=>$request->coupon_type,
+                'amount'=>$request->amount,
+                'valid_from'=>$request->valid_from,
+                'valid_to'=>$request->valid_to
             ];
             if($request->coupon_image){
                 $path=Storage::disk('public')->put('coupons', $request->coupon_image, 'public');

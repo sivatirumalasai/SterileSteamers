@@ -44,6 +44,7 @@ Route::get('/contact', function () {
 Route::get("BecomeAPartner",function(){
     return view('become_a_partner',['title'=>'BecomeAPartner']);
 })->name('BecomeAPartner');
+Route::get("ServiceCoupons",'WebSite\CouponController@index')->name('ServiceCoupons');
 
 Route::get('product-info/{id}','WebSite\ProductController@productInfo')->name('product-info');
 Route::get("accessories-list",'WebSite\AccessoryController@index')->name('accessories-list');

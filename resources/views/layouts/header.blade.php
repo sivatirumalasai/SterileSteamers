@@ -61,6 +61,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
                                 
                             </ul>
                         </li>
+                        <li >
+                            <a href="{{ route("ServiceCoupons") }}" style="color: @if($title=='Coupons') #199CDB @else #222222  @endif!important">Coupons</a>
+                        </li>
                         {{-- BecomeAPartner --}}
                         <li >
                             <a href="{{ route("BecomeAPartner") }}" style="color: @if($title=='BecomeAPartner') #199CDB @else #222222  @endif!important">Franchise</a>
@@ -114,6 +117,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelI
                                 @endforeach
                                 
                             </ul>
+                        </li>
+                        {{-- Coupons --}}
+                        <li >
+                            <a href="{{ route("ServiceCoupons") }}" style="color: @if($title=='Coupons') #199CDB @else #222222  @endif!important">Coupons</a>
                         </li>
                         {{-- BecomeAPartner --}}
                         <li >

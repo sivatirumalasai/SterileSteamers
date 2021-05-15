@@ -109,7 +109,7 @@
                         </div>
                       </div>
                       <div class="form-check">
-                        <input type="checkbox" name="status" required checked class="form-check-input" id="exampleCheck1">
+                        <input type="checkbox" name="status" {{ $category->status? "checked":"" }} class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label" for="exampleCheck1">status</label>
                       </div>
                     </div>

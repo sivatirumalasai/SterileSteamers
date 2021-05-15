@@ -160,7 +160,7 @@ class ServiceCouponsController extends Controller
                 'no_of_free_services'=>$free_services
             ];
             if($request->coupon_image){
-                $path=Storage::disk('public')->put('services', $request->coupon_image, 'public');
+                $path=Storage::disk('public')->put('services-coupons', $request->coupon_image, 'public');
                 $data['image']=$path;
             }
             $update=ServiceCategoryCoupon::where('id',$id)->update($data);

@@ -14,7 +14,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url("admin/dashboard")}}">Home</a></li>
-              <li class="breadcrumb-item active">Services</li>
+              <li class="breadcrumb-item active">Coupons</li>
             </ol>
           </div>
         </div>
@@ -29,8 +29,8 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Services</h3>
-                <a href="{{route('services.create')}}">+ Add Service</a>
+                <h3 class="card-title">Coupons</h3>
+                <a href="{{route('coupons.create')}}">+ Add Coupon</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -39,37 +39,35 @@
                   <tr>
                     <th>Slno</th>
                     <th>Image</th>
-                    <th>Service Name</th>
-                    <th>Description</th>
+                    <th>Coupon Name</th>
+                    <th>Coupon Code</th>
+                    <th>Type</th>
                     <th>status</th>
-                    <th>Created at</th>
-                    <th>Categories</th>
+                    <th>Valid To</th>
                     <th>Controles</th>
                   </tr>
                   </thead>
                   <tbody>
-                    @foreach (App\Models\Service::get() as $index=>$service)
+                    @foreach (App\Models\Coupon::get() as $index=>$service)
                     <tr>
                       <td>{{ $index+1 }}</td>
                     <td><img width="50"  src="{{Storage::url($service->image)}}" alt=""></td>
 
-                      <td>{{ $service->name }}</td>
-                      <td>{{ $service->description}}
-                      </td>
+                      <td>{{ $service->coupon_name }}</td>
+                      <td>{{ $service->coupon_code}}</td>
+                      @if($service->user_type==1)
+                      <td>All</td>
+                      @elseif($service->user_type==2)
+                      <td>1st time user</td>
+                      @elseif($service->user_type==3)
+                      <td>Limited</td>
+                      @endif
                       <td> {{ ($service->status)? 'Available':"Not Available" }}</td>
-                      <td>{{ $service->created_at->format('Y-m-d') }}</td>
+                      <td>{{ $service->valid_to }}</td>
                       <td>
-                        <a href="{{ route('services.categories.index',['service'=>$service->id]) }}"><button type="button" class="btn btn-block btn-outline-info">Categories</button></a>
-                      </td>
-                      <td>
-                        <div class="row"><a href="{{ route('services.edit',['service'=>$service->id]) }}" ><button class="btn btn-block btn-outline-secondary">
+                        <div class="row"><a href="{{ route('coupons.edit',['coupon'=>$service->id]) }}" ><button class="btn btn-block btn-outline-secondary">
                           <i class="fas fa-edit"></i> </button>
-                          </a><form action="{{ route('services.destroy', $service->id) }}" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-block btn-outline-danger">
-                              <i class="fas fa-trash"></i></button>
-                        </form>
+                          </a>
                         </div>
                       </td>
                     </tr>
@@ -80,11 +78,11 @@
                     <tr>
                       <th>Slno</th>
                       <th>Image</th>
-                      <th>Service Name</th>
-                      <th>Description</th>
+                      <th>Coupon Name</th>
+                      <th>Coupon Code</th>
+                      <th>Type</th>
                       <th>status</th>
                       <th>Created at</th>
-                      <th>Categories</th>
                       <th>Controles</th>
                     </tr>
                   </tfoot>
