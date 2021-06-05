@@ -35,17 +35,32 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('welcome',['title'=>'SeterileSteamers']);
 })->name('home');
-Route::get('/home1', function () {
-    return view('welcome1',['title'=>'SeterileSteamers']);
-})->name('home1');
 Route::get('/contact', function () {
     return view('contact',['title'=>'contact']);
 })->name('contact');
+
+//terms & conditions routes
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy',['title'=>'privacy-policy']);
+})->name('privacy-policy');
+Route::get('/terms-conditions', function () {
+    return view('terms-conditions',['title'=>'terms-conditions']);
+})->name('terms-conditions');
+Route::get('/refund-policy', function () {
+    return view('refund-policy',['title'=>'refund-policy']);
+})->name('refund-policy');
+
+
 Route::get("BecomeAPartner",function(){
     return view('become_a_partner',['title'=>'BecomeAPartner']);
 })->name('BecomeAPartner');
 Route::get("ServiceCoupons",'WebSite\CouponController@index')->name('ServiceCoupons');
+Route::get("orderemail",function ()
+{
+    return view('emails.coupons_order');
+});
 
+Route::get("CouponCart/{id}",'WebSite\CartController@couponCart')->name("CouponCart");
 Route::get('product-info/{id}','WebSite\ProductController@productInfo')->name('product-info');
 Route::get("accessories-list",'WebSite\AccessoryController@index')->name('accessories-list');
 Route::get('accessory-info/{id}','WebSite\AccessoryController@accessoryInfo')->name('accessory-info');

@@ -84,7 +84,7 @@
                                 <div class="template-component-button-box">
                                     <div class="handle-counter">
                                         <button class="counter-minus btn btn-primary dec button">-</button>
-                                        <input type="text" name="name" itemType={{ ($item->model_type=='App\Models\Product')? 'Product':'Accessory' }} id="{{ $item->id }}" value="{{ $item->quantity }}" >
+                                        <input type="text" name="name" itemType=@if($item->model_type=='App\Models\Product'){{ "product" }} @elseif($item->model_type=='App\Models\Accessory') {{ "accessory" }} @else {{ "coupon" }} @endif id="{{ $item->id }}" value="{{ $item->quantity }}" >
                                         <button class="counter-plus btn btn-primary inc button">+</button>
                                     </div>
                                     {{-- <a href="#" class="template-component-button">Select</a> --}}

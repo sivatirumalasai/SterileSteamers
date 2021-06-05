@@ -21,25 +21,20 @@
 								<div class="template-layout-column-center-left">
 									<h6>Services</h6>
 									<ul class="template-list-reset">
-										<li><a href="service-style-1.html">Exterior Hand Wash</a></li>
-										<li><a href="service-style-1.html">Tower Hand Dry</a></li>
-										<li><a href="service-style-1.html">Tire Dressing</a></li>
-										<li><a href="service-style-1.html">Wheel Shine</a></li>
-										<li><a href="service-style-1.html">Interior Vacuum</a></li>
-										<li><a href="service-style-1.html">Sealer Hand Wax</a></li>
+										@foreach (App\Models\Service::all() as $service)
+										<li><a href="{{ route("service-info",['id'=>$service->id]) }}">{{ $service->name }}</a></li>	
+										@endforeach
 									</ul>									
 								</div>
 								
 								<!-- Center right column -->
 								<div class="template-layout-column-center-right">
-									<h6>Company</h6>
+									<h6>Legal</h6>
 									<ul class="template-list-reset">
-										<li><a href="about-style-1.html">About Us</a></li>
-										<li><a href="gallery.html">Gallery</a></li>
-										<li><a href="service-style-2.html">Our Services</a></li>
-										<li><a href="book-your-wash.html">Book Your Wash</a></li>
-										<li><a href="gallery.html">Portfolio</a></li>
-										<li><a href="contact-style-1.html">Contact</a></li>
+										<li><a href="{{ route('privacy-policy') }}">Privacy Policy</a></li>
+										<li><a href="{{ route('terms-conditions') }}">Terms & Conditions</a></li>
+										<li><a href="{{ route('refund-policy') }}">Refund Policy</a></li>
+										<li><a href="{{ route('contact') }}">Contact</a></li>
 									</ul>
 								</div>
 								

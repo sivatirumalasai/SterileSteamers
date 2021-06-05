@@ -227,33 +227,34 @@ class WebServicesController extends Controller
         if($user){
             $cart_items=$user->cartItems->map(function ($cart_item)
             {
+                if($cart_item->model_type=='App\Models\Product' || $cart_item->model_type=='App\Models\Accessory'){
                     unset($cart_item->model->id);
                     unset($cart_item->model->created_at);
                     unset($cart_item->model->updated_at);
                     unset($cart_item->model->status);
                     $images=[];
+
                     foreach(json_decode($cart_item->model->images) as $product_image){
                         $images=url(Storage::url($product_image));
                         break;
                     }
                     $cart_item->model->images=$images;
-                
-                if($cart_item->model_type=='App\Models\Product'){
-                    $cart_item->model_type='product';
+                    
+                    if($cart_item->model_type=='App\Models\Product'){
+                        $cart_item->model_type='product';
+                    }
+                    else{
+                        $cart_item->model_type='accessories';
+                    }
+                    
+                    $cart_item->price=$cart_item->price*$cart_item->quantity;
+                    unset($cart_item->model_type);
+                    unset($cart_item->status);
+                    unset($cart_item->created_at);
+                    unset($cart_item->user_id);
+                    unset($cart_item->id);
+                    return $cart_item;
                 }
-                else{
-                    $cart_item->model_type='accessories';
-                }
-                
-                $cart_item->price=$cart_item->price*$cart_item->quantity;
-                unset($cart_item->model_type);
-                unset($cart_item->status);
-                unset($cart_item->created_at);
-                unset($cart_item->user_id);
-                unset($cart_item->id);
-                
-                return $cart_item;
-               // return $cart_item->model=$cart_item->model;
             });
             return response()->json(['message'=>'success','data'=>$cart_items]);
         }

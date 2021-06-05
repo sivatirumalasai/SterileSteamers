@@ -5,8 +5,10 @@ namespace App\Http\Controllers\WebSite;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\WebServices\WebServicesController;
 use App\Http\Requests\CreateOrderRequest;
+use App\Mail\CouponOrder;
 use App\Models\Accessory;
 use App\Models\Product;
+use App\Models\ServiceCategoryCoupon;
 use App\Models\User;
 use App\Models\UserCart;
 use App\Models\UserOrder;
@@ -14,6 +16,7 @@ use App\Models\UserOrderDetail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -36,9 +39,26 @@ class CartController extends Controller
         }
         return view('user-cart',['cart_items'=>$cart_items,'title'=>'UserCart']);
     }
-    public function sai()
+    public function couponCart($coupon)
     {  
-        dd(Auth::user());
+        $coupon=ServiceCategoryCoupon::where('status',1)->where('id',$coupon)->first();
+        if($coupon){
+            $cartcoupons=UserCart::where('model_type',get_class($coupon))->where('user_id',Auth::user()->id)->get();
+            
+            if($cartcoupons->count()>0){
+                UserCart::where('model_type',get_class($coupon))->where('user_id',Auth::user()->id)->delete();
+            }
+            $cart_order=UserCart::create([
+                'model_id' => $coupon->id,
+                'model_type' => get_class($coupon),
+                'user_id'=>Auth::user()->id,
+                'quantity'=>1,
+                'price'=>$coupon->amount
+                ]);
+            return redirect()->route('user-cart');
+        }
+        return redirect()->back();
+        
     }
     public function AddToCartOld(Request $request)
     {   
@@ -80,12 +100,18 @@ class CartController extends Controller
                         else{
                            if($request->item_type=='product'){
                                 $product=Product::find($request->item_id);  
+                                $amount=$product->actual_price;
+                            }
+                            elseif($request->item_type=='coupon'){
+                                $product=ServiceCategoryCoupon::find($request->item_id);
+                                $amount=$product->amount;
                             }
                             else{
                                 $product=Accessory::find($request->item_id);  
+                                $amount=$product->actual_price;
                             }
                             $cart_order=UserCart::create(['model_id' => $product->id,
-                            'model_type' => get_class($product),'user_id'=>$user->id,'quantity'=>1,'price'=>$product->actual_price]);
+                            'model_type' => get_class($product),'user_id'=>$user->id,'quantity'=>1,'price'=>$amount]);
                         }          
                         $webservices=new WebServicesController();
                         return  response()->json(['message'=>'Cart Updated Successfully','data'=>$webservices->cartItems($user->id)->original['data']]);
@@ -124,15 +150,27 @@ class CartController extends Controller
                     $total_actual_price=0;
                     $total_discount=0;
                     foreach($user->cartItems as $cart_item){
-                        $total_actual_price+=$cart_item->model->actual_price;
-                        $total_discount+=($cart_item->model->actual_price-$cart_item->model->discount);
+                        if($cart_item->model_type=='App\Models\Product' || $cart_item->model_type=='App\Models\Accessory'){
+                            $total_actual_price+=$cart_item->model->actual_price;
+                            $total_discount+=($cart_item->model->discount);
+                            $actual_price=$cart_item->model->actual_price;
+                            $discount=$cart_item->model->discount;
+                            $final_amount=$cart_item->model->actual_price-$cart_item->model->discount;
+                        }
+                        else{
+                            $total_actual_price+=$cart_item->model->amount;
+                            $total_discount+=0;
+                            $actual_price=$cart_item->model->amount;
+                            $discount=0;
+                            $final_amount=$cart_item->model->amount;
+                        }
                         $order->orderDetails()->save(new UserOrderDetail([
                             'model_id'=>$cart_item->model_id,
                             'model_type'=>$cart_item->model_type,
                             'quantity'=>$cart_item->quantity,
-                            'actual_amount'=>$cart_item->model->actual_price,
-                            'discount_amount'=>$cart_item->model->actual_price-$cart_item->model->discount,
-                            'final_amount'=>$cart_item->model->discount,
+                            'actual_amount'=>$actual_price,
+                            'discount_amount'=>$discount,
+                            'final_amount'=>$final_amount,
                         ]));
                         
                     }
@@ -163,15 +201,18 @@ class CartController extends Controller
                     $orderDetails->booking_date=date('Y-m-d');
                     $orderDetails->save();
                     $user=Auth::user();
+                    if($coupon_order=$user->cartItems()->where('model_type','App\Models\ServiceCategoryCoupon')->first()){
+                        Mail::to($request->user())->send(new CouponOrder($coupon_order));
+                    }
                     $user->cartItems()->delete();
-                return  response()->json(['message'=>'Payment has done successfully'],JsonResponse::HTTP_OK);
+                    return  response()->json(['message'=>'Payment has done successfully'],JsonResponse::HTTP_OK);
                 }
                 else{
                     $orderDetails->txn_status=2;
                     $orderDetails->txn_msg='Failed';
                     $orderDetails->booking_date=date('Y-m-d');
                     $orderDetails->save();
-                return  response()->json(['message'=>'Payemnt rejected'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
+                    return  response()->json(['message'=>'Payemnt rejected'],JsonResponse::HTTP_METHOD_NOT_ALLOWED);
                 }
                 
             }

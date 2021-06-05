@@ -47,34 +47,45 @@
             <!-- Left column -->
             <li class="template-layout-column-left">
                 <div class="template-component-image template-component-image-preloader">
-                    <a href="single-service-right-sidebar.html">
+                    <a href="{{ route('CouponCart',['id'=>$coupon->id]) }}">
                         <img src="{{ Storage::url($coupon->image) }}" alt=""/>
                         <span class="template-component-image-hover"></span>
                     </a>
                 </div>
-                <h5 class="template-margin-top-2">
-                    <a href="#">
-                        {{ $coupon->name }}
-                    </a>
-                </h5>
-                <p class="template-padding-reset"></p>
+                <h4 class="template-margin-top-2">
+                <div class="template-blog-header-meta">
+                    <span class="template-icon-meta-user">
+                        <a href="#">{{ $coupon->name }}</a>
+                    </span>
+                    <span class="template-icon-meta-price">
+                        <a href="#"><b> Rs.{{ $coupon->amount }}/-</b></a>
+                    </span>
+                </div>
+                </h4>
             </li>
             @php($i++)
             @elseif($i==2)
             <!-- Center column -->
             <li class="template-layout-column-center">
                 <div class="template-component-image template-component-image-preloader">
-                    <a href="single-service-right-sidebar.html">
+                    <a href="{{ route('CouponCart',['id'=>$coupon->id]) }}">
                         <img src="{{ Storage::url($coupon->image) }}" alt=""/>
                         <span class="template-component-image-hover"></span>
                     </a>
                 </div>
-                <h5 class="template-margin-top-2">
-                    <a href="#">
-                        {{ $coupon->name }}
-                    </a>
-                </h5>
-                <p class="template-padding-reset"></p>
+                <h4 class="template-margin-top-2">
+                    <div class="template-blog-header-meta">
+                        <span class="template-icon-meta-user">
+                            <a href="#">{{ $coupon->name }}</a>
+                        </span>
+                        <span class="template-icon-meta-price">
+                            <a href="#"><b> Rs.{{ $coupon->amount }}/-</b></a>
+                        </span>
+                    </div>
+                </h4>
+                <p class="template-padding-reset">
+                   
+                </p>
             </li>
 
             @php($i++)
@@ -82,16 +93,21 @@
             <!-- Right column -->
             <li class="template-layout-column-right">
                 <div class="template-component-image template-component-image-preloader">
-                    <a href="single-service-right-sidebar.html">
+                    <a href="{{ route('CouponCart',['id'=>$coupon->id]) }}">
                         <img src="{{ Storage::url($coupon->image) }}" alt=""/>
                         <span class="template-component-image-hover"></span>
                     </a>
                 </div>
-                <h5 class="template-margin-top-2">
-                    <a href="#">
-                        {{ $coupon->name }}
-                    </a>
-                </h5>
+                <h4 class="template-margin-top-2">
+                    <div class="template-blog-header-meta">
+                        <span class="template-icon-meta-user">
+                            <a href="#">{{ $coupon->name }}</a>
+                        </span>
+                        <span class="template-icon-meta-price">
+                            <a href="#"><b> Rs.{{ $coupon->amount }}/-</b></a>
+                        </span>
+                    </div>
+                </h4>
                 <p class="template-padding-reset"></p>
             </li>
             @php($i=0)
